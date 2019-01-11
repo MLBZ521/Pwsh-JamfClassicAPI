@@ -16,7 +16,7 @@ function Get-JamfAPIResources() {
         [string]$Server = $script:JamfProServer
     )
 
-    Write-Verbose "Getting available API resources endpoints from ${Server}"
+    Write-Verbose "Getting available API resource endpoints from ${Server}"
 
     Try {
         $response = Invoke-WebRequest -Uri "${Server}/api/resources.json" -Method GET -ErrorVariable RestError -ErrorAction Stop 

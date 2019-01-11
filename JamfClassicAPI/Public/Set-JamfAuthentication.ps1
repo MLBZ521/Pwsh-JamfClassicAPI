@@ -7,10 +7,10 @@
     .PARAMETER Credential
         API Credential to authenticate to the Jamf Pro API.
     .EXAMPLE
-        Set-JamfProAuthentication -Credential (Get-Credential)
+        Set-JamfAuthentication -Credential (Get-Credential)
 #>
 
-function Set-JamfProAuthentication() {
+function Set-JamfAuthentication() {
     [CmdletBinding(DefaultParameterSetName="Credential")]
     [Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUsePSCredentialType", "Credential")]
     param(

@@ -6,10 +6,10 @@
     .PARAMETER Url
         Mandatory - Fully qualified HTTPS URL  for the target JPS.
     .EXAMPLE
-        Set-JamfProServer -Url "https://jamf.company.com:8443"
+        Set-JamfServer -Url "https://jamf.company.com:8443" -Save (Yes/No)
 #>
 
-function Set-JamfProServer() {
+function Set-JamfServer() {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory)]

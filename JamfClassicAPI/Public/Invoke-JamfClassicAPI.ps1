@@ -13,11 +13,11 @@
     .PARAMETER Body
         Optional - HTTP Body payload. (Used for POST and PUT requests)
     .EXAMPLE
-        Invoke-JamfAPI-Classic -Resource "accounts"
+        Invoke-JamfClassicAPI -Resource "accounts"
     .EXAMPLE
-        Invoke-JamfAPI-Classic -Resource "accounts" -Method Delete
+        Invoke-JamfClassicAPI -Resource "accounts" -Method Delete
 #>
-function Invoke-JamfAPI-Classic() {
+function Invoke-JamfClassicAPI() {
     [CmdletBinding()]
     Param(
         [Parameter(ParameterSetName='Authentication')]

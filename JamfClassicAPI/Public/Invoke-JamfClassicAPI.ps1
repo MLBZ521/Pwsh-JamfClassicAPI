@@ -25,44 +25,74 @@ function Invoke-JamfClassicAPI() {
         [System.Management.Automation.CredentialAttribute()]
         $Authentication = $script:APICredentials,
 
-        [Parameter(Mandatory)]
-        [string]$Resource,
+        [ValidateSet('GET','PUT','POST','DELETE', IgnoreCase = $true)]
+        [string]$Method = 'GET',
 
-        [ValidateSet('Get','Put','Post','Delete')]
-        [string]$Method = 'Get',
-
-        [ValidateSet('xml','json')]
+        [ValidateSet('xml','json', IgnoreCase = $true)]
         [string]$Header = 'xml',
 
         [psobject]$Body,
 
         [string]$Server = $env:JamfProServer
-        [string]$Uri = "${Server}/JSSResource/${Resource}"
         # [string]$ResourceParams
-
     )
 
-    switch ($Header) {
-        "xml" {
-            [psobject]$Header = @{"accept"="application/xml"}
-         }
-        "json" {
-            [psobject]$Header = @{"accept"="application/json"}
+    DynamicParam {
+        $RuntimeParamDict = New-Object System.Management.Automation.RuntimeDefinedParameterDictionary
+        $AttributeCollection = New-Object System.Collections.ObjectModel.Collection[System.Attribute]
+
+        # Build Dynamic Paramter for $Resource
+        $ParameterAttributes = New-Object System.Management.Automation.ParameterAttribute
+        $ParameterAttributes.HelpMessage = "Provide the Resource to access:"
+        $ParameterAttributes.Mandatory = $Mandatory.IsPresent
+        $ParameterAttributes.ParameterSetName = '__AllParameterSets'
+        $ParameterAttributes.ValueFromPipeline = $ValueFromPipeline.IsPresent
+        $ParameterAttributes.ValueFromPipelineByPropertyName = $ValueFromPipelineByPropertyName.IsPresent
+        $AttributeCollection.Add($ParameterAttributes)
+
+        $AttributeCollection.Add((New-Object System.Management.Automation.ValidateSetAttribute( $( $global:APIResources.Path ) )))
+        $RuntimeParam = New-Object System.Management.Automation.RuntimeDefinedParameter('Resource', [string], $AttributeCollection)
+        $RuntimeParamDict.Add('Resource', $RuntimeParam)
+
+        return $RuntimeParamDict
+    }
+
+    Begin {
+        $PsBoundParameters.GetEnumerator() | ForEach-Object { New-Variable -Name $_.Key -Value $_.Value -ErrorAction SilentlyContinue}
+        $Uri = "${Server}/JSSResource${Resource}"
+
+        switch ($Header) {
+            "xml" {
+                [psobject]$Header = @{"accept"="application/xml"}
+            }
+            "json" {
+                [psobject]$Header = @{"accept"="application/json"}
+            }
         }
-    }
+        
+        # Get the supported methods for the select resource.
+        $availableMethods = $global:APIResources | Where-Object { $_.Path -eq $Resource } | Select-Object Methods
 
-    Write-Verbose "${Method}:  ${Resource}"
-
-    Try {
-        $response = Invoke-RestMethod -Uri "${Uri}" -Method $Method -Headers $Header -Credential $Authentication -ErrorVariable RestError -ErrorAction SilentlyContinue
-    }
-    Catch {
-        $statusCode = $_.Exception.Response.StatusCode.value__
-
-        If ($statusCode -notcontains "200") {
-            $errorDescription = $($RestError.Message -split [Environment]::NewLine)
-            Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
+        if ( $Method -notin $availableMethods.Methods ) {
+            Write-Error -Message "The selected resource does not support the provided method." -ErrorAction Stop
         }
+
+        Write-Verbose "Invoke method `"${Method}`" on resource `"${Resource}`" with header `"accept: $(${Header}.Values)`""
     }
-    return $response
+
+    Process {
+        Try {
+            $response = Invoke-RestMethod -Uri "${Uri}" -Method $Method -Headers $Header -Credential $Authentication -ErrorVariable RestError -ErrorAction SilentlyContinue
+        }
+        Catch {
+            $statusCode = $_.Exception.Response.StatusCode.value__
+
+            If ($statusCode -notcontains "200") {
+                $errorDescription = $($RestError.Message -split [Environment]::NewLine)
+                Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
+                # Write-Host -Message "FAILED:  ${statusCode} / $($RestError.Message)"
+            }
+        }
+        return $response
+    }
 }

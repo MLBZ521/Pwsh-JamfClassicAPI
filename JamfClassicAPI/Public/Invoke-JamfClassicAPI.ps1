@@ -33,8 +33,9 @@ function Invoke-JamfClassicAPI() {
 
         [psobject]$Body,
 
+        [hashtable]$ResourceParameters,
+
         [string]$Server = $env:JamfProServer
-        # [string]$ResourceParams
     )
 
     DynamicParam {
@@ -59,8 +60,8 @@ function Invoke-JamfClassicAPI() {
 
     Begin {
         $PsBoundParameters.GetEnumerator() | ForEach-Object { New-Variable -Name $_.Key -Value $_.Value -ErrorAction SilentlyContinue}
-        $Uri = "${Server}/JSSResource${Resource}"
 
+        # Set the proper Header content based on the provided parameter value.
         switch ($Header) {
             "xml" {
                 [psobject]$Header = @{"accept"="application/xml"}
@@ -70,14 +71,26 @@ function Invoke-JamfClassicAPI() {
             }
         }
         
-        # Get the supported methods for the select resource.
-        $availableMethods = $global:APIResources | Where-Object { $_.Path -eq $Resource } | Select-Object Methods
-
-        if ( $Method -notin $availableMethods.Methods ) {
+        # Check if the provided $Method is supported by the selected $Resource.
+        if ( $Method -notin $( $global:APIResources | Where-Object { $_.Path -eq $Resource } ).Methods ) {
             Write-Error -Message "The selected resource does not support the provided method." -ErrorAction Stop
         }
 
+        # Check if a $ResourceParamter is required for the requested $Resource and fail out if a $ResourceParamter was not provided.
+        if ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -ne 0 -and $null -eq $ResourceParamter ) {
+            Write-Error -Message "The selected resource requires a `$ResourceParamter to be provided." -ErrorAction Stop
+        }
+        # If a $ResourceParamter is required for the requested $Resource, replace the provide $ResourceParamter in the $Resource string.
+        elseif ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -gt 0 ) {
+            Write-Verbose -Message "Updating the Resourse with the provided Parameters"
+
+            ForEach ( $Parameter in $ResourceParameters.Keys ) {
+                $Resource = $( $Resource | Where-Object { $_ -match "[{].+[}]" } ) -replace "[{]$Parameter[}]", $ResourceParameters[$Parameter]
+            }
+        }
+        
         Write-Verbose "Invoke method `"${Method}`" on resource `"${Resource}`" with header `"accept: $(${Header}.Values)`""
+        $Uri = "${Server}/JSSResource${Resource}"
     }
 
     Process {
@@ -90,7 +103,6 @@ function Invoke-JamfClassicAPI() {
             If ($statusCode -notcontains "200") {
                 $errorDescription = $($RestError.Message -split [Environment]::NewLine)
                 Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
-                # Write-Host -Message "FAILED:  ${statusCode} / $($RestError.Message)"
             }
         }
         return $response

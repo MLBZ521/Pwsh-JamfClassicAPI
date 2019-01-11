@@ -8,14 +8,21 @@
     .PARAMETER Save
         Mandatory - Whether to save the URL to the user environemnt or sesssion.
     .EXAMPLE
-        Set-JamfServer -Url "https://jamf.company.com:8443" -Save (Yes/No)
+        Set-JamfServer -Url "https://jamf.company.com:8443" -Save (Yes|No)
 #>
 
 function Set-JamfServer() {
     [CmdletBinding()]
     Param(
         [Parameter(Mandatory = $true)]
-        [ValidatePattern('^(https:\/\/)([\w\.-]+)(:\d+)')]
+        [ValidateScript({
+            if ( $_ -match '^(https:\/\/)([\w\.-]+)(:\d+)' ) {
+                $true
+            }
+            else {
+                Throw " `"$_`" did not match the expected format.  Please use the following format:  https://jamf.company.com:8443"
+            }
+        })]
         [string]$Url,
    
         [Parameter(Mandatory = $true)]

@@ -35,4 +35,4 @@ Write-Host "Setting session Security Protocol to TLS 1.2"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
 # Get available API resource endpoints from the JPS
-$global:APIResources = Get-JamfAPIResources -Server "${URL}"
+$global:APIResources = Get-JamfAPIResources -Server "${env:JamfProServer}"

@@ -36,7 +36,7 @@ function Invoke-JamfClassicAPI() {
 
         [psobject]$Body,
 
-        [string]$Server = $script:JamfProServer,
+        [string]$Server = $env:JamfProServer
         [string]$Uri = "${Server}/JSSResource/${Resource}"
         # [string]$ResourceParams
 

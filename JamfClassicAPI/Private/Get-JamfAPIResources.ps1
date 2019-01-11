@@ -13,7 +13,7 @@
 function Get-JamfAPIResources() {
     [CmdletBinding()]
     Param(
-        [string]$Server = $script:JamfProServer
+        [string]$Server = $env:JamfProServer
     )
 
     Write-Verbose "Getting available API resource endpoints from ${Server}"

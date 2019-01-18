@@ -24,15 +24,23 @@ Export-ModuleMember -Function ( Get-ChildItem -Path "${PSScriptRoot}\Public\*.ps
 ##################################################
 # Run after loading the module
 
-$URL = $( Read-Host "Please specify the Jamf Pro Server URL (https://jamf.company.com:8443)" )
-$Save = $( Read-Host "Would you like to permanently save this to you your user environment for furture use?" )
+[ValidateScript({
+    if ( $_ -match '^(https:\/\/)([\w\.-]+)(:\d+)' ) {
+        $true
+    }
+    else {
+        Throw " `"$_`" did not match the expected format.  Please use the following format:  https://jamf.company.com:8443"
+    }
+})]$URL = Read-Host "Please specify the Jamf Pro Server URL (https://jamf.company.com:8443)"
+[ValidateSet('Yes','No', 'Y', 'N', IgnoreCase = $true)]$Save = Read-Host "Would you like to permanently save this to you your user environment for furture use?"
+[ValidateSet('Yes','No', 'Y', 'N', IgnoreCase = $true)]$DisableSSL = Read-Host "Self Signed Certificate?"
 
-# Set the JPS Server URL in the PowerShell Environment
+# Set the JPS Server URL in the PowerShell Environment.
 Set-JamfServer -Url "${URL}" -Save "${Save}"
 
-# Set the session to use TLS 1.2
+# Set the session to use TLS 1.2.
 Write-Host "Setting session Security Protocol to TLS 1.2"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Get available API resource endpoints from the JPS
+# Get available API resource endpoints from the JPS.
 $global:APIResources = Get-JamfAPIResources -Server "${env:JamfProServer}"

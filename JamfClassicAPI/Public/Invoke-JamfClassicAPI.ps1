@@ -4,18 +4,29 @@
     .DESCRIPTION
         This cmdlet extends the original Invoke-RestMethod cmdlet with Jamf Pro Classic
         API specific parameters and user authorization to provide easier resource access.
+    .PARAMETER Authentication
+        Mandatory - Jamf Pro Classic API credentials.
+    .PARAMETER Body
+        Optional - HTTP Body payload.  (Used for POST and PUT requests)
+    .PARAMETER Endpoints
+        Optional - Provided values will be transposed into the requested $Resoure.
+    .PARAMETER Header
+        Optional - HTTP Header used in the REST call.  (Default is xml)
+    .PARAMETER Method
+        Optional - REST method to be used for the call.  (Default is GET)
     .PARAMETER Resource
         Mandatory - Jamf Pro Classic API Resource that needs to be accessed.
-    .PARAMETER Method
-        Optional - REST method to be used for the call. (Default is GET)
-    .PARAMETER Header
-        Optional - HTTP Header used in the REST call. (Default is xml)
-    .PARAMETER Body
-        Optional - HTTP Body payload. (Used for POST and PUT requests)
+    .PARAMETER Server
+        Mandatory - The Jamf Pro Server that will be called.
+
     .EXAMPLE
-        Invoke-JamfClassicAPI -Resource "accounts"
+        Get all user accounts configured in the JPS.
+
+        Invoke-JamfClassicAPI -Authentication (Get-Credentials) -Resource '/accounts' -Method GET -Header xml -Server https://jss.domain.com:8443
     .EXAMPLE
-        Invoke-JamfClassicAPI -Resource "accounts" -Method Delete
+        Delete the user account with an ID of 10.
+
+        Invoke-JamfClassicAPI -Authentication (Get-Credentials) -Resource '/accounts/userid/{id}' -Endpoints @{ id = "10"; } -Method DELETE -Header xml -Server https://jss.domain.com:8443
 #>
 function Invoke-JamfClassicAPI() {
     [CmdletBinding()]
@@ -68,14 +79,22 @@ function Invoke-JamfClassicAPI() {
             }
         }
         
-        # Check if the provided $Method is supported by the selected $Resource.
+        # Check if the provided $Method is supported by the provided $Resource.
         if ( $Method -notin $( $global:APIResources | Where-Object { $_.Path -eq $Resource } ).Methods ) {
-            Write-Error -Message "The selected resource does not support the provided method." -ErrorAction Stop
+            Write-Error -Message "The provided resource does not support the provided method." -ErrorAction Stop
+        }
+        # Check if the provided $Method was provided a payload in $Body.
+        elseif ( $Method -eq "PUT","POST" -and $null -eq $Body ) {
+            Write-Error -Message "A payload (`$Body) was not provided and is required with the provided method." -ErrorAction Stop
+        }
+        # Check if the provided $Method was provided the proper $Header type.
+        elseif ( $Method -eq "PUT","POST" -and $Header -ne "xml" ) {
+            Write-Error -Message "The selecprovidedted `$Method does not support the provided `$Header." -ErrorAction Stop
         }
 
         # Check if a $Endpoints is required for the requested $Resource and fail out if a $Endpoints was not provided.
         if ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -ne 0 -and $null -eq $Endpoints ) {
-            Write-Error -Message "The selected resource requires a `$Endpoints to be provided." -ErrorAction Stop
+            Write-Error -Message "The provided resource requires a `$Endpoints to be provided." -ErrorAction Stop
         }
         # If a $Endpoints is required for the requested $Resource, replace the provide $Endpoints in the $Resource string.
         elseif ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -gt 0 ) {

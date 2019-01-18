@@ -42,6 +42,9 @@ function Invoke-JamfClassicAPI() {
         [ValidateSet('xml', 'json', IgnoreCase = $true)]
         [string]$Header = 'xml',
 
+        [ValidateSet('Class', IgnoreCase = $true)]
+        [string]$Caller,
+
         [hashtable]$Endpoints,
         
         [psobject]$Body,
@@ -80,7 +83,7 @@ function Invoke-JamfClassicAPI() {
         }
         
         # Check if the provided $Method is supported by the provided $Resource.
-        if ( $Method -notin $( $global:APIResources | Where-Object { $_.Path -eq $Resource } ).Methods ) {
+        if ( $Method -notin $( $global:APIResources | Where-Object { $_.Path -eq $Resource } ).Methods.Method ) {
             Write-Error -Message "The provided resource does not support the provided method." -ErrorAction Stop
         }
         # Check if the provided $Method was provided a payload in $Body.
@@ -92,19 +95,21 @@ function Invoke-JamfClassicAPI() {
             Write-Error -Message "The selecprovidedted `$Method does not support the provided `$Header." -ErrorAction Stop
         }
 
-        # Check if a $Endpoints is required for the requested $Resource and fail out if a $Endpoints was not provided.
-        if ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -ne 0 -and $null -eq $Endpoints ) {
-            Write-Error -Message "The provided resource requires a `$Endpoints to be provided." -ErrorAction Stop
-        }
-        # If a $Endpoints is required for the requested $Resource, replace the provide $Endpoints in the $Resource string.
-        elseif ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -gt 0 ) {
-            Write-Verbose -Message "Updating the Resourse with the provided Parameters"
+        if ( $Caller -ne "Class" ) {
+            # Check if a $Endpoints is required for the requested $Resource and fail out if a $Endpoints was not provided.
+            if ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -ne 0 -and $null -eq $Endpoints ) {
+                Write-Error -Message "The provided resource requires a `$Endpoints to be provided." -ErrorAction Stop
+            }
+            # If a $Endpoints is required for the requested $Resource, replace the provide $Endpoints in the $Resource string.
+            elseif ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -gt 0 ) {
+                Write-Verbose -Message "Updating the Resourse with the provided Parameters"
 
-            ForEach ( $Endpoint in $Endpoints.Keys ) {
-                $Resource = $( $Resource | Where-Object { $_ -match "[{].+[}]" } ) -replace "[{]$Endpoint[}]", $Endpoints[$Endpoint]
+                ForEach ( $Endpoint in $Endpoints.Keys ) {
+                    $Resource = $( $Resource | Where-Object { $_ -match "[{].+[}]" } ) -replace "[{]$Endpoint[}]", $Endpoints[$Endpoint]
+                }
             }
         }
-        
+                
         Write-Verbose -Message "Invoke method `"${Method}`" on resource `"${Resource}`" with header `"accept: $(${Header}.Values)`""
         $Uri = "${Server}/JSSResource${Resource}"
     }

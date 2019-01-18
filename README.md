@@ -16,10 +16,17 @@ Hopefully this will help some of the more Windows-minded Admins or even, environ
 
 The following items are what are on the list to be done:
 
-  * Improve the -Authentication method on the Invoke-JamfClassicAPI Function
   * (Much) more testing
   * Documentation, Examples, etc
-
+  * Invoke-JamfClassicAPI
+    * Improve the -Authentication method
+  * Set-JamfServer
+    * Save Jamf Pro Server URL to user environment
+    * Disable SSL Validation (For Self Signed Certs)
+  * Set-JamfAuthentication
+    * Save credentials to the Credential Manager
+  * Looking at the best way to utilize the PUSH and PUT Methods
+    * Is it possible to create 'helper' logic?
 
 ## Needs to be tested ##
 
@@ -51,5 +58,5 @@ Get-JamfAPIResources
   * Successfully grabs all API Resources from the provided Jamf Pro Server
 
 Set-JamfServer
-  * Successfully sets the Jamf Pro Server URL
+  * Successfully sets the Jamf Pro Server URL session environment
 

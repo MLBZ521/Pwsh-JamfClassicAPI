@@ -28,9 +28,10 @@ function Get-JamfAPIResources() {
             $errorDescription = $($RestError.Message -split [Environment]::NewLine)            
             Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
         }
-    }  
+    }
 
     $allResources = $response | Select-Object $_.Content | ConvertFrom-Json
+    $allMethods = @{ "GET" = "find"; "POST" = "create"; "PUT" = "update"; "DETELE" = "delete"; } 
 
     Write-Verbose "For each resource endpoint, getting all available operations and methods"
     ForEach ( $Resource in $allResources.apis )  {
@@ -46,21 +47,33 @@ function Get-JamfAPIResources() {
                 Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
             }
         }
-    
+
         $Operations = $response | Select-Object $_.Content | ConvertFrom-Json
-    
+
         ForEach ( $Operation in $Operations.apis ) {
-    
+            Write-Verbose "Building ${Operation}"
             $ResourcePathOperation = New-Object PSObject -Property ([ordered]@{
                 Path  = $Operation.path
                 Description = $Operation.description
                 Methods = $(
                     if ( $Operation.operations.notes -eq "You can PUT, POST, and DELETE using this resource URL." ) {
-                        [Array]("GET", "POST", "PUT", "DELETE")
+                        ForEach ( $httpMethod in $allMethods.Keys ) {
+                            [PSCustomObject]@{
+                                Method = $httpMethod
+                                Nickname = $Operation.operations.nickname -replace "find", $allMethods.Item($httpMethod)
+                                Summary = $Operation.operations.summary -replace "find", (Get-Culture).TextInfo.ToTitleCase($($allMethods.Item($httpMethod)))
+                                Notes = $Operation.operations.notes
+                            }
+                        }
                     }
                     else {
-                        ForEach ( $ResourceOperation in $Operation.operations ) {                         
-                            $ResourceOperation.httpMethod
+                        ForEach ( $ResourceOperation in $Operation.operations ) {
+                            [PSCustomObject]@{
+                                Method = $ResourceOperation.httpMethod
+                                Nickname = $ResourceOperation.nickname
+                                Summary = $ResourceOperation.summary
+                                Notes = $ResourceOperation.notes
+                            }
                         }
                     }
                 )
@@ -70,3 +83,12 @@ function Get-JamfAPIResources() {
     }
     return $resourceOperations
 }
+
+
+####################################################################################################
+# The following are items that I've noticed that will need to be manually fixed:
+#
+# "accounts" and "users" use the same nicknames
+#
+# /api/model/computerreports.json
+# ConvertFrom-Json : Cannot process argument because the value of argument "name" is not valid. Change the value of the "name" argument and run the operation again.

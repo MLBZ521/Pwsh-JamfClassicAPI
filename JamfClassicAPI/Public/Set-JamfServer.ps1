@@ -8,7 +8,7 @@
     .PARAMETER Save
         Mandatory - Whether to save the URL to the user environemnt or sesssion.
     .EXAMPLE
-        Set-JamfServer -Url "https://jamf.company.com:8443" -Save (Yes|No)
+        Set-JamfServer -Url "https://jamf.company.com:8443" -Save ([Yes|Y]|[No|N]) -DisableSSL ([Yes|Y]|[No|N])
 #>
 
 function Set-JamfServer() {
@@ -16,7 +16,7 @@ function Set-JamfServer() {
     Param(
         [Parameter(Mandatory = $true)]
         [ValidateScript({
-            if ( $_ -match '^(https:\/\/)([\w\.-]+)(:\d+)' ) {
+            if ( $_ -match '^(https:\/\/)([\w\.-]+)(:\d+)$' ) {
                 $true
             }
             else {
@@ -27,16 +27,26 @@ function Set-JamfServer() {
    
         [Parameter(Mandatory = $true)]
         [ValidateSet('Yes','No', 'Y', 'N', IgnoreCase = $true)]
-        [string]$Save
+        [string]$Save,
+
+        [Parameter]
+        [ValidateSet('Yes','No', 'Y', 'N', IgnoreCase = $true)]
+        [string]$DisableSSL
         )
     
-    Write-Verbose "Setting the Jamf Pro Server to:  ${Url}"
+    Write-Verbose -Message "Setting the Jamf Pro Server to:  ${Url}"
     if ( $Save -eq 'Yes','y' ) {
-        Write-Verbose "Saving the Jamf Pro Server URL to the User environment."
+        Write-Verbose -Message "Saving the Jamf Pro Server URL to the User environment."
         [Environment]::SetEnvironmentVariable("JamfProServer", "${URL}", "User")
     }
     else {
-        Write-Verbose "Saving the Jamf Pro Server URL to the session."
+        Write-Verbose -Message "Saving the Jamf Pro Server URL to the session."
         $env:JamfProServer = "${URL}"
+    }
+
+    if ( $disableSSL -eq 'Yes','y' ) {
+        # Disable validation of SSL certificates.
+        Write-Verbose -Message "Disabling validation self-signed certs."
+        [System.Net.ServicePointManager]::ServerCertificateValidationCallback = { $true }
     }
 }

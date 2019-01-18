@@ -25,8 +25,11 @@ The following items are what are on the list to be done:
     * Disable SSL Validation (For Self Signed Certs)
   * Set-JamfAuthentication
     * Save credentials to the Credential Manager
-  * Looking at the best way to utilize the PUSH and PUT Methods
+  * Looking at the best way to call each Resource and Method
     * Is it possible to create 'helper' logic?
+    * Thinking we can utilize PowerShell Classes here, example, creating a new building:
+      * $NewBuilding = [Buildings]::new("CPCOM","createBuildingsByName")
+      * $NewBuilding.Create()
 
 ## Needs to be tested ##
 

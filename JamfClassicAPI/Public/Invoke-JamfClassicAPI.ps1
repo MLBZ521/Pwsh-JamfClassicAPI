@@ -1,6 +1,6 @@
 <#
     .SYNOPSIS
-        Generic helper cmdlet to invoke Rest methods against Jamf Pro Server.
+        Generic helper cmdlet to invoke Rest methods against a Jamf Pro Server.
     .DESCRIPTION
         This cmdlet extends the original Invoke-RestMethod cmdlet with Jamf Pro Classic
         API specific parameters and user authorization to provide easier resource access.
@@ -34,16 +34,13 @@ function Invoke-JamfClassicAPI() {
         [Parameter(ParameterSetName = 'Authentication')]
         [System.Management.Automation.PSCredential]
         [System.Management.Automation.CredentialAttribute()]
-        $Authentication = $script:APICredentials,
+        $Authentication = ($script:APICredentials),
 
         [ValidateSet('GET', 'PUT', 'POST', 'DELETE', IgnoreCase = $true)]
         [string]$Method = 'GET',
 
         [ValidateSet('xml', 'json', IgnoreCase = $true)]
         [string]$Header = 'xml',
-
-        [ValidateSet('Class', IgnoreCase = $true)]
-        [string]$Caller,
 
         [hashtable]$Endpoints,
         
@@ -81,7 +78,7 @@ function Invoke-JamfClassicAPI() {
                 [psobject]$Header = @{"accept" = "application/json"}
             }
         }
-        
+
         # Check if the provided $Method is supported by the provided $Resource.
         if ( $Method -notin $( $global:APIResources | Where-Object { $_.Path -eq $Resource } ).Methods.Method ) {
             Write-Error -Message "The provided resource does not support the provided method." -ErrorAction Stop
@@ -95,23 +92,20 @@ function Invoke-JamfClassicAPI() {
             Write-Error -Message "The selecprovidedted `$Method does not support the provided `$Header." -ErrorAction Stop
         }
 
-        if ( $Caller -ne "Class" ) {
-            # Check if a $Endpoints is required for the requested $Resource and fail out if a $Endpoints was not provided.
-            if ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -ne 0 -and $null -eq $Endpoints ) {
-                Write-Error -Message "The provided resource requires a `$Endpoints to be provided." -ErrorAction Stop
-            }
-            # If a $Endpoints is required for the requested $Resource, replace the provide $Endpoints in the $Resource string.
-            elseif ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -gt 0 ) {
-                Write-Verbose -Message "Updating the Resourse with the provided Parameters"
+        # Check if a $Endpoints is required for the requested $Resource and fail out if a $Endpoints was not provided.
+        if ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -ne 0 -and $null -eq $Endpoints ) {
+            Write-Error -Message "The provided resource requires a `$Endpoints to be provided." -ErrorAction Stop
+        }
+        # If a $Endpoints is required for the requested $Resource, replace the provide $Endpoints in the $Resource string.
+        elseif ( $( $Resource -split "/" | Where-Object { $_ -match "[{].+[}]" } ).Count -gt 0 ) {
+            Write-Verbose -Message "Updating the Resourse with the provided Parameters"
 
-                ForEach ( $Endpoint in $Endpoints.Keys ) {
-                    $Resource = $( $Resource | Where-Object { $_ -match "[{].+[}]" } ) -replace "[{]$Endpoint[}]", $Endpoints[$Endpoint]
-                }
+            ForEach ( $Endpoint in $Endpoints.Keys ) {
+                $Resource = $( $Resource | Where-Object { $_ -match "[{].+[}]" } ) -replace "[{]$Endpoint[}]", $Endpoints[$Endpoint]
             }
         }
-                
+
         Write-Verbose -Message "Invoke method `"${Method}`" on resource `"${Resource}`" with header `"accept: $(${Header}.Values)`""
-        $Uri = "${Server}/JSSResource${Resource}"
     }
 
     Process {
@@ -120,12 +114,9 @@ function Invoke-JamfClassicAPI() {
         }
         catch {
             $statusCode = $_.Exception.Response.StatusCode.value__
-
-            if ($statusCode -notcontains "200") {
-                $errorDescription = $($RestError.Message -split [Environment]::NewLine)
-                Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
-                # Write-Host -Message "FAILED:  ${statusCode} / $($RestError.Message)"
-            }
+            $errorDescription = $($RestError.Message -split [Environment]::NewLine)
+            Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
+            # Write-Host -Message "FAILED:  ${statusCode} / $($RestError.Message)"
         }
         return $response
     }

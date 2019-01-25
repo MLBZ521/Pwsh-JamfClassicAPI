@@ -147,6 +147,77 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
+
+    
+    ##### Resource Path:  /departments #####
+
+    # Returns all departments
+    [psobject] GetDepartments() {
+        $Resource = "departments"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns department by name
+    [psobject] GetDepartmentByName($Name) {
+        $Resource = "departments/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns department by id
+    [psobject] GetDepartmentById($ID) {
+        $Resource = "departments/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new department
+    [psobject] CreateDepartment($Name) {
+        $Resource = "departments/id/0"
+        $Method = "POST"
+        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates department by name
+    [psobject] UpdateDepartmentByName($Name) {
+        $Resource = "departments/name/${Name}"
+        $Method = "PUT"
+        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates department by id
+    [psobject] UpdateDepartmentByID($ID,$Name) {
+        $Resource = "departments/id/${ID}"
+        $Method = "PUT"
+        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes department by name
+    [psobject] DeleteDepartmentByName($Name) {
+        $Resource = "departments/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes department by id
+    [psobject] DeleteDepartmentByID($ID) {
+        $Resource = "departments/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
 }
+
 
     ##### Resource Path:  / #####

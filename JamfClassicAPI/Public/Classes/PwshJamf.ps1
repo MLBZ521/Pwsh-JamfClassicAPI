@@ -79,6 +79,7 @@ Class PwshJamf {
         return $Results
     }
 
+    
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings
@@ -217,7 +218,83 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-}
 
+
+    ##### Resource Path:  /policies #####
+
+    # Returns all policies
+    [psobject] GetPoliciess() {
+        $Resource = "policies"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns policy by name
+    [psobject] GetPolicyByName($Name) {
+        $Resource = "policies/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns policy by id
+    [psobject] GetPolicyById($ID) {
+        $Resource = "policies/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+    
+    # Returns policy Subsets by name
+    [psobject] GetPolicySubsetById($Name,$Subset) {
+        $Resource = "policies/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns policy Subsets by id
+    [psobject] GetPolicySubsetById($ID,$Subset) {
+        $Resource = "policies/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+    
+    # Returns policies by category
+    [psobject] GetPoliciesByCategory($Category) {
+        $Resource = "policies/category/${Category}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+    
+    # Returns policies by type
+    [psobject] GetPoliciesByCreatedBy($CreatedBy) {
+        $Resource = "policies/createdBy/${CreatedBy}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes policy by name
+    [psobject] DeletePolicyByName($Name) {
+        $Resource = "policies/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes policy by id
+    [psobject] DeletePolicyByID($ID) {
+        $Resource = "policies/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
 
     ##### Resource Path:  / #####
+
+    
+}

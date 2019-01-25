@@ -60,6 +60,25 @@ Class PwshJamf {
     ####################################################################################################
     # Available API Endpoints:
 
+    ##### Resource Path:  /activationcode #####
+
+    # Returns all activationcode
+    [psobject] GetActivationcode() {
+        $Resource = "activationcode"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates department by name
+    [psobject] UpdateDepartment($Code) {
+        $Resource = "activationcode/name/${Name}"
+        $Method = "PUT"
+        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><activation_code><code>${Code}</code></activation_code>"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings
@@ -87,7 +106,7 @@ Class PwshJamf {
     }
 
     # Creates new building
-    [psobject] createBuilding($Name) {
+    [psobject] CreateBuilding($Name) {
         $Resource = "buildings/id/0"
         $Method = "POST"
         [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
@@ -96,7 +115,7 @@ Class PwshJamf {
     }
 
     # Updates building by name
-    [psobject] updateBuildingByName($Name) {
+    [psobject] UpdateBuildingByName($Name) {
         $Resource = "buildings/name/${Name}"
         $Method = "PUT"
         [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
@@ -105,7 +124,7 @@ Class PwshJamf {
     }
 
     # Updates building by id
-    [psobject] updateBuildingByID($ID,$Name) {
+    [psobject] UpdateBuildingByID($ID,$Name) {
         $Resource = "buildings/id/${ID}"
         $Method = "PUT"
         [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
@@ -114,7 +133,7 @@ Class PwshJamf {
     }
 
     # Deletes building by name
-    [psobject] deleteBuildingByName($Name) {
+    [psobject] DeleteBuildingByName($Name) {
         $Resource = "buildings/name/${Name}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource,$Method)
@@ -122,7 +141,7 @@ Class PwshJamf {
     }
 
     # Deletes building by id
-    [psobject] deleteBuildingByID($ID) {
+    [psobject] DeleteBuildingByID($ID) {
         $Resource = "buildings/id/${ID}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource,$Method)

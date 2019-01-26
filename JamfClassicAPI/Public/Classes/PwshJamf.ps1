@@ -12,6 +12,10 @@ Class PwshJamf {
     ####################################################################################################
     # Constructor
 
+    PwshJamf () {
+        Write-Host "Development Zone"
+    }
+
     PwshJamf ([String]$JamfAPIUsername, [string]$JamfAPIPassword) {
         $this.Credentials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("$($JamfAPIUsername):$($JamfAPIPassword)"))
         $this.Headers['Accept'] = $this.Headers['Accept'] -replace '.+', $this.Header
@@ -72,7 +76,7 @@ Class PwshJamf {
 
     # Updates department by name
     [psobject] UpdateDepartment($Code) {
-        $Resource = "activationcode/name/${Name}"
+        $Resource = "activationcode"
         $Method = "PUT"
         [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><activation_code><code>${Code}</code></activation_code>"
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
@@ -247,7 +251,7 @@ Class PwshJamf {
     }
     
     # Returns policy Subsets by name
-    [psobject] GetPolicySubsetById($Name,$Subset) {
+    [psobject] GetPolicySubsetByName($Name,$Subset) {
         $Resource = "policies/name/${Name}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)

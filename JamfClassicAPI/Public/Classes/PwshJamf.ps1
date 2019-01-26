@@ -298,6 +298,22 @@ Class PwshJamf {
         return $Results
     }
 
+    # Adds package by name to policy by name, specifying the action (cache, install, uninstall)
+    [psobject] AddPackageToPolicyByName($PolicyName,$PackageName,$Action) {
+        $Resource = "policies/name/${PolicyName}"
+        $Method = "PUT"
+        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?>
+            <package_configuration>
+                <packages>
+                    <package>
+                    <name>${PackageName}</name>
+                    <action>${Action}</action>
+                </package>
+                </packages>
+            </package_configuration>"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
     ##### Resource Path:  / #####
 
     

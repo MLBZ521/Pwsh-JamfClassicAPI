@@ -223,6 +223,49 @@ Class PwshJamf {
         return $Results
     }
 
+    
+    ##### Resource Path:  /packages #####
+
+    # Returns all packages
+    [psobject] GetPackages() {
+        $Resource = "packages"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns package by name
+    [psobject] GetPackageByName($Name) {
+        $Resource = "packages/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns package by id
+    [psobject] GetPackageById($ID) {
+        $Resource = "packages/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes package by name
+    [psobject] DeletePackageByName($Name) {
+        $Resource = "packages/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes package by id
+    [psobject] DeletePackageByID($ID) {
+        $Resource = "packages/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
 
     ##### Resource Path:  /policies #####
 

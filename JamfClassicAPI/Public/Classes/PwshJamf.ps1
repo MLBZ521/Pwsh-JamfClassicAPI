@@ -394,6 +394,81 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
+
+    # Helper to build a policy from Subsets
+    [psobject] BuildPolicy($Subsets) {
+        $Payload = $this._BuildXML("policy")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","package_configuration")
+        $Payload = $this.'_AddXMLElement'($Payload,"//package_configuration","packages")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","scripts")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","printers")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","dock_items")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","account_maintenance")
+        $Payload = $this.'_AddXMLElement'($Payload,"//account_maintenance","accounts")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","directory_bindings")
+
+        # Loop through each Subset value and append it to the payload
+        foreach ( $Subset in $Subsets) {
+            $Subset.FirstChild.NextSibling.LocalName
+
+            switch ($Subset.FirstChild.NextSibling.LocalName) {
+                "package" {
+                    $Payload.DocumentElement.SelectSingleNode("//packages").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "script" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "printer" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "dock_item" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "account" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "directory_binding" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                Default {
+                    $Payload.DocumentElement.AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+            }
+        }
+
+        return $Payload
+    }
+
+    # Helper to build a policy subset
+    [psobject] BuildPolicySubset($Subset,$Configuration) {
+        $Payload = $this.'_BuildXML'($Subset)
+
+        # Loop through each configuration item and create a node from it.
+        ForEach ($Key in $Configuration.Keys) {
+
+            # Check if the configuration has a sub-element.
+            if ( $Key -match "[.]" ) {
+                # Split the configuration between parent and child elements.
+                $ParentKey,$ChildKey = $Key -split "[.]"
+                # Create a parent element and add the node to the document
+                $Payload = $this.'_AddXMLElement'($Payload,"/*","${ParentKey}")
+                # Create a node from an element and text
+                $Payload = $this.'_AddXMLText'($Payload,"//${ParentKey}","${ChildKey}","$($Configuration.$Key)")
+            }
+            else {
+                $Payload = $this.'_AddXMLText'($Payload,"/*","${Key}","$($Configuration.$Key)")
+            }
+        }
+
+        # My hacky idea to create subnodes from keys with a "." will end up creating multiple subnodes of the same name, if multiple properities for a subnode is specified.
+        # So here, we'll clean those up.
+        $EmptyNodes = $Payload.SelectNodes("//*[count(@*) = 0 and count(child::*) = 0 and not(string-length(text())) > 0]")
+        $EmptyNodes | ForEach-Object { $_.ParentNode.RemoveChild($_) } | Out-Null
+
+        return $Payload
+    }
+
+
     ##### Resource Path:  / #####
 
     

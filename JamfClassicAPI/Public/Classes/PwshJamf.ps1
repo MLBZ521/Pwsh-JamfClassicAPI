@@ -119,7 +119,7 @@ Class PwshJamf {
         return $Results
     }
 
-    
+
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings
@@ -192,7 +192,7 @@ Class PwshJamf {
         return $Results
     }
 
-    
+
     ##### Resource Path:  /departments #####
 
     # Returns all departments
@@ -265,7 +265,7 @@ Class PwshJamf {
         return $Results
     }
 
-    
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages
@@ -334,7 +334,7 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-    
+
     # Returns policy Subsets by name
     [psobject] GetPolicySubsetByName($Name,$Subset) {
         $Resource = "policies/name/${Name}/subset/${Subset}"
@@ -350,7 +350,7 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-    
+
     # Returns policies by category
     [psobject] GetPoliciesByCategory($Category) {
         $Resource = "policies/category/${Category}"
@@ -358,12 +358,36 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-    
+
     # Returns policies by type
     [psobject] GetPoliciesByCreatedBy($CreatedBy) {
         $Resource = "policies/createdBy/${CreatedBy}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new policy
+    [psobject] CreatePolicy($Payload) {
+        $Resource = "policies/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates policy by name
+    [psobject] UpdatePolicyByName($Name,$Payload) {
+        $Resource = "policies/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates policy by id
+    [psobject] UpdatePolicyByID($ID,$Payload) {
+        $Resource = "policies/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
@@ -471,5 +495,5 @@ Class PwshJamf {
 
     ##### Resource Path:  / #####
 
-    
+
 }

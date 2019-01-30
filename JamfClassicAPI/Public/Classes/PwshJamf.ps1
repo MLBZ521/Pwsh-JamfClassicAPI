@@ -62,6 +62,70 @@ Class PwshJamf {
     }
 
     ####################################################################################################
+    # Helper Methods
+
+    # Build the first element in XML Payload
+    [xml] _BuildXML($Element) {
+        [xml]$Payload = New-Object Xml
+        # Creation of a node and its text
+        $XmlDeclaration = $Payload.CreateXmlDeclaration("1.0", "UTF-8", $null)
+        $Payload.AppendChild($XmlDeclaration) | Out-Null
+        $xmlElt = $Payload.CreateElement("${Element}")
+        # Add the node to the document
+        $Payload.AppendChild($xmlElt)
+        return $Payload
+    }
+
+    # Add an elemnt to the XML Payload
+    [xml] _AddXMLElement($Payload,$Parent,$Child) {
+        # Creation of a node and its text
+        $xmlElt = $Payload.CreateElement("${Child}")
+        # Add the node to the document
+        $Payload.SelectSingleNode("${Parent}").AppendChild($xmlElt)
+        return $Payload
+    }
+
+    # Add an elemnt to the XML Payload
+    [xml] _AddXMLText($Payload,$Parent,$Element,$ElementText) {
+        # Creation of a node and its text
+        $xmlElt = $Payload.CreateElement("${Element}")
+        $xmlText = $Payload.CreateTextNode("${ElementText}")
+        $xmlElt.AppendChild($xmlText) | Out-Null
+        # Add the node to the document
+        $Payload.SelectSingleNode("${Parent}").AppendChild($xmlElt)
+        return $Payload
+    }
+
+    # Helper to build an xml Node
+    [psobject] BuildXMLNode($Node,$Configuration) {
+        $Payload = $this.'_BuildXML'($Node)
+
+        # Loop through each configuration item and create a node from it.
+        ForEach ($Key in $Configuration.Keys) {
+
+            # Check if the configuration has a sub-element.
+            if ( $Key -match "[.]" ) {
+                # Split the configuration between parent and child elements.
+                $ParentKey,$ChildKey = $Key -split "[.]"
+                # Create a parent element and add the node to the document
+                $Payload = $this.'_AddXMLElement'($Payload,"/*","${ParentKey}")
+                # Create a node from an element and text
+                $Payload = $this.'_AddXMLText'($Payload,"//${ParentKey}","${ChildKey}","$($Configuration.$Key)")
+            }
+            else {
+                $Payload = $this.'_AddXMLText'($Payload,"/*","${Key}","$($Configuration.$Key)")
+            }
+        }
+
+        # My hacky idea to create subnodes from keys with a "." will end up creating multiple subnodes of the same name, if multiple properities for a subnode is specified.
+        # So here, we'll clean those up.
+        $EmptyNodes = $Payload.SelectNodes("//*[count(@*) = 0 and count(child::*) = 0 and not(string-length(text())) > 0]")
+        $EmptyNodes | ForEach-Object { $_.ParentNode.RemoveChild($_) } | Out-Null
+
+        return $Payload
+    }
+
+    ####################################################################################################
     # Available API Endpoints:
 
     ##### Resource Path:  /activationcode #####
@@ -78,12 +142,13 @@ Class PwshJamf {
     [psobject] UpdateActivationcode($Code) {
         $Resource = "activationcode"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><activation_code><code>${Code}</code></activation_code>"
+        $Payload = $this.'_BuildXML'("activation_code")
+        $Payload = $this.'_AddXMLText'($Payload,"activation_code","code",$Code)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
-    
+
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings
@@ -114,7 +179,8 @@ Class PwshJamf {
     [psobject] CreateBuilding($Name) {
         $Resource = "buildings/id/0"
         $Method = "POST"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -123,7 +189,8 @@ Class PwshJamf {
     [psobject] UpdateBuildingByName($Name) {
         $Resource = "buildings/name/${Name}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -132,7 +199,8 @@ Class PwshJamf {
     [psobject] UpdateBuildingByID($ID,$Name) {
         $Resource = "buildings/id/${ID}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -153,7 +221,7 @@ Class PwshJamf {
         return $Results
     }
 
-    
+
     ##### Resource Path:  /departments #####
 
     # Returns all departments
@@ -184,7 +252,8 @@ Class PwshJamf {
     [psobject] CreateDepartment($Name) {
         $Resource = "departments/id/0"
         $Method = "POST"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Payload = $this.'_BuildXML'("department")
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -193,7 +262,8 @@ Class PwshJamf {
     [psobject] UpdateDepartmentByName($Name) {
         $Resource = "departments/name/${Name}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Payload = $this.'_BuildXML'("department")
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -202,7 +272,8 @@ Class PwshJamf {
     [psobject] UpdateDepartmentByID($ID,$Name) {
         $Resource = "departments/id/${ID}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Payload = $this.'_BuildXML'("department")
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -223,7 +294,7 @@ Class PwshJamf {
         return $Results
     }
 
-    
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages
@@ -247,6 +318,30 @@ Class PwshJamf {
         $Resource = "packages/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new package
+    [psobject] CreatePackage($Payload) {
+        $Resource = "packages/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates package by name
+    [psobject] UpdatePackageByName($Name,$Payload) {
+        $Resource = "packages/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates package by id
+    [psobject] UpdatePackageByID($ID,$Payload) {
+        $Resource = "packages/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
@@ -292,7 +387,7 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-    
+
     # Returns policy Subsets by name
     [psobject] GetPolicySubsetByName($Name,$Subset) {
         $Resource = "policies/name/${Name}/subset/${Subset}"
@@ -308,7 +403,7 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-    
+
     # Returns policies by category
     [psobject] GetPoliciesByCategory($Category) {
         $Resource = "policies/category/${Category}"
@@ -316,12 +411,36 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
     }
-    
+
     # Returns policies by type
     [psobject] GetPoliciesByCreatedBy($CreatedBy) {
         $Resource = "policies/createdBy/${CreatedBy}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new policy
+    [psobject] CreatePolicy($Payload) {
+        $Resource = "policies/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates policy by name
+    [psobject] UpdatePolicyByName($Name,$Payload) {
+        $Resource = "policies/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates policy by id
+    [psobject] UpdatePolicyByID($ID,$Payload) {
+        $Resource = "policies/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
@@ -345,19 +464,60 @@ Class PwshJamf {
     [psobject] AddPackageToPolicyByName($PolicyName,$PackageName,$Action) {
         $Resource = "policies/name/${PolicyName}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?>
-            <package_configuration>
-                <packages>
-                    <package>
-                    <name>${PackageName}</name>
-                    <action>${Action}</action>
-                </package>
-                </packages>
-            </package_configuration>"
+        $Payload = $this.'_BuildXML'("package_configuration")
+        $Payload = $this.'_AddXMLElement'($Payload,"package_configuration","packages")
+        $Payload = $this.'_AddXMLText'($Payload,"packages","name",$PackageName)
+        $Payload = $this.'_AddXMLText'($Payload,"packages","action",$Action)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
+
+    # Helper to build a policy from Subsets
+    [psobject] BuildPolicy($Subsets) {
+        $Payload = $this._BuildXML("policy")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","package_configuration")
+        $Payload = $this.'_AddXMLElement'($Payload,"//package_configuration","packages")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","scripts")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","printers")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","dock_items")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","account_maintenance")
+        $Payload = $this.'_AddXMLElement'($Payload,"//account_maintenance","accounts")
+        $Payload = $this.'_AddXMLElement'($Payload,"//policy","directory_bindings")
+
+        # Loop through each Subset value and append it to the payload
+        foreach ( $Subset in $Subsets) {
+            $Subset.FirstChild.NextSibling.LocalName
+
+            switch ($Subset.FirstChild.NextSibling.LocalName) {
+                "package" {
+                    $Payload.DocumentElement.SelectSingleNode("//packages").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "script" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "printer" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "dock_item" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "account" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "directory_binding" {
+                    $Payload.DocumentElement.SelectSingleNode("//scripts").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                Default {
+                    $Payload.DocumentElement.AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+            }
+        }
+
+        return $Payload
+    }
+
+
     ##### Resource Path:  / #####
 
-    
+
 }

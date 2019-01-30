@@ -321,6 +321,30 @@ Class PwshJamf {
         return $Results
     }
 
+    # Creates new package
+    [psobject] CreatePackage($Payload) {
+        $Resource = "packages/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates package by name
+    [psobject] UpdatePackageByName($Name,$Payload) {
+        $Resource = "packages/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates package by id
+    [psobject] UpdatePackageByID($ID,$Payload) {
+        $Resource = "packages/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
     # Deletes package by name
     [psobject] DeletePackageByName($Name) {
         $Resource = "packages/name/${Name}"

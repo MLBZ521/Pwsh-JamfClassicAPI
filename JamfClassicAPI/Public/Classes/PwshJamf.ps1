@@ -75,7 +75,7 @@ Class PwshJamf {
     }
 
     # Updates department by name
-    [psobject] UpdateDepartment($Code) {
+    [psobject] UpdateActivationcode($Code) {
         $Resource = "activationcode"
         $Method = "PUT"
         [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><activation_code><code>${Code}</code></activation_code>"

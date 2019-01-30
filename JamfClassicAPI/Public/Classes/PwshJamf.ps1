@@ -96,6 +96,35 @@ Class PwshJamf {
         return $Payload
     }
 
+    # Helper to build an xml Node
+    [psobject] BuildXMLNode($Node,$Configuration) {
+        $Payload = $this.'_BuildXML'($Node)
+
+        # Loop through each configuration item and create a node from it.
+        ForEach ($Key in $Configuration.Keys) {
+
+            # Check if the configuration has a sub-element.
+            if ( $Key -match "[.]" ) {
+                # Split the configuration between parent and child elements.
+                $ParentKey,$ChildKey = $Key -split "[.]"
+                # Create a parent element and add the node to the document
+                $Payload = $this.'_AddXMLElement'($Payload,"/*","${ParentKey}")
+                # Create a node from an element and text
+                $Payload = $this.'_AddXMLText'($Payload,"//${ParentKey}","${ChildKey}","$($Configuration.$Key)")
+            }
+            else {
+                $Payload = $this.'_AddXMLText'($Payload,"/*","${Key}","$($Configuration.$Key)")
+            }
+        }
+
+        # My hacky idea to create subnodes from keys with a "." will end up creating multiple subnodes of the same name, if multiple properities for a subnode is specified.
+        # So here, we'll clean those up.
+        $EmptyNodes = $Payload.SelectNodes("//*[count(@*) = 0 and count(child::*) = 0 and not(string-length(text())) > 0]")
+        $EmptyNodes | ForEach-Object { $_.ParentNode.RemoveChild($_) } | Out-Null
+
+        return $Payload
+    }
+
     ####################################################################################################
     # Available API Endpoints:
 
@@ -459,35 +488,6 @@ Class PwshJamf {
                 }
             }
         }
-
-        return $Payload
-    }
-
-    # Helper to build a policy subset
-    [psobject] BuildPolicySubset($Subset,$Configuration) {
-        $Payload = $this.'_BuildXML'($Subset)
-
-        # Loop through each configuration item and create a node from it.
-        ForEach ($Key in $Configuration.Keys) {
-
-            # Check if the configuration has a sub-element.
-            if ( $Key -match "[.]" ) {
-                # Split the configuration between parent and child elements.
-                $ParentKey,$ChildKey = $Key -split "[.]"
-                # Create a parent element and add the node to the document
-                $Payload = $this.'_AddXMLElement'($Payload,"/*","${ParentKey}")
-                # Create a node from an element and text
-                $Payload = $this.'_AddXMLText'($Payload,"//${ParentKey}","${ChildKey}","$($Configuration.$Key)")
-            }
-            else {
-                $Payload = $this.'_AddXMLText'($Payload,"/*","${Key}","$($Configuration.$Key)")
-            }
-        }
-
-        # My hacky idea to create subnodes from keys with a "." will end up creating multiple subnodes of the same name, if multiple properities for a subnode is specified.
-        # So here, we'll clean those up.
-        $EmptyNodes = $Payload.SelectNodes("//*[count(@*) = 0 and count(child::*) = 0 and not(string-length(text())) > 0]")
-        $EmptyNodes | ForEach-Object { $_.ParentNode.RemoveChild($_) } | Out-Null
 
         return $Payload
     }

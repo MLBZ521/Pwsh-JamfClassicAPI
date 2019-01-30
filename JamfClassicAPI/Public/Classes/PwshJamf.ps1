@@ -113,7 +113,8 @@ Class PwshJamf {
     [psobject] UpdateActivationcode($Code) {
         $Resource = "activationcode"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><activation_code><code>${Code}</code></activation_code>"
+        $Payload = $this.'_BuildXML'("activation_code")
+        $Payload = $this.'_AddXMLText'($Payload,"activation_code","code",$Code)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -149,7 +150,8 @@ Class PwshJamf {
     [psobject] CreateBuilding($Name) {
         $Resource = "buildings/id/0"
         $Method = "POST"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -158,7 +160,8 @@ Class PwshJamf {
     [psobject] UpdateBuildingByName($Name) {
         $Resource = "buildings/name/${Name}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -167,7 +170,8 @@ Class PwshJamf {
     [psobject] UpdateBuildingByID($ID,$Name) {
         $Resource = "buildings/id/${ID}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><building><name>${Name}</name></building>"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -219,7 +223,8 @@ Class PwshJamf {
     [psobject] CreateDepartment($Name) {
         $Resource = "departments/id/0"
         $Method = "POST"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Payload = $this.'_BuildXML'("department")
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -228,7 +233,8 @@ Class PwshJamf {
     [psobject] UpdateDepartmentByName($Name) {
         $Resource = "departments/name/${Name}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Payload = $this.'_BuildXML'("department")
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -237,7 +243,8 @@ Class PwshJamf {
     [psobject] UpdateDepartmentByID($ID,$Name) {
         $Resource = "departments/id/${ID}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?><department><name>${Name}</name></department>"
+        $Payload = $this.'_BuildXML'("department")
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -380,15 +387,10 @@ Class PwshJamf {
     [psobject] AddPackageToPolicyByName($PolicyName,$PackageName,$Action) {
         $Resource = "policies/name/${PolicyName}"
         $Method = "PUT"
-        [xml]$Payload = "<?xml version='1.0' encoding='UTF-8'?>
-            <package_configuration>
-                <packages>
-                    <package>
-                    <name>${PackageName}</name>
-                    <action>${Action}</action>
-                </package>
-                </packages>
-            </package_configuration>"
+        $Payload = $this.'_BuildXML'("package_configuration")
+        $Payload = $this.'_AddXMLElement'($Payload,"package_configuration","packages")
+        $Payload = $this.'_AddXMLText'($Payload,"packages","name",$PackageName)
+        $Payload = $this.'_AddXMLText'($Payload,"packages","action",$Action)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }

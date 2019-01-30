@@ -62,6 +62,41 @@ Class PwshJamf {
     }
 
     ####################################################################################################
+    # Helper Methods
+
+    # Build the first element in XML Payload
+    [xml] _BuildXML($Element) {
+        [xml]$Payload = New-Object Xml
+        # Creation of a node and its text
+        $XmlDeclaration = $Payload.CreateXmlDeclaration("1.0", "UTF-8", $null)
+        $Payload.AppendChild($XmlDeclaration) | Out-Null
+        $xmlElt = $Payload.CreateElement("${Element}")
+        # Add the node to the document
+        $Payload.AppendChild($xmlElt)
+        return $Payload
+    }
+
+    # Add an elemnt to the XML Payload
+    [xml] _AddXMLElement($Payload,$Parent,$Child) {
+        # Creation of a node and its text
+        $xmlElt = $Payload.CreateElement("${Child}")
+        # Add the node to the document
+        $Payload.SelectSingleNode("${Parent}").AppendChild($xmlElt)
+        return $Payload
+    }
+
+    # Add an elemnt to the XML Payload
+    [xml] _AddXMLText($Payload,$Parent,$Element,$ElementText) {
+        # Creation of a node and its text
+        $xmlElt = $Payload.CreateElement("${Element}")
+        $xmlText = $Payload.CreateTextNode("${ElementText}")
+        $xmlElt.AppendChild($xmlText) | Out-Null
+        # Add the node to the document
+        $Payload.SelectSingleNode("${Parent}").AppendChild($xmlElt)
+        return $Payload
+    }
+
+    ####################################################################################################
     # Available API Endpoints:
 
     ##### Resource Path:  /activationcode #####

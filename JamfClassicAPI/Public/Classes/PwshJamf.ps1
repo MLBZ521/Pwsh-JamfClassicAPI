@@ -2,11 +2,11 @@ Class PwshJamf {
 
     [ValidatePattern('(https:\/\/)([\w\.-]+)(:\d+)')]
     [uri] $Server
-    [string] $JamfAPIUsername
-    [string] $JamfAPIPassword
+    [string] $Header = "application/json"
+    hidden [string] $JamfAPIUsername
+    hidden [string] $JamfAPIPassword
     hidden [string] $Credentials
     hidden [hashtable] $Headers = @{}
-    [string] $Header = "application/json"
     hidden static [string] $RestError
 
     ####################################################################################################
@@ -16,9 +16,15 @@ Class PwshJamf {
         Write-Host "Development Zone"
     }
 
+    PwshJamf ([pscredential]$Credentials) {
+        $this.Credentials = [System.Convert]::ToBase64String( [System.Text.Encoding]::UTF8.GetBytes( ( “$( $Credentials.UserName.ToString() ):$( ( [Runtime.InteropServices.Marshal]::PtrToStringBSTR( [Runtime.InteropServices.Marshal]::SecureStringToBSTR( $Credentials.Password ) ) ) )” ) ) )
+        $this.Headers.Add('Accept', $this.Header)
+        $this.Headers.Add('Authorization', "Basic $($this.Credentials)")
+    }
+
     PwshJamf ([String]$JamfAPIUsername, [string]$JamfAPIPassword) {
         $this.Credentials = [System.Convert]::ToBase64String([System.Text.Encoding]::ASCII.GetBytes("$($JamfAPIUsername):$($JamfAPIPassword)"))
-        $this.Headers['Accept'] = $this.Headers['Accept'] -replace '.+', $this.Header
+        $this.Headers.Add('Accept', $this.Header)
         $this.Headers.Add('Authorization', "Basic $($this.Credentials)")
     }
 

@@ -228,6 +228,79 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /categories #####
+
+    # Returns all categories
+    [psobject] GetCategories() {
+        $Resource = "categories"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns category by name
+    [psobject] GetCategoryByName($Name) {
+        $Resource = "categories/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns category by id
+    [psobject] GetCategoryById($ID) {
+        $Resource = "categories/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new category
+    [psobject] CreateCategory($Name) {
+        $Resource = "categories/id/0"
+        $Method = "POST"
+        $Payload = $this.'_BuildXML'("category")
+        $Payload = $this.'_AddXMLText'($Payload,"category","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates category by name
+    [psobject] UpdateCategoryByName($Name) {
+        $Resource = "categories/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("category")
+        $Payload = $this.'_AddXMLText'($Payload,"category","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates category by id
+    [psobject] UpdateCategoryByID($ID,$Name) {
+        $Resource = "categories/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("category")
+        $Payload = $this.'_AddXMLText'($Payload,"category","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes category by name
+    [psobject] DeleteCategoryByName($Name) {
+        $Resource = "categories/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes category by id
+    [psobject] DeleteCategoryByID($ID) {
+        $Resource = "categories/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /departments #####
 
     # Returns all departments

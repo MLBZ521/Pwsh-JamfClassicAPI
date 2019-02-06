@@ -111,7 +111,7 @@ function Invoke-JamfClassicAPI() {
 
     Process {
         try {
-            $response = Invoke-RestMethod -Uri "${Uri}" -Method $Method -Headers $Header -Credential $Authentication -ErrorVariable RestError -ErrorAction SilentlyContinue
+            $response = Invoke-RestMethod -Uri "${Uri}" -Method $Method -Headers $Header -ContentType "application/xml" -Body $Body -Credential $Authentication -ErrorVariable RestError -ErrorAction SilentlyContinue
         }
         catch {
             $statusCode = $_.Exception.Response.StatusCode.value__

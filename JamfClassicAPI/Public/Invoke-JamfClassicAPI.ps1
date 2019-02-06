@@ -105,6 +105,7 @@ function Invoke-JamfClassicAPI() {
             }
         }
 
+        $Uri = "${Server}/JSSResource${Resource}"
         Write-Verbose -Message "Invoke method `"${Method}`" on resource `"${Resource}`" with header `"accept: $(${Header}.Values)`""
     }
 

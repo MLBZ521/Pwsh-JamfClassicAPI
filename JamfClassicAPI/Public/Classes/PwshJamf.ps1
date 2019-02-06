@@ -523,6 +523,79 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /sites #####
+
+    # Returns all sites
+    [psobject] GetSites() {
+        $Resource = "sites"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns site by name
+    [psobject] GetSiteByName($Name) {
+        $Resource = "sites/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns site by id
+    [psobject] GetSiteById($ID) {
+        $Resource = "sites/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new site
+    [psobject] CreateSite($Name) {
+        $Resource = "sites/id/0"
+        $Method = "POST"
+        $Payload = $this.'_BuildXML'("site")
+        $Payload = $this.'_AddXMLText'($Payload,"site","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates site by name
+    [psobject] UpdateSiteByName($Name) {
+        $Resource = "sites/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("site")
+        $Payload = $this.'_AddXMLText'($Payload,"site","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates site by id
+    [psobject] UpdateSiteByID($ID,$Name) {
+        $Resource = "sites/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("site")
+        $Payload = $this.'_AddXMLText'($Payload,"site","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes site by name
+    [psobject] DeleteSiteByName($Name) {
+        $Resource = "sites/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes site by id
+    [psobject] DeleteSiteByID($ID) {
+        $Resource = "sites/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  / #####
 
 

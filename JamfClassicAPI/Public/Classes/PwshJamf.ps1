@@ -134,6 +134,129 @@ Class PwshJamf {
     ####################################################################################################
     # Available API Endpoints:
 
+    ##### Resource Path:  /accounts #####
+
+    # Returns all accounts
+    [psobject] GetAccounts() {
+        $Resource = "accounts"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns account by username
+    [psobject] GetAccountByUsername($Name) {
+        $Resource = "accounts/username/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns account by userid
+    [psobject] GetAccountByUserid($ID) {
+        $Resource = "accounts/userid/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new account
+    [psobject] CreateAccountUser($Payload) {
+        $Resource = "accounts/userid/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates account by username
+    [psobject] UpdateAccountByUsername($Name,$Payload) {
+        $Resource = "accounts/username/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates account by userid
+    [psobject] UpdateAccountByUserid($ID,$Payload) {
+        $Resource = "accounts/userid/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes account by username
+    [psobject] DeleteAccountByUsername($Name) {
+        $Resource = "accounts/username/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes account by userid
+    [psobject] DeleteAccountByUserid($ID) {
+        $Resource = "accounts/userid/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns account by groupname
+    [psobject] GetAccountByGroupname($Name) {
+        $Resource = "accounts/groupname/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns account by groupid
+    [psobject] GetAccountByGroupid($ID) {
+        $Resource = "accounts/groupid/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new account
+    [psobject] CreateAccountGroup($Payload) {
+        $Resource = "accounts/groupid/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates account by groupname
+    [psobject] UpdateAccountByGroupname($Name,$Payload) {
+        $Resource = "accounts/groupname/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates account by groupid
+    [psobject] UpdateAccountByID($ID,$Payload) {
+        $Resource = "accounts/groupid/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes account by groupname
+    [psobject] DeleteAccountByGroupname($Name) {
+        $Resource = "accounts/groupname/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes account by groupid
+    [psobject] DeleteAccountByID($ID) {
+        $Resource = "accounts/groupid/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /activationcode #####
 
     # Returns all activationcode

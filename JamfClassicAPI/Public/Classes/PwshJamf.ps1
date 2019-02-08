@@ -70,6 +70,15 @@ Class PwshJamf {
     ####################################################################################################
     # Helper Methods
 
+    # Build a blank XML Payload
+    [xml] _BuildXML() {
+        [xml]$Payload = New-Object Xml
+        # Creation of a node and its text
+        $XmlDeclaration = $Payload.CreateXmlDeclaration("1.0", "UTF-8", $null)
+        $Payload.AppendChild($XmlDeclaration) | Out-Null
+        return $Payload
+    }
+
     # Build the first element in XML Payload
     [xml] _BuildXML($Element) {
         [xml]$Payload = New-Object Xml

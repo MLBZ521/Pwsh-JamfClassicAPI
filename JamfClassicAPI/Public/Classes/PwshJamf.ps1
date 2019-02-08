@@ -519,6 +519,97 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computergroups #####
+
+    # Returns all computergroups
+    [psobject] GetComputerGroups() {
+        $Resource = "computergroups"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computergroup by name
+    [psobject] GetComputerGroupByName($Name) {
+        $Resource = "computergroups/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computergroup by id
+    [psobject] GetComputerGroupById($ID) {
+        $Resource = "computergroups/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new computergroup
+    [psobject] CreateComputerGroup($Payload) {
+        $Resource = "computergroups/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates computergroup by name
+    [psobject] UpdateComputerGroupByName($Name,$Payload) {
+        $Resource = "computergroups/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates computergroup by id
+    [psobject] UpdateComputerGroupByID($ID,$Payload) {
+        $Resource = "computergroups/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes computergroup by name
+    [psobject] DeleteComputerGroupByName($Name) {
+        $Resource = "computergroups/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes computergroup by id
+    [psobject] DeleteComputerGroupByID($ID) {
+        $Resource = "computergroups/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates static computergroup by name (uses computer_additions and computer_deletions)
+    [psobject] UpdateStaticComputerGroupByName($Group,$Computers,$Action) {
+        $Resource = "computergroups/name/${Group}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("computer_group")
+        $Payload = $this.'_AddXMLElement'($Payload,"//computer_group","computer_${Action}")
+        $NestedNodes = $this.BuildXMLNode("computer","name",$Computers)
+        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates static computergroup by id (uses computer_additions and computer_deletions)
+    [psobject] UpdateStaticComputerGroupById($Group,$Computers,$Action) {
+        $Resource = "computergroups/id/${Group}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("computer_group")
+        $Payload = $this.'_AddXMLElement'($Payload,"//computer_group","computer_${Action}")
+        $NestedNodes = $this.BuildXMLNode("computer","id",$Computers)
+        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages

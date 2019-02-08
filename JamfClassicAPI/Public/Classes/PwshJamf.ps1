@@ -610,6 +610,97 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledevicegroups #####
+
+    # Returns all mobiledevicegroups
+    [psobject] GetMobileDeviceGroups() {
+        $Resource = "mobiledevicegroups"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile_device_group by name
+    [psobject] GetMobileDeviceGroupByName($Name) {
+        $Resource = "mobiledevicegroups/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile_device_group by id
+    [psobject] GetMobileDeviceGroupById($ID) {
+        $Resource = "mobiledevicegroups/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new mobile_device_group
+    [psobject] CreateMobileDeviceGroup($Payload) {
+        $Resource = "mobiledevicegroups/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates mobile_device_group by name
+    [psobject] UpdateMobileDeviceGroupByName($Name,$Payload) {
+        $Resource = "mobiledevicegroups/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates mobile_device_group by id
+    [psobject] UpdateMobileDeviceGroupByID($ID,$Payload) {
+        $Resource = "mobiledevicegroups/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes mobile_device_group by name
+    [psobject] DeleteMobileDeviceGroupByName($Name) {
+        $Resource = "mobiledevicegroups/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes mobile_device_group by id
+    [psobject] DeleteMobileDeviceGroupByID($ID) {
+        $Resource = "mobiledevicegroups/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates static mobile_device_group by name (uses mobile_device_additions and mobile_device_deletions)
+    [psobject] UpdateStaticMobileDeviceGroupByName($Group,$MobileDevices,$Action) {
+        $Resource = "mobiledevicegroups/name/${Group}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("mobile_device_group")
+        $Payload = $this.'_AddXMLElement'($Payload,"//mobile_device_group","mobile_device_${Action}")
+        $NestedNodes = $this.BuildXMLNode("mobile_device","name",$MobileDevices)
+        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates static mobile_device_group by id (uses mobile_device_additions and mobile_device_deletions)
+    [psobject] UpdateStaticMobileDeviceGroupById($Group,$MobileDevices,$Action) {
+        $Resource = "mobiledevicegroups/id/${Group}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("mobile_device_group")
+        $Payload = $this.'_AddXMLElement'($Payload,"//mobile_device_group","mobile_device_${Action}")
+        $NestedNodes = $this.BuildXMLNode("mobile_device","id",$MobileDevices)
+        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages

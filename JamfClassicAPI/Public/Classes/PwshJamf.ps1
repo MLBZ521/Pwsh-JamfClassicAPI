@@ -131,6 +131,19 @@ Class PwshJamf {
         return $Payload
     }
 
+    # Helper to build an xml Node
+    [psobject] BuildXMLNode($Node,$Key,$Values) {
+        $Payload = $this.'_BuildXML'("${Node}s")
+
+        # Loop through each configuration item and create a node from it.
+        ForEach ($Value in $Values) {
+            $Element = $this.'_BuildXML'($Node)
+            $Element = $this.'_AddXMLText'($Element,$Node,$Key,$Value)
+            $Payload.DocumentElement.SelectSingleNode("/*").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+        }
+        return $Payload
+    }
+
     ####################################################################################################
     # Available API Endpoints:
 

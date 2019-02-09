@@ -17,7 +17,7 @@ Class PwshJamf {
     }
 
     PwshJamf ([pscredential]$Credentials) {
-        $this.Credentials = [System.Convert]::ToBase64String( [System.Text.Encoding]::UTF8.GetBytes( ( “$( $Credentials.UserName.ToString() ):$( ( [Runtime.InteropServices.Marshal]::PtrToStringBSTR( [Runtime.InteropServices.Marshal]::SecureStringToBSTR( $Credentials.Password ) ) ) )” ) ) )
+        $this.Credentials = [System.Convert]::ToBase64String( [System.Text.Encoding]::UTF8.GetBytes( ( "$( $Credentials.UserName.ToString() ):$( ( [Runtime.InteropServices.Marshal]::PtrToStringBSTR( [Runtime.InteropServices.Marshal]::SecureStringToBSTR( $Credentials.Password ) ) ) )" ) ) )
         $this.Headers.Add('Accept', $this.Header)
         $this.Headers.Add('Authorization', "Basic $($this.Credentials)")
     }

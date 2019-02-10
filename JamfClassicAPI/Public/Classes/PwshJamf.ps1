@@ -652,6 +652,217 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computers #####
+
+    # Returns all computers
+    [psobject] GetComputers() {
+        $Resource = "computers"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all computers with a larger set of basic information
+    [psobject] GetComputersBasic() {
+        $Resource = "computers/subset/basic"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all computers that match the given value; uses the same format as the general search in the JPS; also supports wildcards (*).
+    [psobject] SearchComputers($Match) {
+        $Resource = "computers/match/${Match}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all computers that match the given name parameter
+    [psobject] MatchComputersName($Match) {
+        $Resource = "computers/match/name/${Match}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all computers that match the given name parameter with a larger set of basic information
+    [psobject] MatchComputersNameBasic($Match) {
+        $Resource = "computers/match/name/${Match}/subset/basic"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer by name
+    [psobject] GetComputerByName($Name) {
+        $Resource = "computers/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer by id
+    [psobject] GetComputerById($ID) {
+        $Resource = "computers/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer by udid
+    [psobject] GetComputerByUDID($UDID) {
+        $Resource = "computers/udid/${UDID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer by serialnumber
+    [psobject] GetComputerBySerialNumber($SerialNumber) {
+        $Resource = "computers/serialnumber/${SerialNumber}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer by macaddress
+    [psobject] GetComputerByMACAddress($MACAddress) {
+        $Resource = "computers/macaddress/${MACAddress}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer Subsets by name
+    [psobject] GetComputerSubsetByName($Name,$Subset) {
+        $Resource = "computers/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer Subsets by id
+    [psobject] GetComputerSubsetById($ID,$Subset) {
+        $Resource = "computers/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer Subsets by udid
+    [psobject] GetComputerSubsetByUDID($UDID,$Subset) {
+        $Resource = "computers/udid/${UDID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer Subsets by serialnumber
+    [psobject] GetComputerSubsetBySerialNumber($SerialNumber,$Subset) {
+        $Resource = "computers/serialnumber/${SerialNumber}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns computer Subsets by macaddress
+    [psobject] GetComputerSubsetByMACAddress($MACAddress,$Subset) {
+        $Resource = "computers/macaddress/${MACAddress}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new computer
+    [psobject] CreateComputer($Payload) {
+        $Resource = "computers/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates computer by name
+    [psobject] UpdateComputerByName($Name,$Payload) {
+        $Resource = "computers/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates computer by id
+    [psobject] UpdateComputerByID($ID,$Payload) {
+        $Resource = "computers/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates computer by udid
+    [psobject] UpdateComputerByUDID($UDID) {
+        $Resource = "computers/udid/${UDID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates computer by serialnumber
+    [psobject] UpdateComputerBySerialNumber($SerialNumber) {
+        $Resource = "computers/serialnumber/${SerialNumber}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates computer by macaddress
+    [psobject] UpdateComputerByMACAddress($MACAddress) {
+        $Resource = "computers/macaddress/${MACAddress}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes computer by name
+    [psobject] DeleteComputerByName($Name) {
+        $Resource = "computers/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes computer by id
+    [psobject] DeleteComputerByID($ID) {
+        $Resource = "computers/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes computer by udid
+    [psobject] DeleteComputerByUDID($UDID) {
+        $Resource = "computers/udid/${UDID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes computer by serialnumber
+    [psobject] DeleteComputerBySerialNumber($SerialNumber) {
+        $Resource = "computers/serialnumber/${SerialNumber}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes computer by macaddress
+    [psobject] DeleteComputerByMACAddress($MACAddress) {
+        $Resource = "computers/macaddress/${MACAddress}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

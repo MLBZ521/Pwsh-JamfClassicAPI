@@ -954,6 +954,217 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledevices #####
+
+    # Returns all mobiledevices
+    [psobject] GetMobileDevices() {
+        $Resource = "mobiledevices"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all mobiledevices with a larger set of basic information
+    [psobject] GetMobileDevicesBasic() {
+        $Resource = "mobiledevices/subset/basic"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all mobiledevices that match the given value; uses the same format as the general search in the JPS; also supports wildcards (*).
+    [psobject] SearchMobileDevices($Match) {
+        $Resource = "mobiledevices/match/${Match}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all mobiledevices that match the given name parameter
+    [psobject] MatchMobileDevicesName($Match) {
+        $Resource = "mobiledevices/match/name/${Match}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns all mobiledevices that match the given name parameter with a larger set of basic information
+    [psobject] MatchMobileDevicesNameBasic($Match) {
+        $Resource = "mobiledevices/match/name/${Match}/subset/basic"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device by name
+    [psobject] GetMobileDeviceByName($Name) {
+        $Resource = "mobiledevices/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device by id
+    [psobject] GetMobileDeviceById($ID) {
+        $Resource = "mobiledevices/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device by udid
+    [psobject] GetMobileDeviceByUDID($UDID) {
+        $Resource = "mobiledevices/udid/${UDID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device by serialnumber
+    [psobject] GetMobileDeviceBySerialNumber($SerialNumber) {
+        $Resource = "mobiledevices/serialnumber/${SerialNumber}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device by macaddress
+    [psobject] GetMobileDeviceByMACAddress($MACAddress) {
+        $Resource = "mobiledevices/macaddress/${MACAddress}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device Subsets by name
+    [psobject] GetMobileDeviceSubsetByName($Name,$Subset) {
+        $Resource = "mobiledevices/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device Subsets by id
+    [psobject] GetMobileDeviceSubsetById($ID,$Subset) {
+        $Resource = "mobiledevices/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device Subsets by udid
+    [psobject] GetMobileDeviceSubsetByUDID($UDID,$Subset) {
+        $Resource = "mobiledevices/udid/${UDID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device Subsets by serialnumber
+    [psobject] GetMobileDeviceSubsetBySerialNumber($SerialNumber,$Subset) {
+        $Resource = "mobiledevices/serialnumber/${SerialNumber}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns mobile device Subsets by macaddress
+    [psobject] GetMobileDeviceSubsetByMACAddress($MACAddress,$Subset) {
+        $Resource = "mobiledevices/macaddress/${MACAddress}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new mobile device
+    [psobject] CreateMobileDevice($Payload) {
+        $Resource = "mobiledevices/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates mobile device by name
+    [psobject] UpdateMobileDeviceByName($Name,$Payload) {
+        $Resource = "mobiledevices/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates mobile device by id
+    [psobject] UpdateMobileDeviceByID($ID,$Payload) {
+        $Resource = "mobiledevices/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates mobile device by udid
+    [psobject] UpdateMobileDeviceByUDID($UDID) {
+        $Resource = "mobiledevices/udid/${UDID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates mobile device by serialnumber
+    [psobject] UpdateMobileDeviceBySerialNumber($SerialNumber) {
+        $Resource = "mobiledevices/serialnumber/${SerialNumber}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Updates mobile device by macaddress
+    [psobject] UpdateMobileDeviceByMACAddress($MACAddress) {
+        $Resource = "mobiledevices/macaddress/${MACAddress}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes mobile device by name
+    [psobject] DeleteMobileDeviceByName($Name) {
+        $Resource = "mobiledevices/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes mobile device by id
+    [psobject] DeleteMobileDeviceByID($ID) {
+        $Resource = "mobiledevices/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes mobile device by udid
+    [psobject] DeleteMobileDeviceByUDID($UDID) {
+        $Resource = "mobiledevices/udid/${UDID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes mobile device by serialnumber
+    [psobject] DeleteMobileDeviceBySerialNumber($SerialNumber) {
+        $Resource = "mobiledevices/serialnumber/${SerialNumber}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes mobile device by macaddress
+    [psobject] DeleteMobileDeviceByMACAddress($MACAddress) {
+        $Resource = "mobiledevices/macaddress/${MACAddress}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages

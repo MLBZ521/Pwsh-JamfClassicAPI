@@ -7,7 +7,6 @@ Class PwshJamf {
     hidden [string] $JamfAPIPassword
     hidden [string] $Credentials
     hidden [hashtable] $Headers = @{}
-    hidden static [string] $RestError
 
     ####################################################################################################
     # Constructor
@@ -34,37 +33,64 @@ Class PwshJamf {
     # Generic helper method to invoke GET and DELETE REST Methods against a Jamf Pro Server.
     [psobject] InvokeAPI($Resource,$Method) {
         try {
-            # Write-Host "$($this.Server)JSSResource/$Resource"
-            # Write-Host $Method
-            # Write-Host $this.Headers
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -Verbose -ErrorVariable RestError -ErrorAction SilentlyContinue
+            Write-Host -Message "Request successful" -ForegroundColor "Green"
             return $Results
         }
         catch {
-            $statusCode = $_.Exception.Response.StatusCode.value__
-            $errorDescription = $($this.RestError.Message -split [Environment]::NewLine)
-            Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
-            Write-Host -Message "FAILED:  ${statusCode} / $($this.RestError.Message)"
-            Return $null
+            $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
+            $this._FormatExceptionMessage($_)
+            return $null
         }
     }
 
     # Generic helper method to invoke POST and PUT REST Methods against a Jamf Pro Server.
     [psobject] InvokeAPI($Resource,$Method,$Payload) {
         try {
-            # Write-Host "$($this.Server)JSSResource/$Resource"
-            # Write-Host $Method
-            # Write-Host $this.Headers
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -ContentType "application/xml" -Body $Payload -Verbose -ErrorVariable RestError -ErrorAction SilentlyContinue
+            Write-Host -Message "Request successful" -ForegroundColor "Green"
             return $Results
         }
         catch {
-            $statusCode = $_.Exception.Response.StatusCode.value__
-            $errorDescription = $($this.RestError.Message -split [Environment]::NewLine)
-            Write-Host -Message "FAILED:  ${statusCode} / $($errorDescription[5]) - $($errorDescription[6])"
-            Write-Host -Message "FAILED:  ${statusCode} / $($this.RestError.Message)"
-            Return $null
+            $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
+            $this._FormatExceptionMessage($_)
+            return $null
         }
+    }
+
+    # Helper method that provides a response based on the returned status code from an API call.
+    [psobject] _StatusCodeCheck($StatusCode) {
+        switch ($StatusCode) {
+            200 { Write-Host -Message "Request successful" -ForegroundColor "Green"  }
+            201 { Write-Host -Message "Request successful" -ForegroundColor "Green"  }
+            400 { Write-Host -Message "Error:  400 / Bad request.  Verify the syntax of the request specifically the XML body." -ForegroundColor "Red" }
+            401 { Write-Host -Message "Error:  401 / Authentication failed.  Verify the credentials being used for the request." -ForegroundColor "Red" }
+            403 { Write-Host -Message "Error:  403 / Invalid permissions.  Verify the account being used has the proper permissions for the object/resource you are trying to access." -ForegroundColor "Red" }
+            404 { Write-Host -Message "Error:  404 / Resource not found.  Verify the URL path is correct." -ForegroundColor "Red" }
+            409 { Write-Host -Message "Error:  409 / Conflict - A resource by this name already exists." -ForegroundColor "Red" }
+            500 { Write-Host -Message "Error:  500 / Internal server error.  Retry the request or contact Jamf support if the error is persistent." -ForegroundColor "Red" }
+            Default { Write-Host -Message "Error:  Appears something went wrong, please try again." -ForegroundColor "Red" }
+        }
+        return $null
+    }
+
+    # Helper method to format the response body when a API call fails.
+    [psobject] _FormatExceptionMessage($Exception) {
+        # The method to get the response body is different for PS Code v6.
+        if ($Global:PSVersionTable.PSVersion.Major -lt 6) {
+            $ResponseStream = $_.Exception.Response.GetResponseStream()
+            $StreamReader = New-Object System.IO.StreamReader($ResponseStream)
+            $StreamReader.BaseStream.Position = 0
+            $ResponseBody = $StreamReader.ReadToEnd()            
+        }
+        else {
+            $ResponseBody = $_.ErrorDetails.Message
+        }
+        
+        # Split the reponse body, so we can grab the content we're interested in.
+        $errorDescription = $($ResponseBody -split [Environment]::NewLine)
+        Write-Host -Message "Response:  $($errorDescription[5]) - $($errorDescription[6])" -ForegroundColor "Red"
+        return $null
     }
 
     ####################################################################################################

@@ -33,7 +33,7 @@ Class PwshJamf {
     # Generic helper method to invoke GET and DELETE REST Methods against a Jamf Pro Server.
     [psobject] InvokeAPI($Resource,$Method) {
         try {
-            $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -Verbose -ErrorVariable RestError -ErrorAction SilentlyContinue
+            $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -Verbose -ErrorAction SilentlyContinue
             Write-Host -Message "Request successful" -ForegroundColor "Green"
             return $Results
         }
@@ -47,7 +47,7 @@ Class PwshJamf {
     # Generic helper method to invoke POST and PUT REST Methods against a Jamf Pro Server.
     [psobject] InvokeAPI($Resource,$Method,$Payload) {
         try {
-            $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -ContentType "application/xml" -Body $Payload -Verbose -ErrorVariable RestError -ErrorAction SilentlyContinue
+            $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -ContentType "application/xml" -Body $Payload -Verbose -ErrorAction SilentlyContinue
             Write-Host -Message "Request successful" -ForegroundColor "Green"
             return $Results
         }
@@ -90,6 +90,22 @@ Class PwshJamf {
         # Split the reponse body, so we can grab the content we're interested in.
         $errorDescription = $($ResponseBody -split [Environment]::NewLine)
         Write-Host -Message "Response:  $($errorDescription[5]) - $($errorDescription[6])" -ForegroundColor "Red"
+        return $null
+    }
+
+    # Helper method that will verify credentials by doing an API call and checking the result to verify permissions.
+    [psobject] VerifyAPICredentials(){
+        Write-Host -Message "Verifying API credentials..." -ForegroundColor "Yellow"
+        Try {
+            Invoke-RestMethod -Uri "$($this.Server)JSSResource/jssuser" -Method GET -Headers $this.Headers -Verbose -ErrorAction SilentlyContinue
+            Write-Host -Message "API Credentials Valid!" -ForegroundColor "Blue"
+        }
+        Catch {
+            $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
+            $this._FormatExceptionMessage($_)
+            Write-Host -Message "ERROR:  Invalid Credentials or permissions." -ForegroundColor "Red"
+            return $null
+        }
         return $null
     }
 

@@ -34,8 +34,8 @@ Class PwshJamf {
     [psobject] InvokeAPI($Resource,$Method) {
         try {
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -Verbose -ErrorAction SilentlyContinue
-            Write-Host -Message "Request successful" -ForegroundColor "Green"
-            return $Results
+            $Return = $this._Verbosity($Method,$Results)
+            return $Return
         }
         catch {
             $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
@@ -48,14 +48,36 @@ Class PwshJamf {
     [psobject] InvokeAPI($Resource,$Method,$Payload) {
         try {
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -ContentType "application/xml" -Body $Payload -Verbose -ErrorAction SilentlyContinue
-            Write-Host -Message "Request successful" -ForegroundColor "Green"
-            return $Results
+            $Return = $this._Verbosity($Method,$Results)
+            return $Return
         }
         catch {
             $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
             $this._FormatExceptionMessage($_)
             return $null
         }
+    }
+
+    # Helper method to provide the object type and ID of the record that was just modified or created.
+    [psobject] _Verbosity($Method, $Results) {
+        if ( $Method -eq "GET" ) {
+            Write-Host -Message "Request successful" -ForegroundColor "Green"
+        }
+        else {
+            $Type = $Results.FirstChild.NextSibling.LocalName
+            $ID = $Results.SelectSingleNode("//${Type}") | Select-Object -ExpandProperty InnerText
+            $Action = "performed"
+
+            switch ( $Method ) {
+                DELETE { $Action = "deleted" }
+                POST { $Action = "created" }
+                PUT { $Action = "updated" }
+            }
+
+            Write-Host -Message "Successfully ${Action} ${Type} id:  ${ID}" -ForegroundColor "Green"
+            $Results = $null
+        }
+        return $Results
     }
 
     # Helper method that provides a response based on the returned status code from an API call.

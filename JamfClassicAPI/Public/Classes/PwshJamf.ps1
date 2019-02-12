@@ -379,11 +379,11 @@ Class PwshJamf {
     }
 
     # Updates building by name
-    [psobject] UpdateBuildingByName($Name) {
-        $Resource = "buildings/name/${Name}"
+    [psobject] UpdateBuildingByName($OldName,$NewName) {
+        $Resource = "buildings/name/${OldName}"
         $Method = "PUT"
         $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$NewName)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -452,11 +452,11 @@ Class PwshJamf {
     }
 
     # Updates category by name
-    [psobject] UpdateCategoryByName($Name) {
-        $Resource = "categories/name/${Name}"
+    [psobject] UpdateCategoryByName($OldName,$NewName) {
+        $Resource = "categories/name/${OldName}"
         $Method = "PUT"
         $Payload = $this.'_BuildXML'("category")
-        $Payload = $this.'_AddXMLText'($Payload,"category","name",$Name)
+        $Payload = $this.'_AddXMLText'($Payload,"category","name",$NewName)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -525,11 +525,11 @@ Class PwshJamf {
     }
 
     # Updates department by name
-    [psobject] UpdateDepartmentByName($Name) {
-        $Resource = "departments/name/${Name}"
+    [psobject] UpdateDepartmentByName($OldName,$NewName) {
+        $Resource = "departments/name/${OldName}"
         $Method = "PUT"
         $Payload = $this.'_BuildXML'("department")
-        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
+        $Payload = $this.'_AddXMLText'($Payload,"department","name",$NewName)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -1424,11 +1424,11 @@ Class PwshJamf {
     }
 
     # Updates site by name
-    [psobject] UpdateSiteByName($Name) {
-        $Resource = "sites/name/${Name}"
+    [psobject] UpdateSiteByName($OldName,$NewName) {
+        $Resource = "sites/name/${OldName}"
         $Method = "PUT"
         $Payload = $this.'_BuildXML'("site")
-        $Payload = $this.'_AddXMLText'($Payload,"site","name",$Name)
+        $Payload = $this.'_AddXMLText'($Payload,"site","name",$NewName)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }

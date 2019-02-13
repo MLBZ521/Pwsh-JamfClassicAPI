@@ -9,7 +9,7 @@ Class PwshJamf {
     hidden [hashtable] $Headers = @{}
 
     ####################################################################################################
-    # Constructor
+    # Constructors
 
     PwshJamf () {
         Write-Host "Development Zone"
@@ -31,28 +31,28 @@ Class PwshJamf {
     # Methods
 
     # Generic helper method to invoke GET and DELETE REST Methods against a Jamf Pro Server.
-    [psobject] InvokeAPI($Resource,$Method) {
+    [psobject] InvokeAPI($Resource, $Method) {
         try {
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -Verbose -ErrorAction SilentlyContinue
-            $Return = $this._Verbosity($Method,$Results)
+            $Return = $this._Verbosity($Method, $Results)
             return $Return
         }
         catch {
-            $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
+            $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
             $this._FormatExceptionMessage($_)
             return $null
         }
     }
 
     # Generic helper method to invoke POST and PUT REST Methods against a Jamf Pro Server.
-    [psobject] InvokeAPI($Resource,$Method,$Payload) {
+    [psobject] InvokeAPI($Resource, $Method, $Payload) {
         try {
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -ContentType "application/xml" -Body $Payload -Verbose -ErrorAction SilentlyContinue
-            $Return = $this._Verbosity($Method,$Results)
+            $Return = $this._Verbosity($Method, $Results)
             return $Return
         }
         catch {
-            $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
+            $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
             $this._FormatExceptionMessage($_)
             return $null
         }
@@ -116,14 +116,14 @@ Class PwshJamf {
     }
 
     # Helper method that will verify credentials by doing an API call and checking the result to verify permissions.
-    [psobject] VerifyAPICredentials(){
+    [psobject] VerifyAPICredentials() {
         Write-Host -Message "Verifying API credentials..." -ForegroundColor "Yellow"
         Try {
             Invoke-RestMethod -Uri "$($this.Server)JSSResource/jssuser" -Method GET -Headers $this.Headers -Verbose -ErrorAction SilentlyContinue
             Write-Host -Message "API Credentials Valid!" -ForegroundColor "Blue"
         }
         Catch {
-            $this.'_StatusCodeCheck'($_.Exception.Response.StatusCode.value__)
+            $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
             $this._FormatExceptionMessage($_)
             Write-Host -Message "ERROR:  Invalid Credentials or permissions." -ForegroundColor "Red"
             return $null
@@ -156,7 +156,7 @@ Class PwshJamf {
     }
 
     # Add an elemnt to the XML Payload
-    [xml] _AddXMLElement($Payload,$Parent,$Child) {
+    [xml] _AddXMLElement($Payload, $Parent, $Child) {
         # Creation of a node and its text
         $xmlElt = $Payload.CreateElement("${Child}")
         # Add the node to the document
@@ -165,7 +165,7 @@ Class PwshJamf {
     }
 
     # Add an elemnt to the XML Payload
-    [xml] _AddXMLText($Payload,$Parent,$Element,$ElementText) {
+    [xml] _AddXMLText($Payload, $Parent, $Element, $ElementText) {
         # Creation of a node and its text
         $xmlElt = $Payload.CreateElement("${Element}")
         $xmlText = $Payload.CreateTextNode("${ElementText}")
@@ -176,8 +176,8 @@ Class PwshJamf {
     }
 
     # Helper to build an xml Node
-    [psobject] BuildXMLNode($Node,$Configuration) {
-        $Payload = $this.'_BuildXML'($Node)
+    [psobject] BuildXMLNode($Node, $Configuration) {
+        $Payload = $this._BuildXML($Node)
 
         # Loop through each configuration item and create a node from it.
         ForEach ($Key in $Configuration.Keys) {
@@ -185,14 +185,14 @@ Class PwshJamf {
             # Check if the configuration has a sub-element.
             if ( $Key -match "[.]" ) {
                 # Split the configuration between parent and child elements.
-                $ParentKey,$ChildKey = $Key -split "[.]"
+                $ParentKey, $ChildKey = $Key -split "[.]"
                 # Create a parent element and add the node to the document
-                $Payload = $this.'_AddXMLElement'($Payload,"/*","${ParentKey}")
+                $Payload = $this._AddXMLElement($Payload, "/*", "${ParentKey}")
                 # Create a node from an element and text
-                $Payload = $this.'_AddXMLText'($Payload,"//${ParentKey}","${ChildKey}","$($Configuration.$Key)")
+                $Payload = $this._AddXMLText($Payload, "//${ParentKey}", "${ChildKey}", "$($Configuration.$Key)")
             }
             else {
-                $Payload = $this.'_AddXMLText'($Payload,"/*","${Key}","$($Configuration.$Key)")
+                $Payload = $this._AddXMLText($Payload, "/*", "${Key}", "$($Configuration.$Key)")
             }
         }
 
@@ -205,13 +205,13 @@ Class PwshJamf {
     }
 
     # Helper to build an xml Node
-    [psobject] BuildXMLNode($Node,$Key,$Values) {
-        $Payload = $this.'_BuildXML'("${Node}s")
+    [psobject] BuildXMLNode($Node, $Key, $Values) {
+        $Payload = $this._BuildXML("${Node}s")
 
         # Loop through each configuration item and create a node from it.
         ForEach ($Value in $Values) {
-            $Element = $this.'_BuildXML'($Node)
-            $Element = $this.'_AddXMLText'($Element,$Node,$Key,$Value)
+            $Element = $this._BuildXML($Node)
+            $Element = $this._AddXMLText($Element, $Node, $Key, $Value)
             $Payload.DocumentElement.SelectSingleNode("/*").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
         }
         return $Payload
@@ -226,7 +226,7 @@ Class PwshJamf {
     [psobject] GetAccounts() {
         $Resource = "accounts"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -234,7 +234,7 @@ Class PwshJamf {
     [psobject] GetAccountByUsername($Name) {
         $Resource = "accounts/username/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -242,7 +242,7 @@ Class PwshJamf {
     [psobject] GetAccountByUserid($ID) {
         $Resource = "accounts/userid/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -250,23 +250,23 @@ Class PwshJamf {
     [psobject] CreateAccountUser($Payload) {
         $Resource = "accounts/userid/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates account by username
-    [psobject] UpdateAccountByUsername($Name,$Payload) {
+    [psobject] UpdateAccountByUsername($Name, $Payload) {
         $Resource = "accounts/username/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates account by userid
-    [psobject] UpdateAccountByUserid($ID,$Payload) {
+    [psobject] UpdateAccountByUserid($ID, $Payload) {
         $Resource = "accounts/userid/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -274,7 +274,7 @@ Class PwshJamf {
     [psobject] DeleteAccountByUsername($Name) {
         $Resource = "accounts/username/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -282,7 +282,7 @@ Class PwshJamf {
     [psobject] DeleteAccountByUserid($ID) {
         $Resource = "accounts/userid/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -290,7 +290,7 @@ Class PwshJamf {
     [psobject] GetAccountByGroupname($Name) {
         $Resource = "accounts/groupname/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -298,7 +298,7 @@ Class PwshJamf {
     [psobject] GetAccountByGroupid($ID) {
         $Resource = "accounts/groupid/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -306,23 +306,23 @@ Class PwshJamf {
     [psobject] CreateAccountGroup($Payload) {
         $Resource = "accounts/groupid/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates account by groupname
-    [psobject] UpdateAccountByGroupname($Name,$Payload) {
+    [psobject] UpdateAccountByGroupname($Name, $Payload) {
         $Resource = "accounts/groupname/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates account by groupid
-    [psobject] UpdateAccountByID($ID,$Payload) {
+    [psobject] UpdateAccountByID($ID, $Payload) {
         $Resource = "accounts/groupid/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -330,7 +330,7 @@ Class PwshJamf {
     [psobject] DeleteAccountByGroupname($Name) {
         $Resource = "accounts/groupname/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -338,7 +338,7 @@ Class PwshJamf {
     [psobject] DeleteAccountByID($ID) {
         $Resource = "accounts/groupid/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -349,17 +349,17 @@ Class PwshJamf {
     [psobject] GetActivationcode() {
         $Resource = "activationcode"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Updates department by name
+    # Updates activationcode
     [psobject] UpdateActivationcode($Code) {
         $Resource = "activationcode"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("activation_code")
-        $Payload = $this.'_AddXMLText'($Payload,"activation_code","code",$Code)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("activation_code")
+        $Payload = $this._AddXMLText($Payload, "activation_code", "code", $Code)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -370,7 +370,7 @@ Class PwshJamf {
     [psobject] GetBuildings() {
         $Resource = "buildings"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -378,7 +378,7 @@ Class PwshJamf {
     [psobject] GetBuildingByName($Name) {
         $Resource = "buildings/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -386,7 +386,7 @@ Class PwshJamf {
     [psobject] GetBuildingById($ID) {
         $Resource = "buildings/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -394,29 +394,29 @@ Class PwshJamf {
     [psobject] CreateBuilding($Name) {
         $Resource = "buildings/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("building")
+        $Payload = $this._AddXMLText($Payload, "building", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates building by name
-    [psobject] UpdateBuildingByName($OldName,$NewName) {
+    [psobject] UpdateBuildingByName($OldName, $NewName) {
         $Resource = "buildings/name/${OldName}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$NewName)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("building")
+        $Payload = $this._AddXMLText($Payload, "building", "name", $NewName)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates building by id
-    [psobject] UpdateBuildingByID($ID,$Name) {
+    [psobject] UpdateBuildingByID($ID, $Name) {
         $Resource = "buildings/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("building")
+        $Payload = $this._AddXMLText($Payload, "building", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -424,7 +424,7 @@ Class PwshJamf {
     [psobject] DeleteBuildingByName($Name) {
         $Resource = "buildings/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -432,7 +432,7 @@ Class PwshJamf {
     [psobject] DeleteBuildingByID($ID) {
         $Resource = "buildings/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -443,7 +443,7 @@ Class PwshJamf {
     [psobject] GetCategories() {
         $Resource = "categories"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -451,7 +451,7 @@ Class PwshJamf {
     [psobject] GetCategoryByName($Name) {
         $Resource = "categories/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -459,7 +459,7 @@ Class PwshJamf {
     [psobject] GetCategoryById($ID) {
         $Resource = "categories/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -467,29 +467,29 @@ Class PwshJamf {
     [psobject] CreateCategory($Name) {
         $Resource = "categories/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("category")
-        $Payload = $this.'_AddXMLText'($Payload,"category","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("category")
+        $Payload = $this._AddXMLText($Payload, "category", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates category by name
-    [psobject] UpdateCategoryByName($OldName,$NewName) {
+    [psobject] UpdateCategoryByName($OldName, $NewName) {
         $Resource = "categories/name/${OldName}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("category")
-        $Payload = $this.'_AddXMLText'($Payload,"category","name",$NewName)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("category")
+        $Payload = $this._AddXMLText($Payload, "category", "name", $NewName)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates category by id
-    [psobject] UpdateCategoryByID($ID,$Name) {
+    [psobject] UpdateCategoryByID($ID, $Name) {
         $Resource = "categories/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("category")
-        $Payload = $this.'_AddXMLText'($Payload,"category","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("category")
+        $Payload = $this._AddXMLText($Payload, "category", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -497,7 +497,7 @@ Class PwshJamf {
     [psobject] DeleteCategoryByName($Name) {
         $Resource = "categories/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -505,7 +505,7 @@ Class PwshJamf {
     [psobject] DeleteCategoryByID($ID) {
         $Resource = "categories/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -516,7 +516,7 @@ Class PwshJamf {
     [psobject] GetDepartments() {
         $Resource = "departments"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -524,7 +524,7 @@ Class PwshJamf {
     [psobject] GetDepartmentByName($Name) {
         $Resource = "departments/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -532,7 +532,7 @@ Class PwshJamf {
     [psobject] GetDepartmentById($ID) {
         $Resource = "departments/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -540,29 +540,29 @@ Class PwshJamf {
     [psobject] CreateDepartment($Name) {
         $Resource = "departments/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("department")
-        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("department")
+        $Payload = $this._AddXMLText($Payload, "department", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates department by name
-    [psobject] UpdateDepartmentByName($OldName,$NewName) {
+    [psobject] UpdateDepartmentByName($OldName, $NewName) {
         $Resource = "departments/name/${OldName}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("department")
-        $Payload = $this.'_AddXMLText'($Payload,"department","name",$NewName)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("department")
+        $Payload = $this._AddXMLText($Payload, "department", "name", $NewName)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates department by id
-    [psobject] UpdateDepartmentByID($ID,$Name) {
+    [psobject] UpdateDepartmentByID($ID, $Name) {
         $Resource = "departments/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("department")
-        $Payload = $this.'_AddXMLText'($Payload,"department","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("department")
+        $Payload = $this._AddXMLText($Payload, "department", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -570,7 +570,7 @@ Class PwshJamf {
     [psobject] DeleteDepartmentByName($Name) {
         $Resource = "departments/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -578,98 +578,98 @@ Class PwshJamf {
     [psobject] DeleteDepartmentByID($ID) {
         $Resource = "departments/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
 
     ##### Resource Path:  /computergroups #####
 
-    # Returns all computergroups
+    # Returns all computer groups
     [psobject] GetComputerGroups() {
         $Resource = "computergroups"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Returns computergroup by name
+    # Returns computer group by name
     [psobject] GetComputerGroupByName($Name) {
         $Resource = "computergroups/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Returns computergroup by id
+    # Returns computer group by id
     [psobject] GetComputerGroupById($ID) {
         $Resource = "computergroups/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Creates new computergroup
+    # Creates new computer group
     [psobject] CreateComputerGroup($Payload) {
         $Resource = "computergroups/id/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates computergroup by name
-    [psobject] UpdateComputerGroupByName($Name,$Payload) {
+    # Updates computer group by name
+    [psobject] UpdateComputerGroupByName($Name, $Payload) {
         $Resource = "computergroups/name/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates computergroup by id
-    [psobject] UpdateComputerGroupByID($ID,$Payload) {
+    # Updates computer group by id
+    [psobject] UpdateComputerGroupByID($ID, $Payload) {
         $Resource = "computergroups/id/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Deletes computergroup by name
+    # Deletes computer group by name
     [psobject] DeleteComputerGroupByName($Name) {
         $Resource = "computergroups/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Deletes computergroup by id
+    # Deletes computer group by id
     [psobject] DeleteComputerGroupByID($ID) {
         $Resource = "computergroups/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Updates static computergroup by name (uses computer_additions and computer_deletions)
-    [psobject] UpdateStaticComputerGroupByName($Group,$Computers,$Action) {
+    # Updates static computer group by name (uses computer_additions and computer_deletions)
+    [psobject] UpdateStaticComputerGroupByName($Group, $Computers, $Action) {
         $Resource = "computergroups/name/${Group}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("computer_group")
-        $Payload = $this.'_AddXMLElement'($Payload,"//computer_group","computer_${Action}")
-        $NestedNodes = $this.BuildXMLNode("computer","name",$Computers)
+        $Payload = $this._BuildXML("computer_group")
+        $Payload = $this._AddXMLElement($Payload, "//computer_group", "computer_${Action}")
+        $NestedNodes = $this.BuildXMLNode("computer", "name", $Computers)
         $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates static computergroup by id (uses computer_additions and computer_deletions)
-    [psobject] UpdateStaticComputerGroupById($Group,$Computers,$Action) {
+    # Updates static computer group by id (uses computer_additions and computer_deletions)
+    [psobject] UpdateStaticComputerGroupById($Group, $Computers, $Action) {
         $Resource = "computergroups/id/${Group}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("computer_group")
-        $Payload = $this.'_AddXMLElement'($Payload,"//computer_group","computer_${Action}")
-        $NestedNodes = $this.BuildXMLNode("computer","id",$Computers)
+        $Payload = $this._BuildXML("computer_group")
+        $Payload = $this._AddXMLElement($Payload, "//computer_group", "computer_${Action}")
+        $NestedNodes = $this.BuildXMLNode("computer", "id", $Computers)
         $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -680,7 +680,7 @@ Class PwshJamf {
     [psobject] GetComputers() {
         $Resource = "computers"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -688,7 +688,7 @@ Class PwshJamf {
     [psobject] GetComputersBasic() {
         $Resource = "computers/subset/basic"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -696,7 +696,7 @@ Class PwshJamf {
     [psobject] SearchComputers($Match) {
         $Resource = "computers/match/${Match}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -704,7 +704,7 @@ Class PwshJamf {
     [psobject] MatchComputersName($Match) {
         $Resource = "computers/match/name/${Match}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -712,7 +712,7 @@ Class PwshJamf {
     [psobject] MatchComputersNameBasic($Match) {
         $Resource = "computers/match/name/${Match}/subset/basic"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -720,7 +720,7 @@ Class PwshJamf {
     [psobject] GetComputerByName($Name) {
         $Resource = "computers/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -728,7 +728,7 @@ Class PwshJamf {
     [psobject] GetComputerById($ID) {
         $Resource = "computers/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -736,7 +736,7 @@ Class PwshJamf {
     [psobject] GetComputerByUDID($UDID) {
         $Resource = "computers/udid/${UDID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -744,7 +744,7 @@ Class PwshJamf {
     [psobject] GetComputerBySerialNumber($SerialNumber) {
         $Resource = "computers/serialnumber/${SerialNumber}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -752,47 +752,47 @@ Class PwshJamf {
     [psobject] GetComputerByMACAddress($MACAddress) {
         $Resource = "computers/macaddress/${MACAddress}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns computer Subsets by name
-    [psobject] GetComputerSubsetByName($Name,$Subset) {
+    [psobject] GetComputerSubsetByName($Name, $Subset) {
         $Resource = "computers/name/${Name}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns computer Subsets by id
-    [psobject] GetComputerSubsetById($ID,$Subset) {
+    [psobject] GetComputerSubsetById($ID, $Subset) {
         $Resource = "computers/id/${ID}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns computer Subsets by udid
-    [psobject] GetComputerSubsetByUDID($UDID,$Subset) {
+    [psobject] GetComputerSubsetByUDID($UDID, $Subset) {
         $Resource = "computers/udid/${UDID}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns computer Subsets by serialnumber
-    [psobject] GetComputerSubsetBySerialNumber($SerialNumber,$Subset) {
+    [psobject] GetComputerSubsetBySerialNumber($SerialNumber, $Subset) {
         $Resource = "computers/serialnumber/${SerialNumber}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns computer Subsets by macaddress
-    [psobject] GetComputerSubsetByMACAddress($MACAddress,$Subset) {
+    [psobject] GetComputerSubsetByMACAddress($MACAddress, $Subset) {
         $Resource = "computers/macaddress/${MACAddress}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -800,23 +800,23 @@ Class PwshJamf {
     [psobject] CreateComputer($Payload) {
         $Resource = "computers/id/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates computer by name
-    [psobject] UpdateComputerByName($Name,$Payload) {
+    [psobject] UpdateComputerByName($Name, $Payload) {
         $Resource = "computers/name/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates computer by id
-    [psobject] UpdateComputerByID($ID,$Payload) {
+    [psobject] UpdateComputerByID($ID, $Payload) {
         $Resource = "computers/id/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -824,7 +824,7 @@ Class PwshJamf {
     [psobject] UpdateComputerByUDID($UDID) {
         $Resource = "computers/udid/${UDID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -832,7 +832,7 @@ Class PwshJamf {
     [psobject] UpdateComputerBySerialNumber($SerialNumber) {
         $Resource = "computers/serialnumber/${SerialNumber}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -840,7 +840,7 @@ Class PwshJamf {
     [psobject] UpdateComputerByMACAddress($MACAddress) {
         $Resource = "computers/macaddress/${MACAddress}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -848,7 +848,7 @@ Class PwshJamf {
     [psobject] DeleteComputerByName($Name) {
         $Resource = "computers/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -856,7 +856,7 @@ Class PwshJamf {
     [psobject] DeleteComputerByID($ID) {
         $Resource = "computers/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -864,7 +864,7 @@ Class PwshJamf {
     [psobject] DeleteComputerByUDID($UDID) {
         $Resource = "computers/udid/${UDID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -872,7 +872,7 @@ Class PwshJamf {
     [psobject] DeleteComputerBySerialNumber($SerialNumber) {
         $Resource = "computers/serialnumber/${SerialNumber}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -880,7 +880,7 @@ Class PwshJamf {
     [psobject] DeleteComputerByMACAddress($MACAddress) {
         $Resource = "computers/macaddress/${MACAddress}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -891,87 +891,87 @@ Class PwshJamf {
     [psobject] GetMobileDeviceGroups() {
         $Resource = "mobiledevicegroups"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Returns mobile_device_group by name
+    # Returns mobile device group by name
     [psobject] GetMobileDeviceGroupByName($Name) {
         $Resource = "mobiledevicegroups/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Returns mobile_device_group by id
+    # Returns mobile device group by id
     [psobject] GetMobileDeviceGroupById($ID) {
         $Resource = "mobiledevicegroups/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Creates new mobile_device_group
+    # Creates new mobile device group
     [psobject] CreateMobileDeviceGroup($Payload) {
         $Resource = "mobiledevicegroups/id/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates mobile_device_group by name
-    [psobject] UpdateMobileDeviceGroupByName($Name,$Payload) {
+    # Updates mobile device group by name
+    [psobject] UpdateMobileDeviceGroupByName($Name, $Payload) {
         $Resource = "mobiledevicegroups/name/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates mobile_device_group by id
-    [psobject] UpdateMobileDeviceGroupByID($ID,$Payload) {
+    # Updates mobile device group by id
+    [psobject] UpdateMobileDeviceGroupByID($ID, $Payload) {
         $Resource = "mobiledevicegroups/id/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Deletes mobile_device_group by name
+    # Deletes mobile device group by name
     [psobject] DeleteMobileDeviceGroupByName($Name) {
         $Resource = "mobiledevicegroups/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Deletes mobile_device_group by id
+    # Deletes mobile device group by id
     [psobject] DeleteMobileDeviceGroupByID($ID) {
         $Resource = "mobiledevicegroups/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
-    # Updates static mobile_device_group by name (uses mobile_device_additions and mobile_device_deletions)
-    [psobject] UpdateStaticMobileDeviceGroupByName($Group,$MobileDevices,$Action) {
+    # Updates static mobile device group by name (uses mobile_device_additions and mobile_device_deletions)
+    [psobject] UpdateStaticMobileDeviceGroupByName($Group, $MobileDevices, $Action) {
         $Resource = "mobiledevicegroups/name/${Group}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("mobile_device_group")
-        $Payload = $this.'_AddXMLElement'($Payload,"//mobile_device_group","mobile_device_${Action}")
-        $NestedNodes = $this.BuildXMLNode("mobile_device","name",$MobileDevices)
+        $Payload = $this._BuildXML("mobile_device_group")
+        $Payload = $this._AddXMLElement($Payload, "//mobile_device_group", "mobile_device_${Action}")
+        $NestedNodes = $this.BuildXMLNode("mobile_device", "name", $MobileDevices)
         $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates static mobile_device_group by id (uses mobile_device_additions and mobile_device_deletions)
-    [psobject] UpdateStaticMobileDeviceGroupById($Group,$MobileDevices,$Action) {
+    # Updates static mobile device group by id (uses mobile_device_additions and mobile_device_deletions)
+    [psobject] UpdateStaticMobileDeviceGroupById($Group, $MobileDevices, $Action) {
         $Resource = "mobiledevicegroups/id/${Group}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("mobile_device_group")
-        $Payload = $this.'_AddXMLElement'($Payload,"//mobile_device_group","mobile_device_${Action}")
-        $NestedNodes = $this.BuildXMLNode("mobile_device","id",$MobileDevices)
+        $Payload = $this._BuildXML("mobile_device_group")
+        $Payload = $this._AddXMLElement($Payload, "//mobile_device_group", "mobile_device_${Action}")
+        $NestedNodes = $this.BuildXMLNode("mobile_device", "id", $MobileDevices)
         $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -982,7 +982,7 @@ Class PwshJamf {
     [psobject] GetMobileDevices() {
         $Resource = "mobiledevices"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -990,7 +990,7 @@ Class PwshJamf {
     [psobject] GetMobileDevicesBasic() {
         $Resource = "mobiledevices/subset/basic"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -998,7 +998,7 @@ Class PwshJamf {
     [psobject] SearchMobileDevices($Match) {
         $Resource = "mobiledevices/match/${Match}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1006,7 +1006,7 @@ Class PwshJamf {
     [psobject] MatchMobileDevicesName($Match) {
         $Resource = "mobiledevices/match/name/${Match}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1014,7 +1014,7 @@ Class PwshJamf {
     [psobject] MatchMobileDevicesNameBasic($Match) {
         $Resource = "mobiledevices/match/name/${Match}/subset/basic"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1022,7 +1022,7 @@ Class PwshJamf {
     [psobject] GetMobileDeviceByName($Name) {
         $Resource = "mobiledevices/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1030,7 +1030,7 @@ Class PwshJamf {
     [psobject] GetMobileDeviceById($ID) {
         $Resource = "mobiledevices/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1038,7 +1038,7 @@ Class PwshJamf {
     [psobject] GetMobileDeviceByUDID($UDID) {
         $Resource = "mobiledevices/udid/${UDID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1046,7 +1046,7 @@ Class PwshJamf {
     [psobject] GetMobileDeviceBySerialNumber($SerialNumber) {
         $Resource = "mobiledevices/serialnumber/${SerialNumber}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1054,47 +1054,47 @@ Class PwshJamf {
     [psobject] GetMobileDeviceByMACAddress($MACAddress) {
         $Resource = "mobiledevices/macaddress/${MACAddress}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns mobile device Subsets by name
-    [psobject] GetMobileDeviceSubsetByName($Name,$Subset) {
+    [psobject] GetMobileDeviceSubsetByName($Name, $Subset) {
         $Resource = "mobiledevices/name/${Name}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns mobile device Subsets by id
-    [psobject] GetMobileDeviceSubsetById($ID,$Subset) {
+    [psobject] GetMobileDeviceSubsetById($ID, $Subset) {
         $Resource = "mobiledevices/id/${ID}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns mobile device Subsets by udid
-    [psobject] GetMobileDeviceSubsetByUDID($UDID,$Subset) {
+    [psobject] GetMobileDeviceSubsetByUDID($UDID, $Subset) {
         $Resource = "mobiledevices/udid/${UDID}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns mobile device Subsets by serialnumber
-    [psobject] GetMobileDeviceSubsetBySerialNumber($SerialNumber,$Subset) {
+    [psobject] GetMobileDeviceSubsetBySerialNumber($SerialNumber, $Subset) {
         $Resource = "mobiledevices/serialnumber/${SerialNumber}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns mobile device Subsets by macaddress
-    [psobject] GetMobileDeviceSubsetByMACAddress($MACAddress,$Subset) {
+    [psobject] GetMobileDeviceSubsetByMACAddress($MACAddress, $Subset) {
         $Resource = "mobiledevices/macaddress/${MACAddress}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1102,23 +1102,23 @@ Class PwshJamf {
     [psobject] CreateMobileDevice($Payload) {
         $Resource = "mobiledevices/id/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates mobile device by name
-    [psobject] UpdateMobileDeviceByName($Name,$Payload) {
+    [psobject] UpdateMobileDeviceByName($Name, $Payload) {
         $Resource = "mobiledevices/name/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates mobile device by id
-    [psobject] UpdateMobileDeviceByID($ID,$Payload) {
+    [psobject] UpdateMobileDeviceByID($ID, $Payload) {
         $Resource = "mobiledevices/id/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -1126,7 +1126,7 @@ Class PwshJamf {
     [psobject] UpdateMobileDeviceByUDID($UDID) {
         $Resource = "mobiledevices/udid/${UDID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1134,7 +1134,7 @@ Class PwshJamf {
     [psobject] UpdateMobileDeviceBySerialNumber($SerialNumber) {
         $Resource = "mobiledevices/serialnumber/${SerialNumber}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1142,7 +1142,7 @@ Class PwshJamf {
     [psobject] UpdateMobileDeviceByMACAddress($MACAddress) {
         $Resource = "mobiledevices/macaddress/${MACAddress}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1150,7 +1150,7 @@ Class PwshJamf {
     [psobject] DeleteMobileDeviceByName($Name) {
         $Resource = "mobiledevices/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1158,7 +1158,7 @@ Class PwshJamf {
     [psobject] DeleteMobileDeviceByID($ID) {
         $Resource = "mobiledevices/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1166,7 +1166,7 @@ Class PwshJamf {
     [psobject] DeleteMobileDeviceByUDID($UDID) {
         $Resource = "mobiledevices/udid/${UDID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1174,7 +1174,7 @@ Class PwshJamf {
     [psobject] DeleteMobileDeviceBySerialNumber($SerialNumber) {
         $Resource = "mobiledevices/serialnumber/${SerialNumber}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1182,7 +1182,7 @@ Class PwshJamf {
     [psobject] DeleteMobileDeviceByMACAddress($MACAddress) {
         $Resource = "mobiledevices/macaddress/${MACAddress}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1193,7 +1193,7 @@ Class PwshJamf {
     [psobject] GetPackages() {
         $Resource = "packages"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1201,7 +1201,7 @@ Class PwshJamf {
     [psobject] GetPackageByName($Name) {
         $Resource = "packages/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1209,7 +1209,7 @@ Class PwshJamf {
     [psobject] GetPackageById($ID) {
         $Resource = "packages/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1217,23 +1217,23 @@ Class PwshJamf {
     [psobject] CreatePackage($Payload) {
         $Resource = "packages/id/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates package by name
-    [psobject] UpdatePackageByName($Name,$Payload) {
+    [psobject] UpdatePackageByName($Name, $Payload) {
         $Resource = "packages/name/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates package by id
-    [psobject] UpdatePackageByID($ID,$Payload) {
+    [psobject] UpdatePackageByID($ID, $Payload) {
         $Resource = "packages/id/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -1241,7 +1241,7 @@ Class PwshJamf {
     [psobject] DeletePackageByName($Name) {
         $Resource = "packages/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1249,7 +1249,7 @@ Class PwshJamf {
     [psobject] DeletePackageByID($ID) {
         $Resource = "packages/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1257,10 +1257,10 @@ Class PwshJamf {
     ##### Resource Path:  /policies #####
 
     # Returns all policies
-    [psobject] GetPoliciess() {
+    [psobject] GetPolicies() {
         $Resource = "policies"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1268,7 +1268,7 @@ Class PwshJamf {
     [psobject] GetPolicyByName($Name) {
         $Resource = "policies/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1276,23 +1276,23 @@ Class PwshJamf {
     [psobject] GetPolicyById($ID) {
         $Resource = "policies/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns policy Subsets by name
-    [psobject] GetPolicySubsetByName($Name,$Subset) {
+    [psobject] GetPolicySubsetByName($Name, $Subset) {
         $Resource = "policies/name/${Name}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Returns policy Subsets by id
-    [psobject] GetPolicySubsetById($ID,$Subset) {
+    [psobject] GetPolicySubsetById($ID, $Subset) {
         $Resource = "policies/id/${ID}/subset/${Subset}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1300,7 +1300,7 @@ Class PwshJamf {
     [psobject] GetPoliciesByCategory($Category) {
         $Resource = "policies/category/${Category}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1308,7 +1308,7 @@ Class PwshJamf {
     [psobject] GetPoliciesByCreatedBy($CreatedBy) {
         $Resource = "policies/createdBy/${CreatedBy}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1316,23 +1316,23 @@ Class PwshJamf {
     [psobject] CreatePolicy($Payload) {
         $Resource = "policies/id/0"
         $Method = "POST"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates policy by name
-    [psobject] UpdatePolicyByName($Name,$Payload) {
+    [psobject] UpdatePolicyByName($Name, $Payload) {
         $Resource = "policies/name/${Name}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates policy by id
-    [psobject] UpdatePolicyByID($ID,$Payload) {
+    [psobject] UpdatePolicyByID($ID, $Payload) {
         $Resource = "policies/id/${ID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -1340,7 +1340,7 @@ Class PwshJamf {
     [psobject] DeletePolicyByName($Name) {
         $Resource = "policies/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1348,33 +1348,33 @@ Class PwshJamf {
     [psobject] DeletePolicyByID($ID) {
         $Resource = "policies/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
     # Adds package by name to policy by name, specifying the action (cache, install, uninstall)
-    [psobject] AddPackageToPolicyByName($PolicyName,$PackageName,$Action) {
+    [psobject] AddPackageToPolicyByName($PolicyName, $PackageName, $Action) {
         $Resource = "policies/name/${PolicyName}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("package_configuration")
-        $Payload = $this.'_AddXMLElement'($Payload,"package_configuration","packages")
-        $Payload = $this.'_AddXMLText'($Payload,"packages","name",$PackageName)
-        $Payload = $this.'_AddXMLText'($Payload,"packages","action",$Action)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("package_configuration")
+        $Payload = $this._AddXMLElement($Payload, "package_configuration", "packages")
+        $Payload = $this._AddXMLText($Payload, "packages", "name", $PackageName)
+        $Payload = $this._AddXMLText($Payload, "packages", "action", $Action)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Helper to build a policy from Subsets
     [psobject] BuildPolicy($Subsets) {
         $Payload = $this._BuildXML("policy")
-        $Payload = $this.'_AddXMLElement'($Payload,"//policy","package_configuration")
-        $Payload = $this.'_AddXMLElement'($Payload,"//package_configuration","packages")
-        $Payload = $this.'_AddXMLElement'($Payload,"//policy","scripts")
-        $Payload = $this.'_AddXMLElement'($Payload,"//policy","printers")
-        $Payload = $this.'_AddXMLElement'($Payload,"//policy","dock_items")
-        $Payload = $this.'_AddXMLElement'($Payload,"//policy","account_maintenance")
-        $Payload = $this.'_AddXMLElement'($Payload,"//account_maintenance","accounts")
-        $Payload = $this.'_AddXMLElement'($Payload,"//policy","directory_bindings")
+        $Payload = $this._AddXMLElement($Payload, "//policy", "package_configuration")
+        $Payload = $this._AddXMLElement($Payload, "//package_configuration", "packages")
+        $Payload = $this._AddXMLElement($Payload, "//policy", "scripts")
+        $Payload = $this._AddXMLElement($Payload, "//policy", "printers")
+        $Payload = $this._AddXMLElement($Payload, "//policy", "dock_items")
+        $Payload = $this._AddXMLElement($Payload, "//policy", "account_maintenance")
+        $Payload = $this._AddXMLElement($Payload, "//account_maintenance", "accounts")
+        $Payload = $this._AddXMLElement($Payload, "//policy", "directory_bindings")
 
         # Loop through each Subset value and append it to the payload
         foreach ( $Subset in $Subsets) {
@@ -1415,7 +1415,7 @@ Class PwshJamf {
     [psobject] GetSites() {
         $Resource = "sites"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1423,7 +1423,7 @@ Class PwshJamf {
     [psobject] GetSiteByName($Name) {
         $Resource = "sites/name/${Name}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1431,7 +1431,7 @@ Class PwshJamf {
     [psobject] GetSiteById($ID) {
         $Resource = "sites/id/${ID}"
         $Method = "GET"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1439,29 +1439,29 @@ Class PwshJamf {
     [psobject] CreateSite($Name) {
         $Resource = "sites/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("site")
-        $Payload = $this.'_AddXMLText'($Payload,"site","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("site")
+        $Payload = $this._AddXMLText($Payload, "site", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates site by name
-    [psobject] UpdateSiteByName($OldName,$NewName) {
+    [psobject] UpdateSiteByName($OldName, $NewName) {
         $Resource = "sites/name/${OldName}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("site")
-        $Payload = $this.'_AddXMLText'($Payload,"site","name",$NewName)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("site")
+        $Payload = $this._AddXMLText($Payload, "site", "name", $NewName)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates site by id
-    [psobject] UpdateSiteByID($ID,$Name) {
+    [psobject] UpdateSiteByID($ID, $Name) {
         $Resource = "sites/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("site")
-        $Payload = $this.'_AddXMLText'($Payload,"site","name",$Name)
-        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        $Payload = $this._BuildXML("site")
+        $Payload = $this._AddXMLText($Payload, "site", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -1469,7 +1469,7 @@ Class PwshJamf {
     [psobject] DeleteSiteByName($Name) {
         $Resource = "sites/name/${Name}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 
@@ -1477,7 +1477,7 @@ Class PwshJamf {
     [psobject] DeleteSiteByID($ID) {
         $Resource = "sites/id/${ID}"
         $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource,$Method)
+        $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }
 

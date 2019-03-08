@@ -1,6 +1,8 @@
 Pwsh-JamfClassicAPI
 ======
 
+_I plan to add some examples soon._
+
 PowerShell Module for the Jamf Classic API
 
 This module essentially provides a Jamf Class API focused wrapper for the `Invoke-RestMethod` cmdlet while also providing some additional functionality.  As expressed in the name, this Module only supports the Classic API and not the Jamf Pro API (formally UAPI/Universal API).
@@ -19,12 +21,18 @@ This module is supported in both Windows PowerShell as well and PowerShell Core,
 
 ## Functionality ##
 
-Functionality wise, the module is useable.  While the initial resource endpoints that are added to the PwshJamf Class, are likely ones that I use more often, eventually, there will likely be resource endpoints that I haven't tested as I don't use them on a regular basis, or at all.  But for the most part, majority of the logic behind the code is quite similar, so most should work as intended.
+Functionality wise, the module is useable.  While the initial resource endpoints that are added to the PwshJamf Class are likely ones that I'm using in production scripts, eventually, there will likely be resource endpoints that I haven't tested as I don't use them on a regular basis, or at all.  But for the most part, majority of the logic behind the code is quite similar, so most should work as intended.
 
 The following items have been tested:
+  * PwshJamf Class
+    * Most endpoints have been tested to some degree, but I still recommend testing before running in production
   * Invoke-JamfClassicAPI
     * Resource Parameter "auto completes" as desired
-    * GET Method
+    * Methods
+      * GET
+      * DELETE
+      * PUSH
+      * PUT
     * Headers
       * json
       * xml
@@ -39,11 +47,6 @@ The following items have been tested:
 
 While it should work, I haven't tested the following functionality:
   * Invoke-JamfClassicAPI
-    * Methods
-      * DELETE
-      * PUSH
-      * PUT
-      * These include using the -Body Parameter to supply the content
     * Pipeline (To/From)
   * Set-JamfServer
     * Disable SSL Validation (For Self Signed Certs)
@@ -59,7 +62,7 @@ The following items are what are on the list to be done:
     * Save Jamf Pro Server URL to user environment
   * Set-JamfAuthentication
     * Save credentials to the Credential Manager
-  * And hopefully plenty more built-in functionality.
+  * And hopefully plenty more built-in functionality
 
 ## Reporting Issues / Contributing ##
 

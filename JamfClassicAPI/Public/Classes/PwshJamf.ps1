@@ -510,6 +510,79 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /advancedusersearches #####
+
+    # Returns all advancedusersearches
+    [psobject] GetAdvancedUserSearches() {
+        $Resource = "advancedusersearches"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns advanced user search by name
+    [psobject] GetAdvancedUserSearchByName($Name) {
+        $Resource = "advancedusersearches/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns advanced user search by id
+    [psobject] GetAdvancedUserSearchById($ID) {
+        $Resource = "advancedusersearches/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new advanced user search
+    [psobject] CreateAdvancedUserSearch($Name) {
+        $Resource = "advancedusersearches/id/0"
+        $Method = "POST"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced user search by name
+    [psobject] UpdateAdvancedUserSearchByName($Name) {
+        $Resource = "advancedusersearches/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced user search by id
+    [psobject] UpdateAdvancedUserSearchByID($ID,$Name) {
+        $Resource = "advancedusersearches/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes advanced user search by name
+    [psobject] DeleteAdvancedUserSearchByName($Name) {
+        $Resource = "advancedusersearches/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes advanced user search by id
+    [psobject] DeleteAdvancedUserSearchByID($ID) {
+        $Resource = "advancedusersearches/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings

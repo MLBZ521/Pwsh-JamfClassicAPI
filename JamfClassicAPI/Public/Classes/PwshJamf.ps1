@@ -391,31 +391,25 @@ Class PwshJamf {
     }
 
     # Creates new advanced computer search
-    [psobject] CreateAdvancedComputerSearch($Name) {
+    [psobject] CreateAdvancedComputerSearch($Payload) {
         $Resource = "advancedcomputersearches/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
     # Updates advanced computer search by name
-    [psobject] UpdateAdvancedComputerSearchByName($Name) {
+    [psobject] UpdateAdvancedComputerSearchByName($Name, $Payload) {
         $Resource = "advancedcomputersearches/name/${Name}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
     # Updates advanced computer search by id
-    [psobject] UpdateAdvancedComputerSearchByID($ID,$Name) {
+    [psobject] UpdateAdvancedComputerSearchByID($ID, $Payload) {
         $Resource = "advancedcomputersearches/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -464,31 +458,25 @@ Class PwshJamf {
     }
 
     # Creates new advanced mobile device search
-    [psobject] CreateAdvancedMobileDeviceSearch($Name) {
+    [psobject] CreateAdvancedMobileDeviceSearch($Payload) {
         $Resource = "advancedmobiledevicesearches/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
     # Updates advanced mobile device search by name
-    [psobject] UpdateAdvancedMobileDeviceSearchByName($Name) {
+    [psobject] UpdateAdvancedMobileDeviceSearchByName($Name, $Payload) {
         $Resource = "advancedmobiledevicesearches/name/${Name}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
     # Updates advanced mobile device search by id
-    [psobject] UpdateAdvancedMobileDeviceSearchByID($ID,$Name) {
+    [psobject] UpdateAdvancedMobileDeviceSearchByID($ID, $Payload) {
         $Resource = "advancedmobiledevicesearches/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -537,31 +525,25 @@ Class PwshJamf {
     }
 
     # Creates new advanced user search
-    [psobject] CreateAdvancedUserSearch($Name) {
+    [psobject] CreateAdvancedUserSearch($Payload) {
         $Resource = "advancedusersearches/id/0"
         $Method = "POST"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
     # Updates advanced user search by name
-    [psobject] UpdateAdvancedUserSearchByName($Name) {
+    [psobject] UpdateAdvancedUserSearchByName($Name, $Payload) {
         $Resource = "advancedusersearches/name/${Name}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
 
     # Updates advanced user search by id
-    [psobject] UpdateAdvancedUserSearchByID($ID,$Name) {
+    [psobject] UpdateAdvancedUserSearchByID($ID, $Payload) {
         $Resource = "advancedusersearches/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.'_BuildXML'("building")
-        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
@@ -580,6 +562,31 @@ Class PwshJamf {
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource,$Method)
         return $Results
+    }
+
+    # Helper to build an advanced searches from Subsets
+    [psobject] BuildAdvancedSearch($Type, $Subsets) {
+        $Payload = $this._BuildXML("advanced_${Type}_search")
+        $Payload = $this._AddXMLElement($Payload, "//criteria", "criterion")
+        $Payload = $this._AddXMLElement($Payload, "//display_fields", "display_field")
+ 
+        # Loop through each Subset value and append it to the payload
+        foreach ( $Subset in $Subsets) {
+            $Subset.FirstChild.NextSibling.LocalName
+
+            switch ($Subset.FirstChild.NextSibling.LocalName) {
+                "criterion" {
+                    $Payload.DocumentElement.SelectSingleNode("//criteria").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                "display_field" {
+                    $Payload.DocumentElement.SelectSingleNode("//display_fields").AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+                Default {
+                    $Payload.DocumentElement.AppendChild($Payload.ImportNode($Subset.($Subset.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+                }
+            }
+        }
+        return $Payload
     }
 
 

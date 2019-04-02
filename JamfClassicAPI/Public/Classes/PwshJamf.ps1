@@ -364,6 +364,79 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /advancedcomputersearches #####
+
+    # Returns all advancedcomputersearches
+    [psobject] GetAdvancedComputerSearches() {
+        $Resource = "advancedcomputersearches"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns advanced computer search by name
+    [psobject] GetAdvancedComputerSearchByName($Name) {
+        $Resource = "advancedcomputersearches/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns advanced computer search by id
+    [psobject] GetAdvancedComputerSearchById($ID) {
+        $Resource = "advancedcomputersearches/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new advanced computer search
+    [psobject] CreateAdvancedComputerSearch($Name) {
+        $Resource = "advancedcomputersearches/id/0"
+        $Method = "POST"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced computer search by name
+    [psobject] UpdateAdvancedComputerSearchByName($Name) {
+        $Resource = "advancedcomputersearches/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced computer search by id
+    [psobject] UpdateAdvancedComputerSearchByID($ID,$Name) {
+        $Resource = "advancedcomputersearches/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes advanced computer search by name
+    [psobject] DeleteAdvancedComputerSearchByName($Name) {
+        $Resource = "advancedcomputersearches/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes advanced computer search by id
+    [psobject] DeleteAdvancedComputerSearchByID($ID) {
+        $Resource = "advancedcomputersearches/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings

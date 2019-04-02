@@ -437,6 +437,79 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /advancedmobiledevicesearches #####
+
+    # Returns all advancedmobiledevicesearches
+    [psobject] GetAdvancedMobileDeviceSearches() {
+        $Resource = "advancedmobiledevicesearches"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns advanced mobile device search by name
+    [psobject] GetAdvancedMobileDeviceSearchByName($Name) {
+        $Resource = "advancedmobiledevicesearches/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Returns advanced mobile device search by id
+    [psobject] GetAdvancedMobileDeviceSearchById($ID) {
+        $Resource = "advancedmobiledevicesearches/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Creates new advanced mobile device search
+    [psobject] CreateAdvancedMobileDeviceSearch($Name) {
+        $Resource = "advancedmobiledevicesearches/id/0"
+        $Method = "POST"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced mobile device search by name
+    [psobject] UpdateAdvancedMobileDeviceSearchByName($Name) {
+        $Resource = "advancedmobiledevicesearches/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced mobile device search by id
+    [psobject] UpdateAdvancedMobileDeviceSearchByID($ID,$Name) {
+        $Resource = "advancedmobiledevicesearches/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this.'_BuildXML'("building")
+        $Payload = $this.'_AddXMLText'($Payload,"building","name",$Name)
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Deletes advanced mobile device search by name
+    [psobject] DeleteAdvancedMobileDeviceSearchByName($Name) {
+        $Resource = "advancedmobiledevicesearches/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+    # Deletes advanced mobile device search by id
+    [psobject] DeleteAdvancedMobileDeviceSearchByID($ID) {
+        $Resource = "advancedmobiledevicesearches/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource,$Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /buildings #####
 
     # Returns all buildings

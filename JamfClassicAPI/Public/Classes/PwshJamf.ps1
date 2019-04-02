@@ -1635,6 +1635,76 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /printers #####
+
+    # Returns all printers
+    [psobject] GetPrinters() {
+        $Resource = "printers"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns printer by name
+    [psobject] GetPrinterByName($Name) {
+        $Resource = "printers/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns printer by id
+    [psobject] GetPrinterById($ID) {
+        $Resource = "printers/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new printer
+    [psobject] CreatePrinter($Configuration) {
+        $Resource = "printers/id/0"
+        $Method = "POST"
+        $Payload = $this._BuildXMLNode("printer",$Configuration)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates printer by name
+    [psobject] UpdatePrinterByName($Name, $Configuration) {
+        $Resource = "printers/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this._BuildXMLNode("printer",$Configuration)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates printer by id
+    [psobject] UpdatePrinterByID($ID, $Configuration) {
+        $Resource = "printers/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this._BuildXMLNode("printer",$Configuration)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes printer by name
+    [psobject] DeletePrinterByName($Name) {
+        $Resource = "printers/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes printer by id
+    [psobject] DeletePrinterByID($ID) {
+        $Resource = "printers/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /sites #####
 
     # Returns all sites

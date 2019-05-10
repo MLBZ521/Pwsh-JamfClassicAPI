@@ -319,7 +319,7 @@ Class PwshJamf {
     }
 
     # Updates account by groupid
-    [psobject] UpdateAccountByID($ID, $Payload) {
+    [psobject] UpdateAccountByGroupID($ID, $Payload) {
         $Resource = "accounts/groupid/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1665,7 +1665,7 @@ Class PwshJamf {
     [psobject] CreatePrinter($Configuration) {
         $Resource = "printers/id/0"
         $Method = "POST"
-        $Payload = $this._BuildXMLNode("printer",$Configuration)
+        $Payload = $this.BuildXMLNode("printer",$Configuration)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -1674,7 +1674,7 @@ Class PwshJamf {
     [psobject] UpdatePrinterByName($Name, $Configuration) {
         $Resource = "printers/name/${Name}"
         $Method = "PUT"
-        $Payload = $this._BuildXMLNode("printer",$Configuration)
+        $Payload = $this.BuildXMLNode("printer",$Configuration)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -1683,7 +1683,7 @@ Class PwshJamf {
     [psobject] UpdatePrinterByID($ID, $Configuration) {
         $Resource = "printers/id/${ID}"
         $Method = "PUT"
-        $Payload = $this._BuildXMLNode("printer",$Configuration)
+        $Payload = $this.BuildXMLNode("printer",$Configuration)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }

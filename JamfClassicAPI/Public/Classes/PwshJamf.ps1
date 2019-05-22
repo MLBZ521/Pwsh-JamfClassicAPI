@@ -1517,6 +1517,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledeviceextensionattributes #####
+
+    # Returns all mobiledeviceextensionattributes
+    [psobject] GetMobileDeviceExtensionAttributes() {
+        $Resource = "mobiledeviceextensionattributes"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceextensionattribute by name
+    [psobject] GetMobileDeviceExtensionAttributeByName($Name) {
+        $Resource = "mobiledeviceextensionattributes/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceextensionattribute by id
+    [psobject] GetMobileDeviceExtensionAttributeById($ID) {
+        $Resource = "mobiledeviceextensionattributes/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new mobiledeviceextensionattribute
+    [psobject] CreateMobileDeviceExtensionAttribute($Payload) {
+        $Resource = "mobiledeviceextensionattributes/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceextensionattribute by name
+    [psobject] UpdateMobileDeviceExtensionAttributeByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "mobiledeviceextensionattributes/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceextensionattribute by id
+    [psobject] UpdateMobileDeviceExtensionAttributeByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "mobiledeviceextensionattributes/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes mobiledeviceextensionattribute by name
+    [psobject] DeleteMobileDeviceExtensionAttributeByName($Name) {
+        $Resource = "mobiledeviceextensionattributes/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceextensionattribute by id
+    [psobject] DeleteMobileDeviceExtensionAttributeByID($ID) {
+        $Resource = "mobiledeviceextensionattributes/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages

@@ -1951,6 +1951,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /userextensionattributes #####
+
+    # Returns all userextensionattributes
+    [psobject] GetUserExtensionAttributes() {
+        $Resource = "userextensionattributes"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns userextensionattribute by name
+    [psobject] GetUserExtensionAttributeByName($Name) {
+        $Resource = "userextensionattributes/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns userextensionattribute by id
+    [psobject] GetUserExtensionAttributeById($ID) {
+        $Resource = "userextensionattributes/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new userextensionattribute
+    [psobject] CreateUserExtensionAttribute($Payload) {
+        $Resource = "userextensionattributes/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates userextensionattribute by name
+    [psobject] UpdateUserExtensionAttributeByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "userextensionattributes/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates userextensionattribute by id
+    [psobject] UpdateUserExtensionAttributeByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "userextensionattributes/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes userextensionattribute by name
+    [psobject] DeleteUserExtensionAttributeByName($Name) {
+        $Resource = "userextensionattributes/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes userextensionattribute by id
+    [psobject] DeleteUserExtensionAttributeByID($ID) {
+        $Resource = "userextensionattributes/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  / #####
 
 

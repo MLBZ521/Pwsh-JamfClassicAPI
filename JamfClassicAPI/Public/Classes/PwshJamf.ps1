@@ -771,6 +771,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computerextensionattributes #####
+
+    # Returns all computerextensionattributes
+    [psobject] GetComputerExtensionAttributes() {
+        $Resource = "computerextensionattributes"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerextensionattribute by name
+    [psobject] GetComputerExtensionAttributeByName($Name) {
+        $Resource = "computerextensionattributes/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerextensionattribute by id
+    [psobject] GetComputerExtensionAttributeById($ID) {
+        $Resource = "computerextensionattributes/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new computerextensionattribute
+    [psobject] CreateComputerExtensionAttribute($Payload) {
+        $Resource = "computerextensionattributes/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computerextensionattribute by name
+    [psobject] UpdateComputerExtensionAttributeByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "computerextensionattributes/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computerextensionattribute by id
+    [psobject] UpdateComputerExtensionAttributeByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "computerextensionattributes/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes computerextensionattribute by name
+    [psobject] DeleteComputerExtensionAttributeByName($Name) {
+        $Resource = "computerextensionattributes/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes computerextensionattribute by id
+    [psobject] DeleteComputerExtensionAttributeByID($ID) {
+        $Resource = "computerextensionattributes/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /departments #####
 
     # Returns all departments

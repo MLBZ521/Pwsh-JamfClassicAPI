@@ -771,6 +771,25 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computercheckin #####
+
+    # Returns all computercheckin
+    [psobject] GetComputerCheckin() {
+        $Resource = "computercheckin"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Updates computercheckin
+    [psobject] UpdateComputerCheckin($Payload) {
+        $Resource = "computercheckin"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+
     ##### Resource Path:  /computerextensionattributes #####
 
     # Returns all computerextensionattributes

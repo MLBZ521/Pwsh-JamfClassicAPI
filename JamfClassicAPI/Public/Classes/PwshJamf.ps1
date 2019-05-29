@@ -2211,6 +2211,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /scripts #####
+
+    # Returns all scripts
+    [psobject] GetScripts() {
+        $Resource = "scripts"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns scripts by name
+    [psobject] GetScriptByName($Name) {
+        $Resource = "scripts/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns scripts by id
+    [psobject] GetScriptById($ID) {
+        $Resource = "scripts/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new scripts
+    [psobject] CreateScript($Payload) {
+        $Resource = "scripts/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates scripts by name
+    [psobject] UpdateScriptByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "scripts/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates scripts by id
+    [psobject] UpdateScriptByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "scripts/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes scripts by name
+    [psobject] DeleteScriptByName($Name) {
+        $Resource = "scripts/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes scripts by id
+    [psobject] DeleteScriptByID($ID) {
+        $Resource = "scripts/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /sites #####
 
     # Returns all sites

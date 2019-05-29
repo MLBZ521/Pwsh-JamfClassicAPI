@@ -807,7 +807,7 @@ Class PwshJamf {
 
     # Updates computerextensionattribute by name
     [psobject] UpdateComputerExtensionAttributeByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "computerextensionattributes/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -816,7 +816,7 @@ Class PwshJamf {
 
     # Updates computerextensionattribute by id
     [psobject] UpdateComputerExtensionAttributeByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "computerextensionattributes/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1553,7 +1553,7 @@ Class PwshJamf {
 
     # Updates mobiledeviceextensionattribute by name
     [psobject] UpdateMobileDeviceExtensionAttributeByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "mobiledeviceextensionattributes/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1562,7 +1562,7 @@ Class PwshJamf {
 
     # Updates mobiledeviceextensionattribute by id
     [psobject] UpdateMobileDeviceExtensionAttributeByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "mobiledeviceextensionattributes/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1987,7 +1987,7 @@ Class PwshJamf {
 
     # Updates userextensionattribute by name
     [psobject] UpdateUserExtensionAttributeByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "userextensionattributes/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1996,7 +1996,7 @@ Class PwshJamf {
 
     # Updates userextensionattribute by id
     [psobject] UpdateUserExtensionAttributeByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "userextensionattributes/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)

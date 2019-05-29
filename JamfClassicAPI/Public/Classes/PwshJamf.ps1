@@ -1781,6 +1781,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /networksegments #####
+
+    # Returns all networksegments
+    [psobject] GetNetworkSegments() {
+        $Resource = "networksegments"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns networksegments by name
+    [psobject] GetNetworkSegmentByName($Name) {
+        $Resource = "networksegments/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns networksegments by id
+    [psobject] GetNetworkSegmentById($ID) {
+        $Resource = "networksegments/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new networksegments
+    [psobject] CreateNetworkSegment($Payload) {
+        $Resource = "networksegments/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates networksegments by name
+    [psobject] UpdateNetworkSegmentByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "networksegments/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates networksegments by id
+    [psobject] UpdateNetworkSegmentByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "networksegments/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes networksegments by name
+    [psobject] DeleteNetworkSegmentByName($Name) {
+        $Resource = "networksegments/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes networksegments by id
+    [psobject] DeleteNetworkSegmentByID($ID) {
+        $Resource = "networksegments/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages

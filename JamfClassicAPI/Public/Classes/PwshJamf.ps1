@@ -1410,6 +1410,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /ibeacons #####
+
+    # Returns all ibeacons
+    [psobject] GetiBeacons() {
+        $Resource = "ibeacons"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ibeacons by name
+    [psobject] GetiBeaconByName($Name) {
+        $Resource = "ibeacons/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ibeacons by id
+    [psobject] GetiBeaconById($ID) {
+        $Resource = "ibeacons/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new ibeacons
+    [psobject] CreateiBeacon($Payload) {
+        $Resource = "ibeacons/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ibeacons by name
+    [psobject] UpdateiBeaconByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "ibeacons/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ibeacons by id
+    [psobject] UpdateiBeaconByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "ibeacons/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes ibeacons by name
+    [psobject] DeleteiBeaconByName($Name) {
+        $Resource = "ibeacons/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes ibeacons by id
+    [psobject] DeleteiBeaconByID($ID) {
+        $Resource = "ibeacons/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

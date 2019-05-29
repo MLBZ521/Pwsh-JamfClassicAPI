@@ -2146,6 +2146,25 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /smtpserver #####
+
+    # Returns all smtpserver
+    [psobject] GetSMTPServer() {
+        $Resource = "smtpserver"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Updates smtpserver
+    [psobject] UpdateSMTPServer($Payload) {
+        $Resource = "smtpserver"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+
     ##### Resource Path:  /userextensionattributes #####
 
     # Returns all userextensionattributes

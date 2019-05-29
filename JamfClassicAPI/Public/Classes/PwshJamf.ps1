@@ -1322,6 +1322,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /diskencryptionconfigurations #####
+
+    # Returns all diskencryptionconfigurations
+    [psobject] GetDiskEncryptionConfigurations() {
+        $Resource = "diskencryptionconfigurations"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns diskencryptionconfigurations by name
+    [psobject] GetDiskEncryptionConfigurationByName($Name) {
+        $Resource = "diskencryptionconfigurations/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns diskencryptionconfigurations by id
+    [psobject] GetDiskEncryptionConfigurationById($ID) {
+        $Resource = "diskencryptionconfigurations/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new diskencryptionconfigurations
+    [psobject] CreateDiskEncryptionConfiguration($Payload) {
+        $Resource = "diskencryptionconfigurations/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates diskencryptionconfigurations by name
+    [psobject] UpdateDiskEncryptionConfigurationByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "diskencryptionconfigurations/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates diskencryptionconfigurations by id
+    [psobject] UpdateDiskEncryptionConfigurationByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "diskencryptionconfigurations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes diskencryptionconfigurations by name
+    [psobject] DeleteDiskEncryptionConfigurationByName($Name) {
+        $Resource = "diskencryptionconfigurations/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes diskencryptionconfigurations by id
+    [psobject] DeleteDiskEncryptionConfigurationByID($ID) {
+        $Resource = "diskencryptionconfigurations/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

@@ -859,6 +859,25 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computerinventorycollection #####
+
+    # Returns all computerinventorycollection
+    [psobject] GetComputerInventoryCollection() {
+        $Resource = "computerinventorycollection"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Updates computerinventorycollection
+    [psobject] UpdateComputerInventoryCollection($Payload) {
+        $Resource = "computerinventorycollection"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+
     ##### Resource Path:  /departments #####
 
     # Returns all departments

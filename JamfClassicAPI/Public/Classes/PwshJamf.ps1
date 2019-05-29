@@ -1391,6 +1391,25 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /gsxconnection #####
+
+    # Returns all gsxconnection
+    [psobject] GetGSXConnection() {
+        $Resource = "gsxconnection"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Updates gsxconnection
+    [psobject] UpdateGSXConnection($Payload) {
+        $Resource = "gsxconnection"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

@@ -2303,6 +2303,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /softwareupdateservers #####
+
+    # Returns all softwareupdateservers
+    [psobject] GetSoftwareUpdateServers() {
+        $Resource = "softwareupdateservers"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns softwareupdateservers by name
+    [psobject] GetSoftwareUpdateServerByName($Name) {
+        $Resource = "softwareupdateservers/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns softwareupdateservers by id
+    [psobject] GetSoftwareUpdateServerById($ID) {
+        $Resource = "softwareupdateservers/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new softwareupdateservers
+    [psobject] CreateSoftwareUpdateServer($Payload) {
+        $Resource = "softwareupdateservers/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates softwareupdateservers by name
+    [psobject] UpdateSoftwareUpdateServerByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "softwareupdateservers/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates softwareupdateservers by id
+    [psobject] UpdateSoftwareUpdateServerByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "softwareupdateservers/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes softwareupdateservers by name
+    [psobject] DeleteSoftwareUpdateServerByName($Name) {
+        $Resource = "softwareupdateservers/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes softwareupdateservers by id
+    [psobject] DeleteSoftwareUpdateServerByID($ID) {
+        $Resource = "softwareupdateservers/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /userextensionattributes #####
 
     # Returns all userextensionattributes

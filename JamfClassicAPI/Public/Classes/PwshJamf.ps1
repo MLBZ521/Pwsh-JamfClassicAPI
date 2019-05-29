@@ -1253,6 +1253,75 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /directorybindings #####
+
+    # Returns all directorybindings
+    [psobject] GetDirectoryBindings() {
+        $Resource = "directorybindings"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns directorybinding by name
+    [psobject] GetDirectoryBindingByName($Name) {
+        $Resource = "directorybindings/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns directorybinding by id
+    [psobject] GetDirectoryBindingById($ID) {
+        $Resource = "directorybindings/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new directorybinding
+    [psobject] CreateDirectoryBinding($Payload) {
+        $Resource = "directorybindings/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates directorybinding by name
+    [psobject] UpdateDirectoryBindingByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "directorybindings/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates directorybinding by id
+    [psobject] UpdateDirectoryBindingByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "directorybindings/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes directorybinding by name
+    [psobject] DeleteDirectoryBindingByName($Name) {
+        $Resource = "directorybindings/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes directorybinding by id
+    [psobject] DeleteDirectoryBindingByID($ID) {
+        $Resource = "directorybindings/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

@@ -1289,7 +1289,7 @@ Class PwshJamf {
 
     # Updates directorybinding by name
     [psobject] UpdateDirectoryBindingByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "directorybindings/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1298,7 +1298,7 @@ Class PwshJamf {
 
     # Updates directorybinding by id
     [psobject] UpdateDirectoryBindingByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "directorybindings/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1358,7 +1358,7 @@ Class PwshJamf {
 
     # Updates diskencryptionconfigurations by name
     [psobject] UpdateDiskEncryptionConfigurationByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "diskencryptionconfigurations/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1367,7 +1367,7 @@ Class PwshJamf {
 
     # Updates diskencryptionconfigurations by id
     [psobject] UpdateDiskEncryptionConfigurationByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "diskencryptionconfigurations/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1446,7 +1446,7 @@ Class PwshJamf {
 
     # Updates ibeacons by name
     [psobject] UpdateiBeaconByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "ibeacons/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1455,7 +1455,7 @@ Class PwshJamf {
 
     # Updates ibeacons by id
     [psobject] UpdateiBeaconByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "ibeacons/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1563,7 +1563,7 @@ Class PwshJamf {
 
     # Updates ldapserver by name
     [psobject] UpdateLDAPServerByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("//name").InnerText
         $Resource = "ldapservers/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1572,7 +1572,7 @@ Class PwshJamf {
 
     # Updates ldapserver by id
     [psobject] UpdateLDAPServerByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("//id").InnerText
         $Resource = "ldapservers/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2003,7 +2003,7 @@ Class PwshJamf {
 
     # Updates networksegments by name
     [psobject] UpdateNetworkSegmentByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "networksegments/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2012,7 +2012,7 @@ Class PwshJamf {
 
     # Updates networksegments by id
     [psobject] UpdateNetworkSegmentByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "networksegments/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2364,7 +2364,7 @@ Class PwshJamf {
 
     # Updates scripts by name
     [psobject] UpdateScriptByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "scripts/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2373,7 +2373,7 @@ Class PwshJamf {
 
     # Updates scripts by id
     [psobject] UpdateScriptByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "scripts/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2525,7 +2525,7 @@ Class PwshJamf {
 
     # Updates softwareupdateservers by name
     [psobject] UpdateSoftwareUpdateServerByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "softwareupdateservers/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2534,7 +2534,7 @@ Class PwshJamf {
 
     # Updates softwareupdateservers by id
     [psobject] UpdateSoftwareUpdateServerByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "softwareupdateservers/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)

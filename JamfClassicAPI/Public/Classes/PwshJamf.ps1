@@ -1479,6 +1479,123 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /ldapservers #####
+
+    # Returns all ldapservers
+    [psobject] GetLDAPServers() {
+        $Resource = "ldapservers"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ldapserver by name
+    [psobject] GetLDAPServerByName($Name) {
+        $Resource = "ldapservers/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ldapserver by id
+    [psobject] GetLDAPServerById($ID) {
+        $Resource = "ldapservers/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns information for matching user from ldap server by name
+    [psobject] LookupUserInLDAPServerByName($Name, $User) {
+        $Resource = "ldapservers/name/${Name}/user/${User}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns information for matching user from ldap server by id
+    [psobject] LookupUserInLDAPServerByID($ID, $User) {
+        $Resource = "ldapservers/id/${ID}/user/${User}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns information for matching group from ldap server by name
+    [psobject] LookupGroupInLDAPServerByName($Name, $Group) {
+        $Resource = "ldapservers/name/${Name}/group/${Group}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns information for matching group from ldap server by id
+    [psobject] LookupGroupInLDAPServerByID($ID, $Group) {
+        $Resource = "ldapservers/id/${ID}/group/${Group}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns information for user membership in group from ldap server by name
+    [psobject] LookupMembershipInLDAPServerByName($Name, $Group, $User) {
+        $Resource = "ldapservers/name/${Name}/group/${Group}/user/${User}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns information for user membership in group from ldap server by id
+    [psobject] LookupMembershipInLDAPServerByID($ID, $Group, $User) {
+        $Resource = "ldapservers/id/${ID}/group/${Group}/user/${User}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new ldapserver
+    [psobject] CreateLDAPServer($Payload) {
+        $Resource = "ldapservers/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ldapserver by name
+    [psobject] UpdateLDAPServerByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "ldapservers/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ldapserver by id
+    [psobject] UpdateLDAPServerByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "ldapservers/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes ldapserver by name
+    [psobject] DeleteLDAPServerByName($Name) {
+        $Resource = "ldapservers/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes ldapserver by id
+    [psobject] DeleteLDAPServerByID($ID) {
+        $Resource = "ldapservers/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

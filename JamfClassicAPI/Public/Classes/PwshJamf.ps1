@@ -262,8 +262,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates account by username
+    [psobject] UpdateAccountByUsername($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "accounts/username/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+    
     # Updates account by userid
     [psobject] UpdateAccountByUserid($ID, $Payload) {
+        $Resource = "accounts/userid/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates account by userid
+    [psobject] UpdateAccountByUserid($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "accounts/userid/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -318,8 +336,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates account by groupname
+    [psobject] UpdateAccountByGroupname($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "accounts/groupname/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates account by groupid
     [psobject] UpdateAccountByGroupID($ID, $Payload) {
+        $Resource = "accounts/groupid/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates account by groupid
+    [psobject] UpdateAccountByGroupID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "accounts/groupid/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -406,8 +442,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates advanced computer search by name
+    [psobject] UpdateAdvancedComputerSearchByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "advancedcomputersearches/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+    
     # Updates advanced computer search by id
     [psobject] UpdateAdvancedComputerSearchByID($ID, $Payload) {
+        $Resource = "advancedcomputersearches/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced computer search by id
+    [psobject] UpdateAdvancedComputerSearchByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "advancedcomputersearches/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
@@ -473,8 +527,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates advanced mobile device search by name
+    [psobject] UpdateAdvancedMobileDeviceSearchByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "advancedmobiledevicesearches/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
     # Updates advanced mobile device search by id
     [psobject] UpdateAdvancedMobileDeviceSearchByID($ID, $Payload) {
+        $Resource = "advancedmobiledevicesearches/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced mobile device search by id
+    [psobject] UpdateAdvancedMobileDeviceSearchByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "advancedmobiledevicesearches/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
@@ -540,8 +612,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates advanced user search by name
+    [psobject] UpdateAdvancedUserSearchByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "advancedusersearches/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
     # Updates advanced user search by id
     [psobject] UpdateAdvancedUserSearchByID($ID, $Payload) {
+        $Resource = "advancedusersearches/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource,$Method,$Payload)
+        return $Results
+    }
+
+    # Updates advanced user search by id
+    [psobject] UpdateAdvancedUserSearchByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "advancedusersearches/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
@@ -920,8 +1010,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates computer group by name
+    [psobject] UpdateComputerGroupByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "computergroups/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates computer group by id
     [psobject] UpdateComputerGroupByID($ID, $Payload) {
+        $Resource = "computergroups/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer group by id
+    [psobject] UpdateComputerGroupByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "computergroups/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1107,8 +1215,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates computer by name
+    [psobject] UpdateComputerByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "computers/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates computer by id
     [psobject] UpdateComputerByID($ID, $Payload) {
+        $Resource = "computers/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer by id
+    [psobject] UpdateComputerByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "computers/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1638,8 +1764,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates mobile device group by name
+    [psobject] UpdateMobileDeviceGroupByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "mobiledevicegroups/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates mobile device group by id
     [psobject] UpdateMobileDeviceGroupByID($ID, $Payload) {
+        $Resource = "mobiledevicegroups/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device group by id
+    [psobject] UpdateMobileDeviceGroupByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "mobiledevicegroups/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1825,8 +1969,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates mobile device by name
+    [psobject] UpdateMobileDeviceByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "mobiledevices/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates mobile device by id
     [psobject] UpdateMobileDeviceByID($ID, $Payload) {
+        $Resource = "mobiledevices/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device by id
+    [psobject] UpdateMobileDeviceByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "mobiledevices/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2078,8 +2240,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates package by name
+    [psobject] UpdatePackageByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "packages/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates package by id
     [psobject] UpdatePackageByID($ID, $Payload) {
+        $Resource = "packages/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates package by id
+    [psobject] UpdatePackageByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "packages/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2177,8 +2357,26 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates policy by name
+    [psobject] UpdatePolicyByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "policies/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates policy by id
     [psobject] UpdatePolicyByID($ID, $Payload) {
+        $Resource = "policies/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates policy by id
+    [psobject] UpdatePolicyByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "policies/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2285,28 +2483,48 @@ Class PwshJamf {
     }
 
     # Creates new printer
-    [psobject] CreatePrinter($Configuration) {
+    [psobject] CreatePrinter($Payload) {
         $Resource = "printers/id/0"
         $Method = "POST"
-        $Payload = $this.BuildXMLNode("printer",$Configuration)
+        $Payload = $this.BuildXMLNode("printer",$Payload)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates printer by name
-    [psobject] UpdatePrinterByName($Name, $Configuration) {
+    [psobject] UpdatePrinterByName($Name, $Payload) {
         $Resource = "printers/name/${Name}"
         $Method = "PUT"
-        $Payload = $this.BuildXMLNode("printer",$Configuration)
+        $Payload = $this.BuildXMLNode("printer",$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates printer by name
+    [psobject] UpdatePrinterByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "printers/name/${Name}"
+        $Method = "PUT"
+        $Payload = $this.BuildXMLNode("printer",$Payload)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates printer by id
-    [psobject] UpdatePrinterByID($ID, $Configuration) {
+    [psobject] UpdatePrinterByID($ID, $Payload) {
         $Resource = "printers/id/${ID}"
         $Method = "PUT"
-        $Payload = $this.BuildXMLNode("printer",$Configuration)
+        $Payload = $this.BuildXMLNode("printer",$Payload)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates printer by id
+    [psobject] UpdatePrinterByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "printers/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this.BuildXMLNode("printer",$Payload)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }

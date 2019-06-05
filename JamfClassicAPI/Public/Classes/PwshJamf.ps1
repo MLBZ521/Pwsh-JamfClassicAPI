@@ -103,12 +103,12 @@ Class PwshJamf {
             $ResponseStream = $_.Exception.Response.GetResponseStream()
             $StreamReader = New-Object System.IO.StreamReader($ResponseStream)
             $StreamReader.BaseStream.Position = 0
-            $ResponseBody = $StreamReader.ReadToEnd()            
+            $ResponseBody = $StreamReader.ReadToEnd()
         }
         else {
             $ResponseBody = $_.ErrorDetails.Message
         }
-        
+
         # Split the reponse body, so we can grab the content we're interested in.
         $errorDescription = $($ResponseBody -split [Environment]::NewLine)
         Write-Host -Message "Response:  $($errorDescription[5]) - $($errorDescription[6])" -ForegroundColor "Red"
@@ -346,7 +346,7 @@ Class PwshJamf {
     ##### Resource Path:  /activationcode #####
 
     # Returns all activationcode
-    [psobject] GetActivationcode() {
+    [psobject] GetActivationCode() {
         $Resource = "activationcode"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -354,7 +354,7 @@ Class PwshJamf {
     }
 
     # Updates activationcode
-    [psobject] UpdateActivationcode($Code) {
+    [psobject] UpdateActivationCode($Code) {
         $Resource = "activationcode"
         $Method = "PUT"
         $Payload = $this._BuildXML("activation_code")
@@ -569,7 +569,7 @@ Class PwshJamf {
         $Payload = $this._BuildXML("advanced_${Type}_search")
         $Payload = $this._AddXMLElement($Payload, "//criteria", "criterion")
         $Payload = $this._AddXMLElement($Payload, "//display_fields", "display_field")
- 
+
         # Loop through each Subset value and append it to the payload
         foreach ( $Subset in $Subsets) {
             $Subset.FirstChild.NextSibling.LocalName
@@ -878,79 +878,6 @@ Class PwshJamf {
     }
 
 
-    ##### Resource Path:  /departments #####
-
-    # Returns all departments
-    [psobject] GetDepartments() {
-        $Resource = "departments"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Returns department by name
-    [psobject] GetDepartmentByName($Name) {
-        $Resource = "departments/name/${Name}"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Returns department by id
-    [psobject] GetDepartmentById($ID) {
-        $Resource = "departments/id/${ID}"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Creates new department
-    [psobject] CreateDepartment($Name) {
-        $Resource = "departments/id/0"
-        $Method = "POST"
-        $Payload = $this._BuildXML("department")
-        $Payload = $this._AddXMLText($Payload, "department", "name", $Name)
-        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
-        return $Results
-    }
-
-    # Updates department by name
-    [psobject] UpdateDepartmentByName($OldName, $NewName) {
-        $Resource = "departments/name/${OldName}"
-        $Method = "PUT"
-        $Payload = $this._BuildXML("department")
-        $Payload = $this._AddXMLText($Payload, "department", "name", $NewName)
-        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
-        return $Results
-    }
-
-    # Updates department by id
-    [psobject] UpdateDepartmentByID($ID, $Name) {
-        $Resource = "departments/id/${ID}"
-        $Method = "PUT"
-        $Payload = $this._BuildXML("department")
-        $Payload = $this._AddXMLText($Payload, "department", "name", $Name)
-        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
-        return $Results
-    }
-
-    # Deletes department by name
-    [psobject] DeleteDepartmentByName($Name) {
-        $Resource = "departments/name/${Name}"
-        $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Deletes department by id
-    [psobject] DeleteDepartmentByID($ID) {
-        $Resource = "departments/id/${ID}"
-        $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-
     ##### Resource Path:  /computergroups #####
 
     # Returns all computer groups
@@ -1024,7 +951,7 @@ Class PwshJamf {
         $Payload = $this._BuildXML("computer_group")
         $Payload = $this._AddXMLElement($Payload, "//computer_group", "computer_${Action}")
         $NestedNodes = $this.BuildXMLNode("computer", "name", $Computers)
-        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -1036,7 +963,7 @@ Class PwshJamf {
         $Payload = $this._BuildXML("computer_group")
         $Payload = $this._AddXMLElement($Payload, "//computer_group", "computer_${Action}")
         $NestedNodes = $this.BuildXMLNode("computer", "id", $Computers)
-        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -1247,6 +1174,79 @@ Class PwshJamf {
     # Deletes computer by macaddress
     [psobject] DeleteComputerByMACAddress($MACAddress) {
         $Resource = "computers/macaddress/${MACAddress}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
+    ##### Resource Path:  /departments #####
+
+    # Returns all departments
+    [psobject] GetDepartments() {
+        $Resource = "departments"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns department by name
+    [psobject] GetDepartmentByName($Name) {
+        $Resource = "departments/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns department by id
+    [psobject] GetDepartmentById($ID) {
+        $Resource = "departments/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new department
+    [psobject] CreateDepartment($Name) {
+        $Resource = "departments/id/0"
+        $Method = "POST"
+        $Payload = $this._BuildXML("department")
+        $Payload = $this._AddXMLText($Payload, "department", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates department by name
+    [psobject] UpdateDepartmentByName($OldName, $NewName) {
+        $Resource = "departments/name/${OldName}"
+        $Method = "PUT"
+        $Payload = $this._BuildXML("department")
+        $Payload = $this._AddXMLText($Payload, "department", "name", $NewName)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates department by id
+    [psobject] UpdateDepartmentByID($ID, $Name) {
+        $Resource = "departments/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this._BuildXML("department")
+        $Payload = $this._AddXMLText($Payload, "department", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes department by name
+    [psobject] DeleteDepartmentByName($Name) {
+        $Resource = "departments/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes department by id
+    [psobject] DeleteDepartmentByID($ID) {
+        $Resource = "departments/id/${ID}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
@@ -1669,7 +1669,7 @@ Class PwshJamf {
         $Payload = $this._BuildXML("mobile_device_group")
         $Payload = $this._AddXMLElement($Payload, "//mobile_device_group", "mobile_device_${Action}")
         $NestedNodes = $this.BuildXMLNode("mobile_device", "name", $MobileDevices)
-        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -1681,7 +1681,7 @@ Class PwshJamf {
         $Payload = $this._BuildXML("mobile_device_group")
         $Payload = $this._AddXMLElement($Payload, "//mobile_device_group", "mobile_device_${Action}")
         $NestedNodes = $this.BuildXMLNode("mobile_device", "id", $MobileDevices)
-        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null        
+        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }

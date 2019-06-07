@@ -824,6 +824,17 @@ Class PwshJamf {
         return $Results
     }
 
+    # Creates new category
+    [psobject] CreateCategory($Name, $Priority) {
+        $Resource = "categories/id/0"
+        $Method = "POST"
+        $Payload = $this._BuildXML("category")
+        $Payload = $this._AddXMLText($Payload, "category", "name", $Name)
+        $Payload = $this._AddXMLText($Payload, "category", "priority", $Priority)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates category by name
     [psobject] UpdateCategoryByName($OldName, $NewName) {
         $Resource = "categories/name/${OldName}"
@@ -834,12 +845,34 @@ Class PwshJamf {
         return $Results
     }
 
+    # Updates category by name
+    [psobject] UpdateCategoryByName($OldName, $NewName, $Priority) {
+        $Resource = "categories/name/${OldName}"
+        $Method = "PUT"
+        $Payload = $this._BuildXML("category")
+        $Payload = $this._AddXMLText($Payload, "category", "name", $NewName)
+        $Payload = $this._AddXMLText($Payload, "category", "priority", $Priority)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
     # Updates category by id
     [psobject] UpdateCategoryByID($ID, $Name) {
         $Resource = "categories/id/${ID}"
         $Method = "PUT"
         $Payload = $this._BuildXML("category")
         $Payload = $this._AddXMLText($Payload, "category", "name", $Name)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates category by id
+    [psobject] UpdateCategoryByID($ID, $Name, $Priority) {
+        $Resource = "categories/id/${ID}"
+        $Method = "PUT"
+        $Payload = $this._BuildXML("category")
+        $Payload = $this._AddXMLText($Payload, "category", "name", $Name)
+        $Payload = $this._AddXMLText($Payload, "category", "priority", $Priority)
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }

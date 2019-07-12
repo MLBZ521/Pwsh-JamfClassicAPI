@@ -1317,26 +1317,53 @@ Class PwshJamf {
     }
 
     # Updates computer by udid
-    [psobject] UpdateComputerByUDID($UDID) {
+    [psobject] UpdateComputerByUDID($UDID, $Payload) {
         $Resource = "computers/udid/${UDID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource, $Method)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer by udid
+    [psobject] UpdateComputerByUDID($Payload) {
+        $UDID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//udid").InnerText
+        $Resource = "computers/udid/${UDID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates computer by serialnumber
-    [psobject] UpdateComputerBySerialNumber($SerialNumber) {
+    [psobject] UpdateComputerBySerialNumber($SerialNumber, $Payload) {
         $Resource = "computers/serialnumber/${SerialNumber}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource, $Method)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer by serialnumber
+    [psobject] UpdateComputerBySerialNumber($Payload) {
+        $SerialNumber = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//serial_number").InnerText
+        $Resource = "computers/serialnumber/${SerialNumber}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates computer by macaddress
-    [psobject] UpdateComputerByMACAddress($MACAddress) {
+    [psobject] UpdateComputerByMACAddress($MACAddress, $Payload) {
         $Resource = "computers/macaddress/${MACAddress}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource, $Method)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer by macaddress
+    [psobject] UpdateComputerByMACAddress($Payload) {
+        $MACAddress = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//mac_address").InnerText
+        $Resource = "computers/macaddress/${MACAddress}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
@@ -2115,26 +2142,53 @@ Class PwshJamf {
     }
 
     # Updates mobile device by udid
-    [psobject] UpdateMobileDeviceByUDID($UDID) {
+    [psobject] UpdateMobileDeviceByUDID($UDID, $Payload) {
         $Resource = "mobiledevices/udid/${UDID}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource, $Method)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device by udid
+    [psobject] UpdateMobileDeviceByUDID($Payload) {
+        $UDID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//udid").InnerText
+        $Resource = "mobiledevices/udid/${UDID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates mobile device by serialnumber
-    [psobject] UpdateMobileDeviceBySerialNumber($SerialNumber) {
+    [psobject] UpdateMobileDeviceBySerialNumber($SerialNumber, $Payload) {
         $Resource = "mobiledevices/serialnumber/${SerialNumber}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource, $Method)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device by serialnumber
+    [psobject] UpdateMobileDeviceBySerialNumber($Payload) {
+        $SerialNumber = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//serial_number").InnerText
+        $Resource = "mobiledevices/serialnumber/${SerialNumber}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates mobile device by macaddress
-    [psobject] UpdateMobileDeviceByMACAddress($MACAddress) {
+    [psobject] UpdateMobileDeviceByMACAddress($MACAddress, $Payload) {
         $Resource = "mobiledevices/macaddress/${MACAddress}"
         $Method = "PUT"
-        $Results = $this.InvokeAPI($Resource, $Method)
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device by macaddress
+    [psobject] UpdateMobileDeviceByMACAddress($Payload) {
+        $MACAddress = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//wifi_mac_address").InnerText
+        $Resource = "mobiledevices/macaddress/${MACAddress}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 

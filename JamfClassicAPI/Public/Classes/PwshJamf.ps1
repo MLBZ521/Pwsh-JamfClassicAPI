@@ -1086,25 +1086,67 @@ Class PwshJamf {
     }
 
     # Updates static computer group by name (uses computer_additions and computer_deletions)
-    [psobject] UpdateStaticComputerGroupByName($Group, $Computers, $Action) {
-        $Resource = "computergroups/name/${Group}"
+    [psobject] UpdateStaticComputerGroupByName($GroupName, $DeviceIdentifier, $ArrayOf_Computers, $Action) {
+        $Resource = "computergroups/name/${GroupName}"
         $Method = "PUT"
+
+        switch ($DeviceIdentifier) {
+            "serial" { $DeviceIdentifier = "serial_number" }
+            "uuid" { $DeviceIdentifier = "udid" }
+            "udid" { $DeviceIdentifier = "udid" }
+            "id" { $DeviceIdentifier = "id" }
+            "mac" { $DeviceIdentifier = "wifi_mac_address" }
+            "name" { $DeviceIdentifier = "name" }
+        }
+
+        switch ($Action) {
+            "add" { $Action = "additions" }
+            "remove" { $Action = "deletions" }
+            "delete" { $Action = "deletions" }
+        }
+
         $Payload = $this._BuildXML("computer_group")
         $Payload = $this._AddXMLElement($Payload, "//computer_group", "computer_${Action}")
-        $NestedNodes = $this.BuildXMLNode("computer", "name", $Computers)
-        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+
+        ForEach ( $Computer in $ArrayOf_Computers ) {
+            $Element = $this._BuildXML("computer")
+            $Element = $this._AddXMLText($Element, "computer", "${DeviceIdentifier}", $Computer)
+            $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+        }
+
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates static computer group by id (uses computer_additions and computer_deletions)
-    [psobject] UpdateStaticComputerGroupById($Group, $Computers, $Action) {
-        $Resource = "computergroups/id/${Group}"
+    [psobject] UpdateStaticComputerGroupById($GroupID, $DeviceIdentifier, $ArrayOf_Computers, $Action) {
+        $Resource = "computergroups/id/${GroupID}"
         $Method = "PUT"
+  
+        switch ($DeviceIdentifier) {
+            "serial" { $DeviceIdentifier = "serial_number" }
+            "uuid" { $DeviceIdentifier = "udid" }
+            "udid" { $DeviceIdentifier = "udid" }
+            "id" { $DeviceIdentifier = "id" }
+            "mac" { $DeviceIdentifier = "wifi_mac_address" }
+            "name" { $DeviceIdentifier = "name" }
+        }
+
+        switch ($Action) {
+            "add" { $Action = "additions" }
+            "remove" { $Action = "deletions" }
+            "delete" { $Action = "deletions" }
+        }
+
         $Payload = $this._BuildXML("computer_group")
         $Payload = $this._AddXMLElement($Payload, "//computer_group", "computer_${Action}")
-        $NestedNodes = $this.BuildXMLNode("computer", "id", $Computers)
-        $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+
+        ForEach ( $Computer in $ArrayOf_Computers ) {
+            $Element = $this._BuildXML("computer")
+            $Element = $this._AddXMLText($Element, "computer", "${DeviceIdentifier}", $Computer)
+            $Payload.DocumentElement.SelectSingleNode("//computer_${Action}").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+        }
+
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -1840,25 +1882,69 @@ Class PwshJamf {
     }
 
     # Updates static mobile device group by name (uses mobile_device_additions and mobile_device_deletions)
-    [psobject] UpdateStaticMobileDeviceGroupByName($Group, $MobileDevices, $Action) {
-        $Resource = "mobiledevicegroups/name/${Group}"
+    [psobject] UpdateStaticMobileDeviceGroupByName($GroupName, $DeviceIdentifier, $ArrayOf_MobileDevices, $Action) {
+        $Resource = "mobiledevicegroups/name/${GroupName}"
         $Method = "PUT"
+
+        switch ($DeviceIdentifier) {
+            "serial" { $DeviceIdentifier = "serial_number" }
+            "uuid" { $DeviceIdentifier = "udid" }
+            "udid" { $DeviceIdentifier = "udid" }
+            "id" { $DeviceIdentifier = "id" }
+            "mac" { $DeviceIdentifier = "wifi_mac_address" }
+            "name" { $DeviceIdentifier = "name" }
+        }
+
+        switch ($Action) {
+            "add" { $Action = "additions" }
+            "remove" { $Action = "deletions" }
+            "delete" { $Action = "deletions" }
+        }
+
         $Payload = $this._BuildXML("mobile_device_group")
         $Payload = $this._AddXMLElement($Payload, "//mobile_device_group", "mobile_device_${Action}")
-        $NestedNodes = $this.BuildXMLNode("mobile_device", "name", $MobileDevices)
-        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+
+        # Loop through each configuration item and create a node from it.
+        ForEach ($Device in $ArrayOf_MobileDevices) {
+            $Element = $this._BuildXML("mobile_device")
+            $Element = $this._AddXMLText($Element, "mobile_device", "${DeviceIdentifier}", $Device)
+            $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+        }
+
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
     # Updates static mobile device group by id (uses mobile_device_additions and mobile_device_deletions)
-    [psobject] UpdateStaticMobileDeviceGroupById($Group, $MobileDevices, $Action) {
-        $Resource = "mobiledevicegroups/id/${Group}"
+    [psobject] UpdateStaticMobileDeviceGroupById($GroupID, $DeviceIdentifier, $ArrayOf_MobileDevices, $Action) {
+        $Resource = "mobiledevicegroups/id/${GroupID}"
         $Method = "PUT"
+        
+        switch ($DeviceIdentifier) {
+            "serial" { $DeviceIdentifier = "serial_number" }
+            "uuid" { $DeviceIdentifier = "udid" }
+            "udid" { $DeviceIdentifier = "udid" }
+            "id" { $DeviceIdentifier = "id" }
+            "mac" { $DeviceIdentifier = "wifi_mac_address" }
+            "name" { $DeviceIdentifier = "name" }
+        }
+
+        switch ($Action) {
+            "add" { $Action = "additions" }
+            "remove" { $Action = "deletions" }
+            "delete" { $Action = "deletions" }
+        }
+
         $Payload = $this._BuildXML("mobile_device_group")
         $Payload = $this._AddXMLElement($Payload, "//mobile_device_group", "mobile_device_${Action}")
-        $NestedNodes = $this.BuildXMLNode("mobile_device", "id", $MobileDevices)
-        $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($NestedNodes.($NestedNodes.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+
+        # Loop through each configuration item and create a node from it.
+        ForEach ($Device in $ArrayOf_MobileDevices) {
+            $Element = $this._BuildXML("mobile_device")
+            $Element = $this._AddXMLText($Element, "mobile_device", "${DeviceIdentifier}", $Device)
+            $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
+        }
+        
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }

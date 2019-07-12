@@ -2233,6 +2233,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledeviceconfigurationprofiles #####
+
+    # Returns all mobile device configuration profiles
+    [psobject] GetMobileDeviceConfigurationProfiles() {
+        $Resource = "mobiledeviceconfigurationprofiles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobile device configuration profile by name
+    [psobject] GetMobileDeviceConfigurationProfileByName($Name) {
+        $Resource = "mobiledeviceconfigurationprofiles/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobile device configuration profile by id
+    [psobject] GetMobileDeviceConfigurationProfileById($ID) {
+        $Resource = "mobiledeviceconfigurationprofiles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new mobile device configuration profile
+    [psobject] CreateMobileDeviceConfigurationProfile($Payload) {
+        $Resource = "mobiledeviceconfigurationprofiles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device configuration profile by name
+    [psobject] UpdateMobileDeviceConfigurationProfileByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "mobiledeviceconfigurationprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device configuration profile by id
+    [psobject] UpdateMobileDeviceConfigurationProfileByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "mobiledeviceconfigurationprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes mobile device configuration profile by name
+    [psobject] DeleteMobileDeviceConfigurationProfileByName($Name) {
+        $Resource = "mobiledeviceconfigurationprofiles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobile device configuration profile by id
+    [psobject] DeleteMobileDeviceConfigurationProfileByID($ID) {
+        $Resource = "mobiledeviceconfigurationprofiles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobile device configuration profile Subsets by name
+    [psobject] GetMobileDeviceConfigurationProfileSubsetByName($Name, $Subset) {
+        $Resource = "mobiledeviceconfigurationprofiles/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobile device configuration profile Subsets by id
+    [psobject] GetMobileDeviceConfigurationProfileSubsetById($ID, $Subset) {
+        $Resource = "mobiledeviceconfigurationprofiles/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledeviceextensionattributes #####
 
     # Returns all mobiledeviceextensionattributes

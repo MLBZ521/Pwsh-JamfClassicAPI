@@ -2456,6 +2456,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /osxconfigurationprofiles #####
+
+    # Returns all computer configuration profiles
+    [psobject] GetComputerConfigurationProfiles() {
+        $Resource = "osxconfigurationprofiles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computer configuration profile by name
+    [psobject] GetComputerConfigurationProfileByName($Name) {
+        $Resource = "osxconfigurationprofiles/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computer configuration profile by id
+    [psobject] GetComputerConfigurationProfileById($ID) {
+        $Resource = "osxconfigurationprofiles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new computer configuration profile
+    [psobject] CreateComputerConfigurationProfile($Payload) {
+        $Resource = "osxconfigurationprofiles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer configuration profile by name
+    [psobject] UpdateComputerConfigurationProfileByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "osxconfigurationprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer configuration profile by id
+    [psobject] UpdateComputerConfigurationProfileByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "osxconfigurationprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes computer configuration profile by name
+    [psobject] DeleteComputerConfigurationProfileByName($Name) {
+        $Resource = "osxconfigurationprofiles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes computer configuration profile by id
+    [psobject] DeleteComputerConfigurationProfileByID($ID) {
+        $Resource = "osxconfigurationprofiles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computer configuration profile Subsets by name
+    [psobject] GetComputerConfigurationProfileSubsetByName($Name, $Subset) {
+        $Resource = "osxconfigurationprofiles/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computer configuration profile Subsets by id
+    [psobject] GetComputerConfigurationProfileSubsetById($ID, $Subset) {
+        $Resource = "osxconfigurationprofiles/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /packages #####
 
     # Returns all packages

@@ -2269,7 +2269,15 @@ Class PwshJamf {
 
     # Updates mobile device configuration profile by name
     [psobject] UpdateMobileDeviceConfigurationProfileByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "mobiledeviceconfigurationprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobile device configuration profile by name
+    [psobject] UpdateMobileDeviceConfigurationProfileByName($Name, $Payload) {
         $Resource = "mobiledeviceconfigurationprofiles/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2278,12 +2286,20 @@ Class PwshJamf {
 
     # Updates mobile device configuration profile by id
     [psobject] UpdateMobileDeviceConfigurationProfileByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "mobiledeviceconfigurationprofiles/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
+
+    # Updates mobile device configuration profile by id
+    [psobject] UpdateMobileDeviceConfigurationProfileByID($ID, $Payload) {
+        $Resource = "mobiledeviceconfigurationprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }    
 
     # Deletes mobile device configuration profile by name
     [psobject] DeleteMobileDeviceConfigurationProfileByName($Name) {
@@ -2492,7 +2508,15 @@ Class PwshJamf {
 
     # Updates computer configuration profile by name
     [psobject] UpdateComputerConfigurationProfileByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "osxconfigurationprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer configuration profile by name
+    [psobject] UpdateComputerConfigurationProfileByName($Name, $Payload) {
         $Resource = "osxconfigurationprofiles/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2501,7 +2525,15 @@ Class PwshJamf {
 
     # Updates computer configuration profile by id
     [psobject] UpdateComputerConfigurationProfileByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "osxconfigurationprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computer configuration profile by id
+    [psobject] UpdateComputerConfigurationProfileByID($ID, $Payload) {
         $Resource = "osxconfigurationprofiles/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)

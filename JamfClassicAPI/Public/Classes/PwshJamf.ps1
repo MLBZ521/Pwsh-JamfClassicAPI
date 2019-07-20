@@ -38,9 +38,10 @@ Class PwshJamf {
             return $Return
         }
         catch {
-            $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
-            $this._FormatExceptionMessage($_)
-            return $null
+            if ( $Resource.Split("/")[0] -ne "sites" ) {
+                $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
+            }
+            return $this._FormatExceptionMessage($_)
         }
     }
 
@@ -53,8 +54,7 @@ Class PwshJamf {
         }
         catch {
             $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
-            $this._FormatExceptionMessage($_)
-            return $null
+            return $this._FormatExceptionMessage($_)
         }
     }
 
@@ -111,8 +111,8 @@ Class PwshJamf {
 
         # Split the reponse body, so we can grab the content we're interested in.
         $errorDescription = $($ResponseBody -split [Environment]::NewLine)
-        Write-Host -Message "Response:  $($errorDescription[5]) - $($errorDescription[6])" -ForegroundColor "Red"
-        return $null
+        Write-Host -Message "Response:  $($errorDescription[5]) - $($errorDescription[6])" -ForegroundColor "Magenta"
+        return $errorDescription[6]
     }
 
     # Helper method that will verify credentials by doing an API call and checking the result to verify permissions.
@@ -126,7 +126,7 @@ Class PwshJamf {
             $this._StatusCodeCheck($_.Exception.Response.StatusCode.value__)
             $this._FormatExceptionMessage($_)
             Write-Host -Message "ERROR:  Invalid Credentials or permissions." -ForegroundColor "Red"
-            return $null
+            return $this._FormatExceptionMessage($_)
         }
         return $null
     }
@@ -270,7 +270,7 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
-    
+
     # Updates account by userid
     [psobject] UpdateAccountByUserid($ID, $Payload) {
         $Resource = "accounts/userid/${ID}"
@@ -450,7 +450,7 @@ Class PwshJamf {
         $Results = $this.InvokeAPI($Resource,$Method,$Payload)
         return $Results
     }
-    
+
     # Updates advanced computer search by id
     [psobject] UpdateAdvancedComputerSearchByID($ID, $Payload) {
         $Resource = "advancedcomputersearches/id/${ID}"
@@ -1122,7 +1122,7 @@ Class PwshJamf {
     [psobject] UpdateStaticComputerGroupById($GroupID, $DeviceIdentifier, $ArrayOf_Computers, $Action) {
         $Resource = "computergroups/id/${GroupID}"
         $Method = "PUT"
-  
+
         switch ($DeviceIdentifier) {
             "serial" { $DeviceIdentifier = "serial_number" }
             "uuid" { $DeviceIdentifier = "udid" }
@@ -1946,7 +1946,7 @@ Class PwshJamf {
     [psobject] UpdateStaticMobileDeviceGroupById($GroupID, $DeviceIdentifier, $ArrayOf_MobileDevices, $Action) {
         $Resource = "mobiledevicegroups/id/${GroupID}"
         $Method = "PUT"
-        
+
         switch ($DeviceIdentifier) {
             "serial" { $DeviceIdentifier = "serial_number" }
             "uuid" { $DeviceIdentifier = "udid" }
@@ -1971,7 +1971,7 @@ Class PwshJamf {
             $Element = $this._AddXMLText($Element, "mobile_device", "${DeviceIdentifier}", $Device)
             $Payload.DocumentElement.SelectSingleNode("//mobile_device_${Action}").AppendChild($Payload.ImportNode($Element.($Element.FirstChild.NextSibling.LocalName), $true)) | Out-Null
         }
-        
+
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
@@ -2299,7 +2299,7 @@ Class PwshJamf {
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
-    }    
+    }
 
     # Deletes mobile device configuration profile by name
     [psobject] DeleteMobileDeviceConfigurationProfileByName($Name) {

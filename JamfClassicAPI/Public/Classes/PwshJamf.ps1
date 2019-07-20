@@ -3051,6 +3051,24 @@ Class PwshJamf {
         $Resource = "sites/name/${Name}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
+
+        # If the delete failed because items exist in the Site, delete those items.
+        if ( $Results -ne $null ) {
+            (($Results -split ':',2)[1]).Split(",") | ForEach-Object {
+                switch ( $_ ) {
+                    { "$(${_}.Split(":")[0])" -eq "Policy" } { $this.DeletePolicyByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Smart Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Smart Mobile Device Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
+                    Default { Write-host "Something I can't delete is in this Site." }
+                }
+            }
+
+            # Try deleting the Site again
+            $Results = $this.InvokeAPI($Resource, $Method)
+        }
+
         return $Results
     }
 
@@ -3059,6 +3077,24 @@ Class PwshJamf {
         $Resource = "sites/id/${ID}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
+
+        # If the delete failed because items exist in the Site, delete those items.
+        if ( $Results -ne $null ) {
+            (($Results -split ':',2)[1]).Split(",") | ForEach-Object {
+                switch ( $_ ) {
+                    { "$(${_}.Split(":")[0])" -eq "Policy" } { $this.DeletePolicyByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Smart Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Smart Mobile Device Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
+                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
+                    Default { Write-host "Something I can't delete is in this Site." }
+                }
+            }
+
+            # Try deleting the Site again
+            $Results = $this.InvokeAPI($Resource, $Method)
+        }
+
         return $Results
     }
 

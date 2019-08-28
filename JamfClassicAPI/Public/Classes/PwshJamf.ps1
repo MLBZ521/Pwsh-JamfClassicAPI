@@ -2196,6 +2196,107 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /managedpreferenceprofiles #####
+
+    # Returns all managedpreferenceprofiles
+    [psobject] GetManagedPreferenceProfiles() {
+        $Resource = "managedpreferenceprofiles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns managedpreferenceprofile by name
+    [psobject] GetManagedPreferenceProfileByName($Name) {
+        $Resource = "managedpreferenceprofiles/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns managedpreferenceprofile by id
+    [psobject] GetManagedPreferenceProfileById($ID) {
+        $Resource = "managedpreferenceprofiles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns managedpreferenceprofile Subsets by name
+    [psobject] GetManagedPreferenceProfileSubsetByName($Name, $Subset) {
+        $Resource = "managedpreferenceprofiles/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns managedpreferenceprofile Subsets by id
+    [psobject] GetManagedPreferenceProfileSubsetById($ID, $Subset) {
+        $Resource = "managedpreferenceprofiles/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new managedpreferenceprofile
+    [psobject] CreateManagedPreferenceProfile($Payload) {
+        $Resource = "managedpreferenceprofiles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by name
+    [psobject] UpdateManagedPreferenceProfileByName($Name, $Payload) {
+        $Resource = "managedpreferenceprofiles/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by name
+    [psobject] UpdateManagedPreferenceProfileByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "managedpreferenceprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by id
+    [psobject] UpdateManagedPreferenceProfileByID($ID, $Payload) {
+        $Resource = "managedpreferenceprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by id
+    [psobject] UpdateManagedPreferenceProfileByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "managedpreferenceprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes managedpreferenceprofile by name
+    [psobject] DeleteManagedPreferenceProfileByName($Name) {
+        $Resource = "managedpreferenceprofiles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes managedpreferenceprofile by id
+    [psobject] DeleteManagedPreferenceProfileByID($ID) {
+        $Resource = "managedpreferenceprofiles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

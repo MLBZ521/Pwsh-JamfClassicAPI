@@ -2931,7 +2931,7 @@ Class PwshJamf {
         return $Results
     }
 
-    # Returns scripts by name
+    # Returns script by name
     [psobject] GetScriptByName($Name) {
         $Resource = "scripts/name/${Name}"
         $Method = "GET"
@@ -2939,7 +2939,7 @@ Class PwshJamf {
         return $Results
     }
 
-    # Returns scripts by id
+    # Returns script by id
     [psobject] GetScriptById($ID) {
         $Resource = "scripts/id/${ID}"
         $Method = "GET"
@@ -2947,7 +2947,7 @@ Class PwshJamf {
         return $Results
     }
 
-    # Creates new scripts
+    # Creates new script
     [psobject] CreateScript($Payload) {
         $Resource = "scripts/id/0"
         $Method = "POST"
@@ -2955,25 +2955,41 @@ Class PwshJamf {
         return $Results
     }
 
-    # Updates scripts by name
+    # Updates script by name
+    [psobject] UpdateScriptByName($Name, $Payload) {
+        $Resource = "scripts/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates script by name
     [psobject] UpdateScriptByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
         $Resource = "scripts/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Updates scripts by id
-    [psobject] UpdateScriptByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+    # Updates script by id
+    [psobject] UpdateScriptByID($ID, $Payload) {
         $Resource = "scripts/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
     }
 
-    # Deletes scripts by name
+    # Updates script by id
+    [psobject] UpdateScriptByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "scripts/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes script by name
     [psobject] DeleteScriptByName($Name) {
         $Resource = "scripts/name/${Name}"
         $Method = "DELETE"
@@ -2981,7 +2997,7 @@ Class PwshJamf {
         return $Results
     }
 
-    # Deletes scripts by id
+    # Deletes script by id
     [psobject] DeleteScriptByID($ID) {
         $Resource = "scripts/id/${ID}"
         $Method = "DELETE"

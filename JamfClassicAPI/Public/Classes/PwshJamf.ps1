@@ -3394,6 +3394,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /restrictedsoftware #####
+
+    # Returns all restrictedsoftware
+    [psobject] GetRestrictedSoftware() {
+        $Resource = "restrictedsoftware"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns managedpreferenceprofile by name
+    [psobject] GetRestrictedSoftwareByName($Name) {
+        $Resource = "restrictedsoftware/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns managedpreferenceprofile by id
+    [psobject] GetRestrictedSoftwareById($ID) {
+        $Resource = "restrictedsoftware/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new managedpreferenceprofile
+    [psobject] CreateRestrictedSoftware($Payload) {
+        $Resource = "restrictedsoftware/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by name
+    [psobject] UpdateRestrictedSoftwareByName($Name, $Payload) {
+        $Resource = "restrictedsoftware/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by name
+    [psobject] UpdateRestrictedSoftwareByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "restrictedsoftware/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by id
+    [psobject] UpdateRestrictedSoftwareByID($ID, $Payload) {
+        $Resource = "restrictedsoftware/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates managedpreferenceprofile by id
+    [psobject] UpdateRestrictedSoftwareByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "restrictedsoftware/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes managedpreferenceprofile by name
+    [psobject] DeleteRestrictedSoftwareByName($Name) {
+        $Resource = "restrictedsoftware/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes managedpreferenceprofile by id
+    [psobject] DeleteRestrictedSoftwareByID($ID) {
+        $Resource = "restrictedsoftware/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /scripts #####
 
     # Returns all scripts

@@ -1322,6 +1322,65 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computerinvitations #####
+
+    # Returns all computerinvitations
+    [psobject] GetComputerInvitations() {
+        $Resource = "computerinvitations"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerinvitation by name
+    [psobject] GetComputerInvitationByName($Name) {
+        $Resource = "computerinvitations/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerinvitation by id
+    [psobject] GetComputerInvitationById($ID) {
+        $Resource = "computerinvitations/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerinvitation by id
+    [psobject] GetComputerInvitationByInvitation($Invitation) {
+        $Resource = "computerinvitations/Invitation/${Invitation}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new computerinvitation
+    [psobject] CreateComputerInvitation($Payload) {
+        $Resource = "computerinvitations/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes computerinvitation by name
+    [psobject] DeleteComputerInvitationByName($Name) {
+        $Resource = "computerinvitations/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes computerinvitation by id
+    [psobject] DeleteComputerInvitationByID($ID) {
+        $Resource = "computerinvitations/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /computers #####
 
     # Returns all computers

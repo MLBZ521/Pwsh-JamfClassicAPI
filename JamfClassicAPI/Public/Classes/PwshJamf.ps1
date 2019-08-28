@@ -957,7 +957,7 @@ Class PwshJamf {
 
     # Updates computerconfiguration by name
     [psobject] UpdateComputerConfigurationByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "computerconfigurations/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -974,7 +974,7 @@ Class PwshJamf {
 
     # Updates computerconfiguration by id
     [psobject] UpdateComputerConfigurationByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "computerconfigurations/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1764,7 +1764,7 @@ Class PwshJamf {
 
     # Updates ebook by name
     [psobject] UpdateeBookByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "ebooks/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -1781,7 +1781,7 @@ Class PwshJamf {
 
     # Updates ebook by id
     [psobject] UpdateeBookByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "ebooks/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2054,7 +2054,7 @@ Class PwshJamf {
 
     # Updates licensedsoftware by name
     [psobject] UpdateLicensedSoftwareByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "licensedsoftware/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2071,7 +2071,7 @@ Class PwshJamf {
 
     # Updates licensedsoftware by id
     [psobject] UpdateLicensedSoftwareByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "licensedsoftware/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2155,7 +2155,7 @@ Class PwshJamf {
 
     # Updates macapplication by name
     [psobject] UpdateMacApplicationByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "macapplications/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2172,7 +2172,7 @@ Class PwshJamf {
 
     # Updates macapplication by id
     [psobject] UpdateMacApplicationByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "macapplications/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2256,7 +2256,7 @@ Class PwshJamf {
 
     # Updates managedpreferenceprofile by name
     [psobject] UpdateManagedPreferenceProfileByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "managedpreferenceprofiles/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -2273,7 +2273,7 @@ Class PwshJamf {
 
     # Updates managedpreferenceprofile by id
     [psobject] UpdateManagedPreferenceProfileByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "managedpreferenceprofiles/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3438,7 +3438,7 @@ Class PwshJamf {
 
     # Updates managedpreferenceprofile by name
     [psobject] UpdateRestrictedSoftwareByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "restrictedsoftware/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3455,7 +3455,7 @@ Class PwshJamf {
 
     # Updates managedpreferenceprofile by id
     [psobject] UpdateRestrictedSoftwareByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "restrictedsoftware/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3523,7 +3523,7 @@ Class PwshJamf {
 
     # Updates script by name
     [psobject] UpdateScriptByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "scripts/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3540,7 +3540,7 @@ Class PwshJamf {
 
     # Updates script by id
     [psobject] UpdateScriptByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "scripts/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3866,7 +3866,7 @@ Class PwshJamf {
 
     # Updates vppaccount by id
     [psobject] UpdateVPPAccountByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "vppaccounts/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3918,7 +3918,7 @@ Class PwshJamf {
 
     # Updates vppassignment by id
     [psobject] UpdateVPPAssignmentByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "vppassignments/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -3978,7 +3978,7 @@ Class PwshJamf {
 
     # Updates vppinvitation by id
     [psobject] UpdateVPPInvitationByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "vppinvitations/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)

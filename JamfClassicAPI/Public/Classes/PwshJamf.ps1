@@ -2095,6 +2095,107 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /macapplications #####
+
+    # Returns all macapplications
+    [psobject] GetMacApplications() {
+        $Resource = "macapplications"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns macapplication by name
+    [psobject] GetMacApplicationByName($Name) {
+        $Resource = "macapplications/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns macapplication by id
+    [psobject] GetMacApplicationById($ID) {
+        $Resource = "macapplications/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns macapplication Subsets by name
+    [psobject] GetMacApplicationSubsetByName($Name, $Subset) {
+        $Resource = "macapplications/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns macapplication Subsets by id
+    [psobject] GetMacApplicationSubsetById($ID, $Subset) {
+        $Resource = "macapplications/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new macapplication
+    [psobject] CreateMacApplication($Payload) {
+        $Resource = "macapplications/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates macapplication by name
+    [psobject] UpdateMacApplicationByName($Name, $Payload) {
+        $Resource = "macapplications/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates macapplication by name
+    [psobject] UpdateMacApplicationByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "macapplications/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates macapplication by id
+    [psobject] UpdateMacApplicationByID($ID, $Payload) {
+        $Resource = "macapplications/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates macapplication by id
+    [psobject] UpdateMacApplicationByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "macapplications/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes macapplication by name
+    [psobject] DeleteMacApplicationByName($Name) {
+        $Resource = "macapplications/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes macapplication by id
+    [psobject] DeleteMacApplicationByID($ID) {
+        $Resource = "macapplications/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

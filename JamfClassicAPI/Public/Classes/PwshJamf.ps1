@@ -1704,6 +1704,107 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /ebooks #####
+
+    # Returns all ebooks
+    [psobject] GeteBooks() {
+        $Resource = "ebooks"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ebook by name
+    [psobject] GeteBookByName($Name) {
+        $Resource = "ebooks/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ebook by id
+    [psobject] GeteBookById($ID) {
+        $Resource = "ebooks/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ebook Subsets by name
+    [psobject] GeteBookSubsetByName($Name, $Subset) {
+        $Resource = "ebooks/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns ebook Subsets by id
+    [psobject] GeteBookSubsetById($ID, $Subset) {
+        $Resource = "ebooks/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new ebook
+    [psobject] CreateeBook($Payload) {
+        $Resource = "ebooks/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ebook by name
+    [psobject] UpdateeBookByName($Name, $Payload) {
+        $Resource = "ebooks/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ebook by name
+    [psobject] UpdateeBookByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "ebooks/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ebook by id
+    [psobject] UpdateeBookByID($ID, $Payload) {
+        $Resource = "ebooks/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates ebook by id
+    [psobject] UpdateeBookByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "ebooks/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes ebook by name
+    [psobject] DeleteeBookByName($Name) {
+        $Resource = "ebooks/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes ebook by id
+    [psobject] DeleteeBookByID($ID) {
+        $Resource = "ebooks/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /gsxconnection #####
 
     # Returns all gsxconnection

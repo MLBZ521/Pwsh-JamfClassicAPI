@@ -753,41 +753,6 @@ Class PwshJamf {
     }
 
 
-    ##### Resource Path:  /computerapplications #####
-
-    # Returns computerapplication by name
-    [psobject] GetComputerApplicationByName($Application) {
-        $Resource = "computerapplications/application/${Application}"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Returns computerapplication by name, including inventory information
-    [psobject] GetComputerApplicationByNameAndInventory($Application, $Inventory) {
-        $Resource = "computerapplications/application/${Application}/inventory/${Inventory}"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Returns computerapplication by name and version
-    [psobject] GetComputerApplicationByNameAndVersion($Application, $Version) {
-        $Resource = "computerapplications/application/${Application}/version/${Version}"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-    # Returns computerapplication by name and version, including inventory information
-    [psobject] GetComputerApplicationByNameAndVersionAndInventory($Application, $Version, $Inventory) {
-        $Resource = "computerapplications/application/${Application}/version/${Version}/inventory/${Inventory}"
-        $Method = "GET"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
-
-
     ##### Resource Path:  /categories #####
 
     # Returns all categories
@@ -889,6 +854,41 @@ Class PwshJamf {
     [psobject] DeleteCategoryByID($ID) {
         $Resource = "categories/id/${ID}"
         $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
+    ##### Resource Path:  /computerapplications #####
+
+    # Returns computerapplication by name
+    [psobject] GetComputerApplicationByName($Application) {
+        $Resource = "computerapplications/application/${Application}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerapplication by name, including inventory information
+    [psobject] GetComputerApplicationByNameAndInventory($Application, $Inventory) {
+        $Resource = "computerapplications/application/${Application}/inventory/${Inventory}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerapplication by name and version
+    [psobject] GetComputerApplicationByNameAndVersion($Application, $Version) {
+        $Resource = "computerapplications/application/${Application}/version/${Version}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerapplication by name and version, including inventory information
+    [psobject] GetComputerApplicationByNameAndVersionAndInventory($Application, $Version, $Inventory) {
+        $Resource = "computerapplications/application/${Application}/version/${Version}/inventory/${Inventory}"
+        $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
         return $Results
     }

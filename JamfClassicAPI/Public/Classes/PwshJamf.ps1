@@ -2010,6 +2010,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /licensedsoftware #####
+
+    # Returns all licensedsoftware
+    [psobject] GetLicensedSoftware() {
+        $Resource = "licensedsoftware"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns licensedsoftware by name
+    [psobject] GetLicensedSoftwareByName($Name) {
+        $Resource = "licensedsoftware/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns licensedsoftware by id
+    [psobject] GetLicensedSoftwareById($ID) {
+        $Resource = "licensedsoftware/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new licensedsoftware
+    [psobject] CreateLicensedSoftware($Payload) {
+        $Resource = "licensedsoftware/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates licensedsoftware by name
+    [psobject] UpdateLicensedSoftwareByName($Name, $Payload) {
+        $Resource = "licensedsoftware/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates licensedsoftware by name
+    [psobject] UpdateLicensedSoftwareByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "licensedsoftware/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates licensedsoftware by id
+    [psobject] UpdateLicensedSoftwareByID($ID, $Payload) {
+        $Resource = "licensedsoftware/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates licensedsoftware by id
+    [psobject] UpdateLicensedSoftwareByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "licensedsoftware/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes licensedsoftware by name
+    [psobject] DeleteLicensedSoftwareByName($Name) {
+        $Resource = "licensedsoftware/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes licensedsoftware by id
+    [psobject] DeleteLicensedSoftwareByID($ID) {
+        $Resource = "licensedsoftware/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

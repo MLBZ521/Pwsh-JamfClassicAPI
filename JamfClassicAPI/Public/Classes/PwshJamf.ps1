@@ -859,6 +859,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /classes #####
+
+    # Returns all classes
+    [psobject] GetClasses() {
+        $Resource = "classes"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns class by name
+    [psobject] GetClassByName($Name) {
+        $Resource = "classes/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns class by id
+    [psobject] GetClassById($ID) {
+        $Resource = "classes/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new class
+    [psobject] CreateClass($Payload) {
+        $Resource = "classes/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates class by name
+    [psobject] UpdateClassByName($Name, $Payload) {
+        $Resource = "classes/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates class by name
+    [psobject] UpdateClassByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "classes/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates class by id
+    [psobject] UpdateClassByID($ID, $Payload) {
+        $Resource = "classes/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates class by id
+    [psobject] UpdateClassByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "classes/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes class by name
+    [psobject] DeleteClassByName($Name) {
+        $Resource = "classes/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes class by id
+    [psobject] DeleteClassByID($ID) {
+        $Resource = "classes/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /computerapplications #####
 
     # Returns computerapplication by name

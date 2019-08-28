@@ -3934,6 +3934,66 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /vppinvitations #####
+
+    # Returns all vppinvitations
+    [psobject] GetVPPInvitations() {
+        $Resource = "vppinvitations"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns vppinvitation by id
+    [psobject] GetVPPInvitationById($ID) {
+        $Resource = "vppinvitations/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns vppinvitation Subsets by id
+    [psobject] GetVPPInvitationSubsetById($ID, $Subset) {
+        $Resource = "vppinvitations/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new vppinvitation
+    [psobject] CreateVPPInvitation($Payload) {
+        $Resource = "vppinvitations/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates vppinvitation by id
+    [psobject] UpdateVPPInvitationByID($ID, $Payload) {
+        $Resource = "vppinvitations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates vppinvitation by id
+    [psobject] UpdateVPPInvitationByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "vppinvitations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes vppinvitation by id
+    [psobject] DeleteVPPInvitationByID($ID) {
+        $Resource = "vppinvitations/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  / #####
 
 

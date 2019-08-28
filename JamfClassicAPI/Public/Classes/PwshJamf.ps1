@@ -3830,6 +3830,58 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /vppaccounts #####
+
+    # Returns all vppaccounts
+    [psobject] GetVPPAccounts() {
+        $Resource = "vppaccounts"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns vppaccount by id
+    [psobject] GetVPPAccountById($ID) {
+        $Resource = "vppaccounts/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new vppaccount
+    [psobject] CreateVPPAccount($Payload) {
+        $Resource = "vppaccounts/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates vppaccount by id
+    [psobject] UpdateVPPAccountByID($ID, $Payload) {
+        $Resource = "vppaccounts/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates vppaccount by id
+    [psobject] UpdateVPPAccountByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "vppaccounts/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes vppaccount by id
+    [psobject] DeleteVPPAccountByID($ID) {
+        $Resource = "vppaccounts/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  / #####
 
 

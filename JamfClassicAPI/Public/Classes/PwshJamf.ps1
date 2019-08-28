@@ -913,6 +913,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /computerconfigurations #####
+
+    # Returns all computerconfigurations
+    [psobject] GetComputerConfigurations() {
+        $Resource = "computerconfigurations"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerconfiguration by name
+    [psobject] GetComputerConfigurationByName($Name) {
+        $Resource = "computerconfigurations/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns computerconfiguration by id
+    [psobject] GetComputerConfigurationById($ID) {
+        $Resource = "computerconfigurations/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new computerconfiguration
+    [psobject] CreateComputerConfiguration($Payload) {
+        $Resource = "computerconfigurations/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computerconfiguration by name
+    [psobject] UpdateComputerConfigurationByName($Name, $Payload) {
+        $Resource = "computerconfigurations/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computerconfiguration by name
+    [psobject] UpdateComputerConfigurationByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//name").InnerText
+        $Resource = "computerconfigurations/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computerconfiguration by id
+    [psobject] UpdateComputerConfigurationByID($ID, $Payload) {
+        $Resource = "computerconfigurations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates computerconfiguration by id
+    [psobject] UpdateComputerConfigurationByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "computerconfigurations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes computerconfiguration by name
+    [psobject] DeleteComputerConfigurationByName($Name) {
+        $Resource = "computerconfigurations/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes computerconfiguration by id
+    [psobject] DeleteComputerConfigurationByID($ID) {
+        $Resource = "computerconfigurations/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /computerextensionattributes #####
 
     # Returns all computerextensionattributes

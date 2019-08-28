@@ -3882,6 +3882,58 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /vppassignments #####
+
+    # Returns all vppassignments
+    [psobject] GetVPPAssignments() {
+        $Resource = "vppassignments"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns vppassignment by id
+    [psobject] GetVPPAssignmentById($ID) {
+        $Resource = "vppassignments/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new vppassignment
+    [psobject] CreateVPPAssignment($Payload) {
+        $Resource = "vppassignments/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates vppassignment by id
+    [psobject] UpdateVPPAssignmentByID($ID, $Payload) {
+        $Resource = "vppassignments/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates vppassignment by id
+    [psobject] UpdateVPPAssignmentByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.LocalName)//id").InnerText
+        $Resource = "vppassignments/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+     # Deletes vppassignment by id
+    [psobject] DeleteVPPAssignmentByID($ID) {
+        $Resource = "vppassignments/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  / #####
 
 

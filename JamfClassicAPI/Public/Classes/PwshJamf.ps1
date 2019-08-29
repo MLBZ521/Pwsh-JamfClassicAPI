@@ -753,6 +753,141 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /byoprofiles #####
+
+    # Returns all byoprofiles
+    [psobject] GetBYOProfiles() {
+        $Resource = "byoprofiles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns byoprofile by name
+    [psobject] GetBYOProfileByName($Name) {
+        $Resource = "byoprofiles/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns byoprofile by id
+    [psobject] GetBYOProfileById($ID) {
+        $Resource = "byoprofiles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns byoprofile by site name
+    [psobject] GetBYOProfileBySiteName($SiteName) {
+        $Resource = "byoprofiles/site/name/${SiteName}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns byoprofile by site id
+    [psobject] GetBYOProfileBySiteId($SiteID) {
+        $Resource = "byoprofiles/site/id/${SiteID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new byoprofile
+    [psobject] CreateBYOProfile($Payload) {
+        $Resource = "byoprofiles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by name
+    [psobject] UpdateBYOProfileByName($Name, $Payload) {
+        $Resource = "byoprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by name
+    [psobject] UpdateBYOProfileByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "byoprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by site name
+    [psobject] UpdateBYOProfileBySiteName($SiteName, $Payload) {
+        $Resource = "byoprofiles/site/name/${SiteName}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by site name
+    [psobject] UpdateBYOProfileBySiteName($Payload) {
+        $SiteName = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//site/name").InnerText
+        $Resource = "byoprofiles/site/name/${SiteName}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by id
+    [psobject] UpdateBYOProfileByID($ID, $Payload) {
+        $Resource = "byoprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by id
+    [psobject] UpdateBYOProfileByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "byoprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by site id
+    [psobject] UpdateBYOProfileBySiteID($SiteID, $Payload) {
+        $Resource = "byoprofiles/site/id/${SiteID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates byoprofile by site id
+    [psobject] UpdateBYOProfileBySiteID($Payload) {
+        $SiteID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalID)//site/id").InnerText
+        $Resource = "byoprofiles/site/id/${SiteID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes byoprofile by name
+    [psobject] DeleteBYOProfileByName($Name) {
+        $Resource = "byoprofiles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes byoprofile by id
+    [psobject] DeleteBYOProfileByID($ID) {
+        $Resource = "byoprofiles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /categories #####
 
     # Returns all categories

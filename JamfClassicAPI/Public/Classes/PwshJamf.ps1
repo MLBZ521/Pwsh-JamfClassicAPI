@@ -3114,6 +3114,148 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledeviceprovisioningprofiles #####
+
+    # Returns all mobiledeviceprovisioningprofiles
+    [psobject] GetMobileDeviceProvisioningProfiles() {
+        $Resource = "mobiledeviceprovisioningprofiles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceprovisioningprofile by name
+    [psobject] GetMobileDeviceProvisioningProfileByName($Name) {
+        $Resource = "mobiledeviceprovisioningprofiles/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceprovisioningprofile by id
+    [psobject] GetMobileDeviceProvisioningProfileById($ID) {
+        $Resource = "mobiledeviceprovisioningprofiles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceprovisioningprofile by uuid
+    [psobject] GetMobileDeviceProvisioningProfileByUUID($UUID) {
+        $Resource = "mobiledeviceprovisioningprofiles/uuid/${UUID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceprovisioningprofile Subsets by name
+    [psobject] GetMobileDeviceProvisioningProfileSubsetByName($Name, $Subset) {
+        $Resource = "mobiledeviceprovisioningprofiles/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceprovisioningprofile Subsets by id
+    [psobject] GetMobileDeviceProvisioningProfileSubsetById($ID, $Subset) {
+        $Resource = "mobiledeviceprovisioningprofiles/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceprovisioningprofile Subsets by uuid
+    [psobject] GetMobileDeviceProvisioningProfileSubsetByUUID($UUID, $Subset) {
+        $Resource = "mobiledeviceprovisioningprofiles/uuid/${UUID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new mobiledeviceprovisioningprofile
+    [psobject] CreateMobileDeviceProvisioningProfile($Payload) {
+        $Resource = "mobiledeviceprovisioningprofiles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceprovisioningprofile by name
+    [psobject] UpdateMobileDeviceProvisioningProfileByName($Name, $Payload) {
+        $Resource = "mobiledeviceprovisioningprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceprovisioningprofile by name
+    [psobject] UpdateMobileDeviceProvisioningProfileByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "mobiledeviceprovisioningprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceprovisioningprofile by id
+    [psobject] UpdateMobileDeviceProvisioningProfileByID($ID, $Payload) {
+        $Resource = "mobiledeviceprovisioningprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceprovisioningprofile by id
+    [psobject] UpdateMobileDeviceProvisioningProfileByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "mobiledeviceprovisioningprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceprovisioningprofile by uuid
+    [psobject] UpdateMobileDeviceProvisioningProfileByUUID($UUID, $Payload) {
+        $Resource = "mobiledeviceprovisioningprofiles/uuid/${UUID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceprovisioningprofile by uuid
+    [psobject] UpdateMobileDeviceProvisioningProfileByUUID($Payload) {
+        $UUID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//uuid").InnerText
+        $Resource = "mobiledeviceprovisioningprofiles/uuid/${UUID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes mobiledeviceprovisioningprofile by name
+    [psobject] DeleteMobileDeviceProvisioningProfileByName($Name) {
+        $Resource = "mobiledeviceprovisioningprofiles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceprovisioningprofile by id
+    [psobject] DeleteMobileDeviceProvisioningProfileByID($ID) {
+        $Resource = "mobiledeviceprovisioningprofiles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceprovisioningprofile by uuid
+    [psobject] DeleteMobileDeviceProvisioningProfileByUUID($UUID) {
+        $Resource = "mobiledeviceprovisioningprofiles/uuid/${UUID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevices #####
 
     # Returns all mobiledevices

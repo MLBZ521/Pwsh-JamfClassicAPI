@@ -2734,6 +2734,148 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledeviceenrollmentprofiles #####
+
+    # Returns all mobiledeviceenrollmentprofiles
+    [psobject] GetMobileDeviceEnrollmentProfiles() {
+        $Resource = "mobiledeviceenrollmentprofiles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceenrollmentprofile by name
+    [psobject] GetMobileDeviceEnrollmentProfileByName($Name) {
+        $Resource = "mobiledeviceenrollmentprofiles/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceenrollmentprofile by id
+    [psobject] GetMobileDeviceEnrollmentProfileById($ID) {
+        $Resource = "mobiledeviceenrollmentprofiles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceenrollmentprofile by invitation
+    [psobject] GetMobileDeviceEnrollmentProfileByInvitation($Invitation) {
+        $Resource = "mobiledeviceenrollmentprofiles/invitation/${Invitation}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceenrollmentprofile Subsets by name
+    [psobject] GetMobileDeviceEnrollmentProfileSubsetByName($Name, $Subset) {
+        $Resource = "mobiledeviceenrollmentprofiles/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceenrollmentprofile Subsets by id
+    [psobject] GetMobileDeviceEnrollmentProfileSubsetById($ID, $Subset) {
+        $Resource = "mobiledeviceenrollmentprofiles/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceenrollmentprofile Subsets by invitation
+    [psobject] GetMobileDeviceEnrollmentProfileSubsetByInvitation($Invitation, $Subset) {
+        $Resource = "mobiledeviceenrollmentprofiles/invitation/${Invitation}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new mobiledeviceenrollmentprofile
+    [psobject] CreateMobileDeviceEnrollmentProfile($Payload) {
+        $Resource = "mobiledeviceenrollmentprofiles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceenrollmentprofile by name
+    [psobject] UpdateMobileDeviceEnrollmentProfileByName($Name, $Payload) {
+        $Resource = "mobiledeviceenrollmentprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceenrollmentprofile by name
+    [psobject] UpdateMobileDeviceEnrollmentProfileByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "mobiledeviceenrollmentprofiles/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceenrollmentprofile by id
+    [psobject] UpdateMobileDeviceEnrollmentProfileByID($ID, $Payload) {
+        $Resource = "mobiledeviceenrollmentprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceenrollmentprofile by id
+    [psobject] UpdateMobileDeviceEnrollmentProfileByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "mobiledeviceenrollmentprofiles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceenrollmentprofile by invitation
+    [psobject] UpdateMobileDeviceEnrollmentProfileByInvitation($Invitation, $Payload) {
+        $Resource = "mobiledeviceenrollmentprofiles/invitation/${Invitation}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceenrollmentprofile by invitation
+    [psobject] UpdateMobileDeviceEnrollmentProfileByInvitation($Payload) {
+        $Invitation = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//invitation").InnerText
+        $Resource = "mobiledeviceenrollmentprofiles/invitation/${Invitation}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes mobiledeviceenrollmentprofile by name
+    [psobject] DeleteMobileDeviceEnrollmentProfileByName($Name) {
+        $Resource = "mobiledeviceenrollmentprofiles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceenrollmentprofile by id
+    [psobject] DeleteMobileDeviceEnrollmentProfileByID($ID) {
+        $Resource = "mobiledeviceenrollmentprofiles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceenrollmentprofile by invitation
+    [psobject] DeleteMobileDeviceEnrollmentProfileByInvitation($Invitation) {
+        $Resource = "mobiledeviceenrollmentprofiles/invitation/${Invitation}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

@@ -3029,6 +3029,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledeviceinvitations #####
+
+    # Returns all mobiledeviceinvitations
+    [psobject] GetMobileDeviceInvitations() {
+        $Resource = "mobiledeviceinvitations"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceinvitation by id
+    [psobject] GetMobileDeviceInvitationById($ID) {
+        $Resource = "mobiledeviceinvitations/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceinvitation by invitation
+    [psobject] GetMobileDeviceInvitationByInvitation($Invitation) {
+        $Resource = "mobiledeviceinvitations/invitation/${Invitation}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new mobiledeviceinvitation
+    [psobject] CreateMobileDeviceInvitation($Payload) {
+        $Resource = "mobiledeviceinvitations/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceinvitation by id
+    [psobject] UpdateMobileDeviceInvitationByID($ID, $Payload) {
+        $Resource = "mobiledeviceinvitations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceinvitation by id
+    [psobject] UpdateMobileDeviceInvitationByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "mobiledeviceinvitations/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceinvitation by invitation
+    [psobject] UpdateMobileDeviceInvitationByInvitation($Invitation, $Payload) {
+        $Resource = "mobiledeviceinvitations/invitation/${Invitation}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceinvitation by invitation
+    [psobject] UpdateMobileDeviceInvitationByInvitation($Payload) {
+        $Invitation = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//invitation").InnerText
+        $Resource = "mobiledeviceinvitations/invitation/${Invitation}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes mobiledeviceinvitation by id
+    [psobject] DeleteMobileDeviceInvitationByID($ID) {
+        $Resource = "mobiledeviceinvitations/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceinvitation by invitation
+    [psobject] DeleteMobileDeviceInvitationByInvitation($Invitation) {
+        $Resource = "mobiledeviceinvitations/invitation/${Invitation}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevices #####
 
     # Returns all mobiledevices

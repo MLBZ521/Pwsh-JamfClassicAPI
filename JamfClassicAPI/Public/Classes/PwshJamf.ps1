@@ -2441,6 +2441,164 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /mobiledeviceapplications #####
+
+    # Returns all mobiledeviceapplications
+    [psobject] GetMobileDeviceApplications() {
+        $Resource = "mobiledeviceapplications"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceapplication by name
+    [psobject] GetMobileDeviceApplicationByName($Name) {
+        $Resource = "mobiledeviceapplications/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceapplication by id
+    [psobject] GetMobileDeviceApplicationById($ID) {
+        $Resource = "mobiledeviceapplications/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceapplication by bundleid
+    [psobject] GetMobileDeviceApplicationByBundleID($BundleID) {
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceapplication by bundleid and version
+    [psobject] GetMobileDeviceApplicationByBundleIDAndVersion($BundleID, $Version) {
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}/version/${Version}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceapplication Subsets by name
+    [psobject] GetMobileDeviceApplicationSubsetByName($Name, $Subset) {
+        $Resource = "mobiledeviceapplications/name/${Name}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns mobiledeviceapplication Subsets by id
+    [psobject] GetMobileDeviceApplicationSubsetById($ID, $Subset) {
+        $Resource = "mobiledeviceapplications/id/${ID}/subset/${Subset}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new mobiledeviceapplication
+    [psobject] CreateMobileDeviceApplication($Payload) {
+        $Resource = "mobiledeviceapplications/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by name
+    [psobject] UpdateMobileDeviceApplicationByName($Name, $Payload) {
+        $Resource = "mobiledeviceapplications/id/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by name
+    [psobject] UpdateMobileDeviceApplicationByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "mobiledeviceapplications/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by id
+    [psobject] UpdateMobileDeviceApplicationByID($ID, $Payload) {
+        $Resource = "mobiledeviceapplications/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by id
+    [psobject] UpdateMobileDeviceApplicationByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "mobiledeviceapplications/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by bundleid
+    [psobject] UpdateMobileDeviceApplicationByBundleID($BundleID, $Payload) {
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by bundleid and version
+    [psobject] UpdateMobileDeviceApplicationByBundleID($BundleID, $Payload, $Version) {
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}/version/${Version}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates mobiledeviceapplication by bundleid
+    [psobject] UpdateMobileDeviceApplicationByBundleID($Payload) {
+        $BundleID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//bundleid").InnerText
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes mobiledeviceapplication by name
+    [psobject] DeleteMobileDeviceApplicationByName($Name) {
+        $Resource = "mobiledeviceapplications/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceapplication by id
+    [psobject] DeleteMobileDeviceApplicationByID($ID) {
+        $Resource = "mobiledeviceapplications/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceapplication by bundleid
+    [psobject] DeleteMobileDeviceApplicationByBundleID($BundleID) {
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes mobiledeviceapplication by bundleid and version
+    [psobject] DeleteMobileDeviceApplicationByBundleID($BundleID, $Version) {
+        $Resource = "mobiledeviceapplications/bundleid/${BundleID}/version/${Version}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /mobiledevicegroups #####
 
     # Returns all mobiledevicegroups

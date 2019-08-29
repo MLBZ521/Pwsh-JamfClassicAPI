@@ -3937,6 +3937,58 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /patchsoftwaretitles #####
+
+    # Returns all patchsoftwaretitles
+    [psobject] GetPatchSoftwareTitles() {
+        $Resource = "patchsoftwaretitles"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns patchsoftwaretitle by id
+    [psobject] GetPatchSoftwareTitleById($ID) {
+        $Resource = "patchsoftwaretitles/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new patchsoftwaretitle
+    [psobject] CreatePatchSoftwareTitle($Payload) {
+        $Resource = "patchsoftwaretitles/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates patchsoftwaretitle by id
+    [psobject] UpdatePatchSoftwareTitleByID($ID, $Payload) {
+        $Resource = "patchsoftwaretitles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates patchsoftwaretitle by id
+    [psobject] UpdatePatchSoftwareTitleByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "patchsoftwaretitles/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes patchsoftwaretitle by id
+    [psobject] DeletePatchSoftwareTitleByID($ID) {
+        $Resource = "patchsoftwaretitles/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /policies #####
 
     # Returns all policies

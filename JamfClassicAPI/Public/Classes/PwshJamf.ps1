@@ -654,7 +654,7 @@ Class PwshJamf {
         return $Results
     }
 
-    # Helper to build an advanced searches from Subsets
+    # Helper to build an advanced search from Subsets
     [psobject] BuildAdvancedSearch($Type, $Subsets) {
         $Payload = $this._BuildXML("advanced_${Type}_search")
         $Payload = $this._AddXMLElement($Payload, "//criteria", "criterion")
@@ -895,7 +895,7 @@ Class PwshJamf {
 
     # Updates class by name
     [psobject] UpdateClassByName($Name, $Payload) {
-        $Resource = "classes/id/${Name}"
+        $Resource = "classes/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -1034,7 +1034,7 @@ Class PwshJamf {
 
     # Updates computerconfiguration by name
     [psobject] UpdateComputerConfigurationByName($Name, $Payload) {
-        $Resource = "computerconfigurations/id/${Name}"
+        $Resource = "computerconfigurations/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -1348,7 +1348,7 @@ Class PwshJamf {
         return $Results
     }
 
-    # Returns computerinvitation by id
+    # Returns computerinvitation by invitation
     [psobject] GetComputerInvitationByInvitation($Invitation) {
         $Resource = "computerinvitations/Invitation/${Invitation}"
         $Method = "GET"
@@ -1900,7 +1900,7 @@ Class PwshJamf {
 
     # Updates ebook by name
     [psobject] UpdateeBookByName($Name, $Payload) {
-        $Resource = "ebooks/id/${Name}"
+        $Resource = "ebooks/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -2190,7 +2190,7 @@ Class PwshJamf {
 
     # Updates licensedsoftware by name
     [psobject] UpdateLicensedSoftwareByName($Name, $Payload) {
-        $Resource = "licensedsoftware/id/${Name}"
+        $Resource = "licensedsoftware/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -2291,7 +2291,7 @@ Class PwshJamf {
 
     # Updates macapplication by name
     [psobject] UpdateMacApplicationByName($Name, $Payload) {
-        $Resource = "macapplications/id/${Name}"
+        $Resource = "macapplications/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -2392,7 +2392,7 @@ Class PwshJamf {
 
     # Updates managedpreferenceprofile by name
     [psobject] UpdateManagedPreferenceProfileByName($Name, $Payload) {
-        $Resource = "managedpreferenceprofiles/id/${Name}"
+        $Resource = "managedpreferenceprofiles/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -2509,7 +2509,7 @@ Class PwshJamf {
 
     # Updates mobiledeviceapplication by name
     [psobject] UpdateMobileDeviceApplicationByName($Name, $Payload) {
-        $Resource = "mobiledeviceapplications/id/${Name}"
+        $Resource = "mobiledeviceapplications/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -3732,7 +3732,7 @@ Class PwshJamf {
 
     # Updates managedpreferenceprofile by name
     [psobject] UpdateRestrictedSoftwareByName($Name, $Payload) {
-        $Resource = "restrictedsoftware/id/${Name}"
+        $Resource = "restrictedsoftware/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results
@@ -3817,7 +3817,7 @@ Class PwshJamf {
 
     # Updates script by name
     [psobject] UpdateScriptByName($Name, $Payload) {
-        $Resource = "scripts/id/${Name}"
+        $Resource = "scripts/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
         return $Results

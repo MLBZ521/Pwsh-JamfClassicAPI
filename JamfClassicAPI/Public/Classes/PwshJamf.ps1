@@ -4688,6 +4688,91 @@ Class PwshJamf {
     }
 
 
+    ##### Resource Path:  /usergroups #####
+
+    # Returns all usergroups
+    [psobject] GetUserGroups() {
+        $Resource = "usergroups"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns usergroup by name
+    [psobject] GetUserGroupByName($Name) {
+        $Resource = "usergroups/name/${Name}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Returns usergroup by id
+    [psobject] GetUserGroupById($ID) {
+        $Resource = "usergroups/id/${ID}"
+        $Method = "GET"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Creates new usergroup
+    [psobject] CreateUserGroup($Payload) {
+        $Resource = "usergroups/id/0"
+        $Method = "POST"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates usergroup by name
+    [psobject] UpdateUserGroupByName($Name, $Payload) {
+        $Resource = "usergroups/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates usergroup by name
+    [psobject] UpdateUserGroupByName($Payload) {
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Resource = "usergroups/name/${Name}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates usergroup by id
+    [psobject] UpdateUserGroupByID($ID, $Payload) {
+        $Resource = "usergroups/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Updates usergroup by id
+    [psobject] UpdateUserGroupByID($Payload) {
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $Resource = "usergroups/id/${ID}"
+        $Method = "PUT"
+        $Results = $this.InvokeAPI($Resource, $Method, $Payload)
+        return $Results
+    }
+
+    # Deletes usergroup by name
+    [psobject] DeleteUserGroupByName($Name) {
+        $Resource = "usergroups/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes usergroup by id
+    [psobject] DeleteUserGroupByID($ID) {
+        $Resource = "usergroups/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+
     ##### Resource Path:  /vppaccounts #####
 
     # Returns all vppaccounts

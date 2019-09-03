@@ -245,7 +245,7 @@ Class PwshJamf {
     }
 
     # Returns account by username
-    [psobject] GetAccountByUsername($Name) {
+    [psobject] GetAccountByUserName($Name) {
         $Resource = "accounts/username/${Name}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -253,7 +253,7 @@ Class PwshJamf {
     }
 
     # Returns account by userid
-    [psobject] GetAccountByUserid($ID) {
+    [psobject] GetAccountByUserID($ID) {
         $Resource = "accounts/userid/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -269,7 +269,7 @@ Class PwshJamf {
     }
 
     # Updates account by username
-    [psobject] UpdateAccountByUsername($Name, $Payload) {
+    [psobject] UpdateAccountByUserName($Name, $Payload) {
         $Resource = "accounts/username/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -277,7 +277,7 @@ Class PwshJamf {
     }
 
     # Updates account by username
-    [psobject] UpdateAccountByUsername($Payload) {
+    [psobject] UpdateAccountByUserName($Payload) {
         $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "accounts/username/${Name}"
         $Method = "PUT"
@@ -286,7 +286,7 @@ Class PwshJamf {
     }
 
     # Updates account by userid
-    [psobject] UpdateAccountByUserid($ID, $Payload) {
+    [psobject] UpdateAccountByUserID($ID, $Payload) {
         $Resource = "accounts/userid/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -294,7 +294,7 @@ Class PwshJamf {
     }
 
     # Updates account by userid
-    [psobject] UpdateAccountByUserid($Payload) {
+    [psobject] UpdateAccountByUserID($Payload) {
         $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
         $Resource = "accounts/userid/${ID}"
         $Method = "PUT"
@@ -303,7 +303,7 @@ Class PwshJamf {
     }
 
     # Deletes account by username
-    [psobject] DeleteAccountByUsername($Name) {
+    [psobject] DeleteAccountByUserName($Name) {
         $Resource = "accounts/username/${Name}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -311,7 +311,7 @@ Class PwshJamf {
     }
 
     # Deletes account by userid
-    [psobject] DeleteAccountByUserid($ID) {
+    [psobject] DeleteAccountByUserID($ID) {
         $Resource = "accounts/userid/${ID}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -319,7 +319,7 @@ Class PwshJamf {
     }
 
     # Returns account by groupname
-    [psobject] GetAccountByGroupname($Name) {
+    [psobject] GetAccountByGroupName($Name) {
         $Resource = "accounts/groupname/${Name}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -327,7 +327,7 @@ Class PwshJamf {
     }
 
     # Returns account by groupid
-    [psobject] GetAccountByGroupid($ID) {
+    [psobject] GetAccountByGroupID($ID) {
         $Resource = "accounts/groupid/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -343,7 +343,7 @@ Class PwshJamf {
     }
 
     # Updates account by groupname
-    [psobject] UpdateAccountByGroupname($Name, $Payload) {
+    [psobject] UpdateAccountByGroupName($Name, $Payload) {
         $Resource = "accounts/groupname/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -351,7 +351,7 @@ Class PwshJamf {
     }
 
     # Updates account by groupname
-    [psobject] UpdateAccountByGroupname($Payload) {
+    [psobject] UpdateAccountByGroupName($Payload) {
         $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
         $Resource = "accounts/groupname/${Name}"
         $Method = "PUT"
@@ -377,7 +377,7 @@ Class PwshJamf {
     }
 
     # Deletes account by groupname
-    [psobject] DeleteAccountByGroupname($Name) {
+    [psobject] DeleteAccountByGroupName($Name) {
         $Resource = "accounts/groupname/${Name}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -385,7 +385,7 @@ Class PwshJamf {
     }
 
     # Deletes account by groupid
-    [psobject] DeleteAccountByID($ID) {
+    [psobject] DeleteAccountByGroupID($ID) {
         $Resource = "accounts/groupid/${ID}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2000,7 +2000,7 @@ Class PwshJamf {
     ##### Resource Path:  /ebooks #####
 
     # Returns all ebooks
-    [psobject] GeteBooks() {
+    [psobject] GetBooks() {
         $Resource = "ebooks"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)

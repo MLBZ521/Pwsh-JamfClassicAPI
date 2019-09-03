@@ -32,6 +32,10 @@ Class PwshJamf {
 
     # Generic helper method to invoke GET and DELETE REST Methods against a Jamf Pro Server.
     [psobject] InvokeAPI($Resource, $Method) {
+
+        # Encode (aka escape) any chacters in the resource url path.
+        $Resource = $this._URLEncode($Resource)
+
         try {
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -Verbose -ErrorAction SilentlyContinue
             $Return = $this._Verbosity($Method, $Results)
@@ -47,6 +51,10 @@ Class PwshJamf {
 
     # Generic helper method to invoke POST and PUT REST Methods against a Jamf Pro Server.
     [psobject] InvokeAPI($Resource, $Method, $Payload) {
+
+        # Encode (aka escape) any chacters in the resource url path.
+        $Resource = $this._URLEncode($Resource)
+
         try {
             $Results = Invoke-RestMethod -Uri "$($this.Server)JSSResource/$Resource" -Method $Method -Headers $this.Headers -ContentType "application/xml" -Body $Payload -Verbose -ErrorAction SilentlyContinue
             $Return = $this._Verbosity($Method, $Results)
@@ -113,6 +121,12 @@ Class PwshJamf {
         $errorDescription = $($ResponseBody -split [Environment]::NewLine)
         Write-Host -Message "Response:  $($errorDescription[5]) - $($errorDescription[6])" -ForegroundColor "Magenta"
         return $errorDescription[6]
+    }
+
+    # Helper method to sanitize text for use in a URL
+    [psobject] _URLEncode($DirtyText) {
+        $CleanText = ([System.Net.WebUtility]::HTMLDecode($DirtyText)).Replace($DirtyText.Split('/')[-1], [System.Net.WebUtility]::UrlEncode($DirtyText.Split('/')[-1]))
+        return $CleanText
     }
 
     # Helper method that will verify credentials by doing an API call and checking the result to verify permissions.

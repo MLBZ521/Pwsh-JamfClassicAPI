@@ -4002,6 +4002,14 @@ Class PwshJamf {
         return $Results
     }
 
+    # Deletes patchsoftwaretitle by name
+    [psobject] DeletePatchSoftwareTitleByName($Name) {
+        $Resource = "patchsoftwaretitles/name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
 
     ##### Resource Path:  /policies #####
 
@@ -4890,6 +4898,15 @@ Class PwshJamf {
         return $Results
     }
 
+    # Deletes vppassignment by name
+    # Not 100% sure this resourse/endpoint works/is valid -- will update when tested.
+    [psobject] DeleteVPPAssignmentByName($Name) {
+        $Resource = "vppassignments/Name/${Name}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
 
     ##### Resource Path:  /vppinvitations #####
 
@@ -4945,6 +4962,15 @@ Class PwshJamf {
     # Deletes vppinvitation by id
     [psobject] DeleteVPPInvitationByID($ID) {
         $Resource = "vppinvitations/id/${ID}"
+        $Method = "DELETE"
+        $Results = $this.InvokeAPI($Resource, $Method)
+        return $Results
+    }
+
+    # Deletes vppinvitation by name
+    # Not 100% sure this resourse/endpoint works/is valid -- will update when tested.
+    [psobject] DeleteVPPInvitationByName($Name) {
+        $Resource = "vppinvitations/name/${Name}"
         $Method = "DELETE"
         $Results = $this.InvokeAPI($Resource, $Method)
         return $Results

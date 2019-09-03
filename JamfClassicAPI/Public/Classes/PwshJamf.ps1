@@ -4502,54 +4502,224 @@ Class PwshJamf {
 
     # Deletes site by name
     [psobject] DeleteSiteByName($Name) {
-        $Resource = "sites/name/${Name}"
-        $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource, $Method)
-
-        # If the delete failed because items exist in the Site, delete those items.
-        if ( $Results -ne $null ) {
-            (($Results -split ':',2)[1]).Split(",") | ForEach-Object {
-                switch ( $_ ) {
-                    { "$(${_}.Split(":")[0])" -eq "Policy" } { $this.DeletePolicyByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Smart Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Smart Mobile Device Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
-                    Default { Write-host "Something I can't delete is in this Site." }
-                }
-            }
-
-            # Try deleting the Site again
-            $Results = $this.InvokeAPI($Resource, $Method)
-        }
-
+        $Results = $this._DeleteSiteHelper($Name)
         return $Results
     }
 
     # Deletes site by id
     [psobject] DeleteSiteByID($ID) {
         $Resource = "sites/id/${ID}"
+        $Method = "GET"
+        $Site = $this.InvokeAPI($Resource, $Method)
+        $Name = $Site.SelectSingleName("//name")
+        $Results = $this._DeleteSiteHelper($Name)
+
+        return $Results
+    }
+
+    [psobject] _DeleteSiteHelper($Name) {
+        $Resource = "sites/name/${Name}"
         $Method = "DELETE"
+
+        # Collect all objects that are deleted...
+        $DeletedItems = @()
+
+        # Frist, we'll have to manually search for items that may be in a Site to delete them.
+        # Delete Groups
+        $allItems = $this.GetAccounts()
+        if ( ($allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)")).Count -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                if ( $eachItem.SelectSingleNode("./site/name").InnerText -eq $Name ) {
+                    $this.DeleteAccountByGroupID($eachItem.SelectSingleNode("./id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$(${eachItem}.name)" } )
+                }
+            }
+        }
+        
+        ### All Advanced Searches are commented out as the process to "lookup" the configuration of an advanced search, also performs the search...  I think it's best not to run every search...so these will need to be a manual check/delete in the JPS.
+
+        # # Delete Advanced Computer Searches
+        # $allItems = $this.GetAdvancedComputerSearches()
+        # if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+        #     ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+        #         $detailedItem = $this.GetAdvancedComputerSearchById($eachItem.id)
+        #         if ( $detailedItem.SelectSingleNode("./site/name").InnerText -eq $Name ) {
+        #             $this.DeleteAdvancedComputerSearchByID($detailedItem.SelectSingleNode("//id").InnerText)
+        #             $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+        #         }
+        #     }
+        # }
+        # # Delete Advanced Mobile Device Searches
+        # $allItems = $this.GetAdvancedMobileDeviceSearches()
+        # if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+        #     ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+        #         $detailedItem = $this.GetAdvancedMobileDeviceSearchById($eachItem.id)
+        #         if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+        #             $this.DeleteAdvancedMobileDeviceSearchByID($detailedItem.SelectSingleNode("//id").InnerText)
+        #             $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+        #         }
+        #     }
+        # }
+        # # Delete Advanced User Searches
+        # $allItems = $this.GetAdvancedUserSearches()
+        # if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+        #     ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+        #         $detailedItem = $this.GetAdvancedUserSearchById($eachItem.id)
+        #         if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+        #             $this.DeleteAdvancedUserSearchByID($detailedItem.SelectSingleNode("//id").InnerText)
+        #             $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+        #         }
+        #     }
+        # }
+        # Delete Classes
+        $allItems = $this.GetClasses()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetClassById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteClassByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Computer Configurations
+        $allItems = $this.GetComputerConfigurations()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetComputerConfigurationById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteComputerConfigurationByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Managed Preference Profiles
+        $allItems = $this.GetManagedPreferenceProfiles()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetManagedPreferenceProfileById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteManagedPreferenceProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Computer Invitations
+        $allItems = $this.GetComputerInvitations()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetComputerInvitationById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteComputerInvitationByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Licensed Software
+        $allItems = $this.GetLicensedSoftware()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//licensed_software/licensed_software") ) {
+                Write-Host "$(${eachItem}.name)"
+                $detailedItem = $this.GetLicensedSoftwareById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteLicensedSoftwareByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Mobile Device Enrollment Profiles
+        $allItems = $this.GetMobileDeviceEnrollmentProfiles()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetMobileDeviceEnrollmentProfileById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteMobileDeviceEnrollmentProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Mobile Device Provisioning Profiles
+        $allItems = $this.GetMobileDeviceProvisioningProfiles()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetMobileDeviceProvisioningProfileById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteMobileDeviceProvisioningProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete Mobile Device Invitations
+        $allItems = $this.GetMobileDeviceInvitations()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetMobileDeviceInvitationById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteMobileDeviceInvitationByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete BYO Profiles
+        $allItems = $this.GetBYOProfiles()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetBYOProfileById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteBYOProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        # Delete VPP Accounts
+        $allItems = $this.GetVPPAccounts()
+        if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
+            ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
+                $detailedItem = $this.GetVPPAccountById($eachItem.id)
+                if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
+                    $this.DeleteVPPAccountByID($detailedItem.SelectSingleNode("//id").InnerText)
+                    $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
+                }
+            }
+        }
+        
+        # Try deleting the Site now...
         $Results = $this.InvokeAPI($Resource, $Method)
 
         # If the delete failed because items exist in the Site, delete those items.
         if ( $Results -ne $null ) {
             (($Results -split ':',2)[1]).Split(",") | ForEach-Object {
-                switch ( $_ ) {
-                    { "$(${_}.Split(":")[0])" -eq "Policy" } { $this.DeletePolicyByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Smart Computer Group" } { $this.DeleteComputerGroupByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Smart Mobile Device Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
-                    { "$(${_}.Split(":")[0])" -eq "Static Computer Group" } { $this.DeleteMobileDeviceGroupByName($_.Split(":")[1]) }
-                    Default { Write-host "Something I can't delete is in this Site." }
+                $ObjectType = $_.Split(":")[0]
+                $ObjectName = $_.Split(":")[1]
+
+                switch ( $ObjectType ) {
+                    "Policy" { $this.DeletePolicyByName($ObjectName) }
+                    "OS X Configuration Profile" { $this.DeleteComputerConfigurationProfileByName($ObjectName) }
+                    "Restricted Software" { $this.DeleteRestrictedSoftwareByName($ObjectName) }
+                    "Smart Computer Group" { $this.DeleteComputerGroupByName($ObjectName) }
+                    "Static Computer Group" { $this.DeleteComputerGroupByName($ObjectName) }
+                    "Smart Mobile Device Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
+                    "Static Computer Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
+                    "Mobile Device Configuration Profile" { $this.DeleteMobileDeviceConfigurationProfileByName($ObjectName) }
+                    "Mobile Device Application" { $this.DeleteMobileDeviceApplicationByName($ObjectName) }
+                    "eBook" { $this.DeleteeBookByName($ObjectName) }
+                    "Smart User Group" { $this.DeleteUserGroupByName($ObjectName) }
+                    "Static User Group" { $this.DeleteUserGroupByName($ObjectName) }
+                    "Patch Management Software Title" { $this.DeletePatchSoftwareTitleByName($ObjectName) }
+                    "Mac Application" { $this.DeleteMacApplicationByName($ObjectName) }
+                    "VPP Assignment" { $this.DeleteVPPAssignmentByName($ObjectName) }
+                    "VPP Invitation" { $this.DeleteVPPInvitationByName($ObjectName) }
+                    Default { Write-host "Something I don't know how to delete is in this Site." }
                 }
+
+                $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="${ObjectType}"; name="$(${ObjectName})" } )
             }
 
             # Try deleting the Site again
             $Results = $this.InvokeAPI($Resource, $Method)
         }
 
-        return $Results
+        return "Deleted (or attempted) the following items:",$DeletedItems, $Results
     }
 
 

@@ -125,7 +125,8 @@ Class PwshJamf {
 
     # Helper method to sanitize text for use in a URL
     [psobject] _URLEncode($DirtyText) {
-        $CleanText = ([System.Net.WebUtility]::HTMLDecode($DirtyText)).Replace($DirtyText.Split('/')[-1], [System.Net.WebUtility]::UrlEncode($DirtyText.Split('/')[-1]))
+        $DirtyText = [System.Net.WebUtility]::HTMLDecode($DirtyText)
+        $CleanText = ($DirtyText).Replace($DirtyText.Split('/')[-1], [System.Net.WebUtility]::UrlEncode($DirtyText.Split('/')[-1]))
         return $CleanText
     }
 
@@ -4002,13 +4003,14 @@ Class PwshJamf {
         return $Results
     }
 
-    # Deletes patchsoftwaretitle by name
-    [psobject] DeletePatchSoftwareTitleByName($Name) {
-        $Resource = "patchsoftwaretitles/name/${Name}"
-        $Method = "DELETE"
-        $Results = $this.InvokeAPI($Resource, $Method)
-        return $Results
-    }
+    # This endpoint doesn't seem to work; thinking the documentation has a typo...
+    # # Deletes patchsoftwaretitle by name
+    # [psobject] DeletePatchSoftwareTitleByName($Name) {
+    #     $Resource = "patchsoftwaretitles/name/${Name}"
+    #     $Method = "DELETE"
+    #     $Results = $this.InvokeAPI($Resource, $Method)
+    #     return $Results
+    # }
 
 
     ##### Resource Path:  /policies #####
@@ -4535,7 +4537,7 @@ Class PwshJamf {
                 }
             }
         }
-        
+
         ### All Advanced Searches are commented out as the process to "lookup" the configuration of an advanced search, also performs the search...  I think it's best not to run every search...so these will need to be a manual check/delete in the JPS.
 
         # # Delete Advanced Computer Searches
@@ -4619,7 +4621,6 @@ Class PwshJamf {
         $allItems = $this.GetLicensedSoftware()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//licensed_software/licensed_software") ) {
-                Write-Host "$(${eachItem}.name)"
                 $detailedItem = $this.GetLicensedSoftwareById($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteLicensedSoftwareByID($detailedItem.SelectSingleNode("//id").InnerText)
@@ -4682,7 +4683,7 @@ Class PwshJamf {
                 }
             }
         }
-        
+
         # Try deleting the Site now...
         $Results = $this.InvokeAPI($Resource, $Method)
 
@@ -4699,13 +4700,13 @@ Class PwshJamf {
                     "Smart Computer Group" { $this.DeleteComputerGroupByName($ObjectName) }
                     "Static Computer Group" { $this.DeleteComputerGroupByName($ObjectName) }
                     "Smart Mobile Device Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
-                    "Static Computer Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
+                    "Static Mobile Device Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
                     "Mobile Device Configuration Profile" { $this.DeleteMobileDeviceConfigurationProfileByName($ObjectName) }
                     "Mobile Device Application" { $this.DeleteMobileDeviceApplicationByName($ObjectName) }
                     "eBook" { $this.DeleteeBookByName($ObjectName) }
                     "Smart User Group" { $this.DeleteUserGroupByName($ObjectName) }
                     "Static User Group" { $this.DeleteUserGroupByName($ObjectName) }
-                    "Patch Management Software Title" { $this.DeletePatchSoftwareTitleByName($ObjectName) }
+                    "Patch Management Software Title" { Write-Host "You will need to manually delete Patch Object:  ${ObjectName}" }
                     "Mac Application" { $this.DeleteMacApplicationByName($ObjectName) }
                     "VPP Assignment" { $this.DeleteVPPAssignmentByName($ObjectName) }
                     "VPP Invitation" { $this.DeleteVPPInvitationByName($ObjectName) }

@@ -434,7 +434,7 @@ Class PwshJamf {
     }
 
     # Returns advanced computer search by id
-    [psobject] GetAdvancedComputerSearchById($ID) {
+    [psobject] GetAdvancedComputerSearchByID($ID) {
         $Resource = "advancedcomputersearches/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)
@@ -519,7 +519,7 @@ Class PwshJamf {
     }
 
     # Returns advanced mobile device search by id
-    [psobject] GetAdvancedMobileDeviceSearchById($ID) {
+    [psobject] GetAdvancedMobileDeviceSearchByID($ID) {
         $Resource = "advancedmobiledevicesearches/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)
@@ -604,7 +604,7 @@ Class PwshJamf {
     }
 
     # Returns advanced user search by id
-    [psobject] GetAdvancedUserSearchById($ID) {
+    [psobject] GetAdvancedUserSearchByID($ID) {
         $Resource = "advancedusersearches/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource,$Method)
@@ -714,7 +714,7 @@ Class PwshJamf {
     }
 
     # Returns building by id
-    [psobject] GetBuildingById($ID) {
+    [psobject] GetBuildingByID($ID) {
         $Resource = "buildings/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -787,7 +787,7 @@ Class PwshJamf {
     }
 
     # Returns byoprofile by id
-    [psobject] GetBYOProfileById($ID) {
+    [psobject] GetBYOProfileByID($ID) {
         $Resource = "byoprofiles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -922,7 +922,7 @@ Class PwshJamf {
     }
 
     # Returns category by id
-    [psobject] GetCategoryById($ID) {
+    [psobject] GetCategoryByID($ID) {
         $Resource = "categories/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1028,7 +1028,7 @@ Class PwshJamf {
     }
 
     # Returns class by id
-    [psobject] GetClassById($ID) {
+    [psobject] GetClassByID($ID) {
         $Resource = "classes/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1167,7 +1167,7 @@ Class PwshJamf {
     }
 
     # Returns computerconfiguration by id
-    [psobject] GetComputerConfigurationById($ID) {
+    [psobject] GetComputerConfigurationByID($ID) {
         $Resource = "computerconfigurations/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1252,7 +1252,7 @@ Class PwshJamf {
     }
 
     # Returns computerextensionattribute by id
-    [psobject] GetComputerExtensionAttributeById($ID) {
+    [psobject] GetComputerExtensionAttributeByID($ID) {
         $Resource = "computerextensionattributes/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1340,7 +1340,7 @@ Class PwshJamf {
     }
 
     # Returns computer group by id
-    [psobject] GetComputerGroupById($ID) {
+    [psobject] GetComputerGroupByID($ID) {
         $Resource = "computergroups/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1439,7 +1439,7 @@ Class PwshJamf {
     }
 
     # Updates static computer group by id (uses computer_additions and computer_deletions)
-    [psobject] UpdateStaticComputerGroupById($GroupID, $DeviceIdentifier, $ArrayOf_Computers, $Action) {
+    [psobject] UpdateStaticComputerGroupByID($GroupID, $DeviceIdentifier, $ArrayOf_Computers, $Action) {
         $Resource = "computergroups/id/${GroupID}"
         $Method = "PUT"
 
@@ -1491,7 +1491,7 @@ Class PwshJamf {
     }
 
     # Returns computerinvitation by id
-    [psobject] GetComputerInvitationById($ID) {
+    [psobject] GetComputerInvitationByID($ID) {
         $Resource = "computerinvitations/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1582,7 +1582,7 @@ Class PwshJamf {
     }
 
     # Returns computer by id
-    [psobject] GetComputerById($ID) {
+    [psobject] GetComputerByID($ID) {
         $Resource = "computers/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1622,7 +1622,7 @@ Class PwshJamf {
     }
 
     # Returns computer Subsets by id
-    [psobject] GetComputerSubsetById($ID, $Subset) {
+    [psobject] GetComputerSubsetByID($ID, $Subset) {
         $Resource = "computers/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1806,7 +1806,7 @@ Class PwshJamf {
     }
 
     # Returns department by id
-    [psobject] GetDepartmentById($ID) {
+    [psobject] GetDepartmentByID($ID) {
         $Resource = "departments/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1879,7 +1879,7 @@ Class PwshJamf {
     }
 
     # Returns directorybinding by id
-    [psobject] GetDirectoryBindingById($ID) {
+    [psobject] GetDirectoryBindingByID($ID) {
         $Resource = "directorybindings/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -1948,7 +1948,7 @@ Class PwshJamf {
     }
 
     # Returns diskencryptionconfigurations by id
-    [psobject] GetDiskEncryptionConfigurationById($ID) {
+    [psobject] GetDiskEncryptionConfigurationByID($ID) {
         $Resource = "diskencryptionconfigurations/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2001,7 +2001,7 @@ Class PwshJamf {
     ##### Resource Path:  /ebooks #####
 
     # Returns all ebooks
-    [psobject] GetBooks() {
+    [psobject] GeteBooks() {
         $Resource = "ebooks"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2017,7 +2017,7 @@ Class PwshJamf {
     }
 
     # Returns ebook by id
-    [psobject] GeteBookById($ID) {
+    [psobject] GeteBookByID($ID) {
         $Resource = "ebooks/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2033,7 +2033,7 @@ Class PwshJamf {
     }
 
     # Returns ebook Subsets by id
-    [psobject] GeteBookSubsetById($ID, $Subset) {
+    [psobject] GeteBookSubsetByID($ID, $Subset) {
         $Resource = "ebooks/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2137,7 +2137,7 @@ Class PwshJamf {
     }
 
     # Returns ibeacons by id
-    [psobject] GetiBeaconById($ID) {
+    [psobject] GetiBeaconByID($ID) {
         $Resource = "ibeacons/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2206,7 +2206,7 @@ Class PwshJamf {
     }
 
     # Returns ldapserver by id
-    [psobject] GetLDAPServerById($ID) {
+    [psobject] GetLDAPServerByID($ID) {
         $Resource = "ldapservers/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2323,7 +2323,7 @@ Class PwshJamf {
     }
 
     # Returns licensedsoftware by id
-    [psobject] GetLicensedSoftwareById($ID) {
+    [psobject] GetLicensedSoftwareByID($ID) {
         $Resource = "licensedsoftware/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2408,7 +2408,7 @@ Class PwshJamf {
     }
 
     # Returns macapplication by id
-    [psobject] GetMacApplicationById($ID) {
+    [psobject] GetMacApplicationByID($ID) {
         $Resource = "macapplications/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2424,7 +2424,7 @@ Class PwshJamf {
     }
 
     # Returns macapplication Subsets by id
-    [psobject] GetMacApplicationSubsetById($ID, $Subset) {
+    [psobject] GetMacApplicationSubsetByID($ID, $Subset) {
         $Resource = "macapplications/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2509,7 +2509,7 @@ Class PwshJamf {
     }
 
     # Returns managedpreferenceprofile by id
-    [psobject] GetManagedPreferenceProfileById($ID) {
+    [psobject] GetManagedPreferenceProfileByID($ID) {
         $Resource = "managedpreferenceprofiles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2525,7 +2525,7 @@ Class PwshJamf {
     }
 
     # Returns managedpreferenceprofile Subsets by id
-    [psobject] GetManagedPreferenceProfileSubsetById($ID, $Subset) {
+    [psobject] GetManagedPreferenceProfileSubsetByID($ID, $Subset) {
         $Resource = "managedpreferenceprofiles/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2610,7 +2610,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceapplication by id
-    [psobject] GetMobileDeviceApplicationById($ID) {
+    [psobject] GetMobileDeviceApplicationByID($ID) {
         $Resource = "mobiledeviceapplications/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2642,7 +2642,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceapplication Subsets by id
-    [psobject] GetMobileDeviceApplicationSubsetById($ID, $Subset) {
+    [psobject] GetMobileDeviceApplicationSubsetByID($ID, $Subset) {
         $Resource = "mobiledeviceapplications/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2768,7 +2768,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceenrollmentprofile by id
-    [psobject] GetMobileDeviceEnrollmentProfileById($ID) {
+    [psobject] GetMobileDeviceEnrollmentProfileByID($ID) {
         $Resource = "mobiledeviceenrollmentprofiles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2792,7 +2792,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceenrollmentprofile Subsets by id
-    [psobject] GetMobileDeviceEnrollmentProfileSubsetById($ID, $Subset) {
+    [psobject] GetMobileDeviceEnrollmentProfileSubsetByID($ID, $Subset) {
         $Resource = "mobiledeviceenrollmentprofiles/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -2910,7 +2910,7 @@ Class PwshJamf {
     }
 
     # Returns mobile device group by id
-    [psobject] GetMobileDeviceGroupById($ID) {
+    [psobject] GetMobileDeviceGroupByID($ID) {
         $Resource = "mobiledevicegroups/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3010,7 +3010,7 @@ Class PwshJamf {
     }
 
     # Updates static mobile device group by id (uses mobile_device_additions and mobile_device_deletions)
-    [psobject] UpdateStaticMobileDeviceGroupById($GroupID, $DeviceIdentifier, $ArrayOf_MobileDevices, $Action) {
+    [psobject] UpdateStaticMobileDeviceGroupByID($GroupID, $DeviceIdentifier, $ArrayOf_MobileDevices, $Action) {
         $Resource = "mobiledevicegroups/id/${GroupID}"
         $Method = "PUT"
 
@@ -3055,7 +3055,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceinvitation by id
-    [psobject] GetMobileDeviceInvitationById($ID) {
+    [psobject] GetMobileDeviceInvitationByID($ID) {
         $Resource = "mobiledeviceinvitations/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3148,7 +3148,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceprovisioningprofile by id
-    [psobject] GetMobileDeviceProvisioningProfileById($ID) {
+    [psobject] GetMobileDeviceProvisioningProfileByID($ID) {
         $Resource = "mobiledeviceprovisioningprofiles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3172,7 +3172,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceprovisioningprofile Subsets by id
-    [psobject] GetMobileDeviceProvisioningProfileSubsetById($ID, $Subset) {
+    [psobject] GetMobileDeviceProvisioningProfileSubsetByID($ID, $Subset) {
         $Resource = "mobiledeviceprovisioningprofiles/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3322,7 +3322,7 @@ Class PwshJamf {
     }
 
     # Returns mobile device by id
-    [psobject] GetMobileDeviceById($ID) {
+    [psobject] GetMobileDeviceByID($ID) {
         $Resource = "mobiledevices/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3362,7 +3362,7 @@ Class PwshJamf {
     }
 
     # Returns mobile device Subsets by id
-    [psobject] GetMobileDeviceSubsetById($ID, $Subset) {
+    [psobject] GetMobileDeviceSubsetByID($ID, $Subset) {
         $Resource = "mobiledevices/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3546,7 +3546,7 @@ Class PwshJamf {
     }
 
     # Returns mobile device configuration profile by id
-    [psobject] GetMobileDeviceConfigurationProfileById($ID) {
+    [psobject] GetMobileDeviceConfigurationProfileByID($ID) {
         $Resource = "mobiledeviceconfigurationprofiles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3620,7 +3620,7 @@ Class PwshJamf {
     }
 
     # Returns mobile device configuration profile Subsets by id
-    [psobject] GetMobileDeviceConfigurationProfileSubsetById($ID, $Subset) {
+    [psobject] GetMobileDeviceConfigurationProfileSubsetByID($ID, $Subset) {
         $Resource = "mobiledeviceconfigurationprofiles/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3647,7 +3647,7 @@ Class PwshJamf {
     }
 
     # Returns mobiledeviceextensionattribute by id
-    [psobject] GetMobileDeviceExtensionAttributeById($ID) {
+    [psobject] GetMobileDeviceExtensionAttributeByID($ID) {
         $Resource = "mobiledeviceextensionattributes/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3716,7 +3716,7 @@ Class PwshJamf {
     }
 
     # Returns networksegments by id
-    [psobject] GetNetworkSegmentById($ID) {
+    [psobject] GetNetworkSegmentByID($ID) {
         $Resource = "networksegments/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3785,7 +3785,7 @@ Class PwshJamf {
     }
 
     # Returns computer configuration profile by id
-    [psobject] GetComputerConfigurationProfileById($ID) {
+    [psobject] GetComputerConfigurationProfileByID($ID) {
         $Resource = "osxconfigurationprofiles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3859,7 +3859,7 @@ Class PwshJamf {
     }
 
     # Returns computer configuration profile Subsets by id
-    [psobject] GetComputerConfigurationProfileSubsetById($ID, $Subset) {
+    [psobject] GetComputerConfigurationProfileSubsetByID($ID, $Subset) {
         $Resource = "osxconfigurationprofiles/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3886,7 +3886,7 @@ Class PwshJamf {
     }
 
     # Returns package by id
-    [psobject] GetPackageById($ID) {
+    [psobject] GetPackageByID($ID) {
         $Resource = "packages/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -3963,7 +3963,7 @@ Class PwshJamf {
     }
 
     # Returns patchsoftwaretitle by id
-    [psobject] GetPatchSoftwareTitleById($ID) {
+    [psobject] GetPatchSoftwareTitleByID($ID) {
         $Resource = "patchsoftwaretitles/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4032,7 +4032,7 @@ Class PwshJamf {
     }
 
     # Returns policy by id
-    [psobject] GetPolicyById($ID) {
+    [psobject] GetPolicyByID($ID) {
         $Resource = "policies/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4048,7 +4048,7 @@ Class PwshJamf {
     }
 
     # Returns policy Subsets by id
-    [psobject] GetPolicySubsetById($ID, $Subset) {
+    [psobject] GetPolicySubsetByID($ID, $Subset) {
         $Resource = "policies/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4089,7 +4089,7 @@ Class PwshJamf {
 
     # Updates policy by name
     [psobject] UpdatePolicyByName($Payload) {
-        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//name").InnerText
+        $Name = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//general/name").InnerText
         $Resource = "policies/name/${Name}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -4106,7 +4106,7 @@ Class PwshJamf {
 
     # Updates policy by id
     [psobject] UpdatePolicyByID($Payload) {
-        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//id").InnerText
+        $ID = $Payload.SelectSingleNode("$($Payload.FirstChild.NextSibling.LocalName)//general/id").InnerText
         $Resource = "policies/id/${ID}"
         $Method = "PUT"
         $Results = $this.InvokeAPI($Resource, $Method, $Payload)
@@ -4205,7 +4205,7 @@ Class PwshJamf {
     }
 
     # Returns printer by id
-    [psobject] GetPrinterById($ID) {
+    [psobject] GetPrinterByID($ID) {
         $Resource = "printers/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4295,7 +4295,7 @@ Class PwshJamf {
     }
 
     # Returns managedpreferenceprofile by id
-    [psobject] GetRestrictedSoftwareById($ID) {
+    [psobject] GetRestrictedSoftwareByID($ID) {
         $Resource = "restrictedsoftware/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4380,7 +4380,7 @@ Class PwshJamf {
     }
 
     # Returns script by id
-    [psobject] GetScriptById($ID) {
+    [psobject] GetScriptByID($ID) {
         $Resource = "scripts/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4465,7 +4465,7 @@ Class PwshJamf {
     }
 
     # Returns site by id
-    [psobject] GetSiteById($ID) {
+    [psobject] GetSiteByID($ID) {
         $Resource = "sites/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4544,7 +4544,7 @@ Class PwshJamf {
         # $allItems = $this.GetAdvancedComputerSearches()
         # if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
         #     ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-        #         $detailedItem = $this.GetAdvancedComputerSearchById($eachItem.id)
+        #         $detailedItem = $this.GetAdvancedComputerSearchByID($eachItem.id)
         #         if ( $detailedItem.SelectSingleNode("./site/name").InnerText -eq $Name ) {
         #             $this.DeleteAdvancedComputerSearchByID($detailedItem.SelectSingleNode("//id").InnerText)
         #             $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4555,7 +4555,7 @@ Class PwshJamf {
         # $allItems = $this.GetAdvancedMobileDeviceSearches()
         # if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
         #     ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-        #         $detailedItem = $this.GetAdvancedMobileDeviceSearchById($eachItem.id)
+        #         $detailedItem = $this.GetAdvancedMobileDeviceSearchByID($eachItem.id)
         #         if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
         #             $this.DeleteAdvancedMobileDeviceSearchByID($detailedItem.SelectSingleNode("//id").InnerText)
         #             $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4566,7 +4566,7 @@ Class PwshJamf {
         # $allItems = $this.GetAdvancedUserSearches()
         # if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
         #     ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-        #         $detailedItem = $this.GetAdvancedUserSearchById($eachItem.id)
+        #         $detailedItem = $this.GetAdvancedUserSearchByID($eachItem.id)
         #         if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
         #             $this.DeleteAdvancedUserSearchByID($detailedItem.SelectSingleNode("//id").InnerText)
         #             $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4577,7 +4577,7 @@ Class PwshJamf {
         $allItems = $this.GetClasses()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetClassById($eachItem.id)
+                $detailedItem = $this.GetClassByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteClassByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4588,7 +4588,7 @@ Class PwshJamf {
         $allItems = $this.GetComputerConfigurations()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetComputerConfigurationById($eachItem.id)
+                $detailedItem = $this.GetComputerConfigurationByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteComputerConfigurationByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4599,7 +4599,7 @@ Class PwshJamf {
         $allItems = $this.GetManagedPreferenceProfiles()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetManagedPreferenceProfileById($eachItem.id)
+                $detailedItem = $this.GetManagedPreferenceProfileByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteManagedPreferenceProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4610,7 +4610,7 @@ Class PwshJamf {
         $allItems = $this.GetComputerInvitations()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetComputerInvitationById($eachItem.id)
+                $detailedItem = $this.GetComputerInvitationByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteComputerInvitationByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4621,7 +4621,7 @@ Class PwshJamf {
         $allItems = $this.GetLicensedSoftware()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//licensed_software/licensed_software") ) {
-                $detailedItem = $this.GetLicensedSoftwareById($eachItem.id)
+                $detailedItem = $this.GetLicensedSoftwareByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteLicensedSoftwareByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4632,7 +4632,7 @@ Class PwshJamf {
         $allItems = $this.GetMobileDeviceEnrollmentProfiles()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetMobileDeviceEnrollmentProfileById($eachItem.id)
+                $detailedItem = $this.GetMobileDeviceEnrollmentProfileByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteMobileDeviceEnrollmentProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4643,7 +4643,7 @@ Class PwshJamf {
         $allItems = $this.GetMobileDeviceProvisioningProfiles()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetMobileDeviceProvisioningProfileById($eachItem.id)
+                $detailedItem = $this.GetMobileDeviceProvisioningProfileByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteMobileDeviceProvisioningProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4654,7 +4654,7 @@ Class PwshJamf {
         $allItems = $this.GetMobileDeviceInvitations()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetMobileDeviceInvitationById($eachItem.id)
+                $detailedItem = $this.GetMobileDeviceInvitationByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteMobileDeviceInvitationByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4665,7 +4665,7 @@ Class PwshJamf {
         $allItems = $this.GetBYOProfiles()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetBYOProfileById($eachItem.id)
+                $detailedItem = $this.GetBYOProfileByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteBYOProfileByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4676,7 +4676,7 @@ Class PwshJamf {
         $allItems = $this.GetVPPAccounts()
         if ( $allItems.SelectSingleNode("//size").InnerText -ne 0 ) {
             ForEach ( $eachItem in $allItems.SelectNodes("//$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)") ) {
-                $detailedItem = $this.GetVPPAccountById($eachItem.id)
+                $detailedItem = $this.GetVPPAccountByID($eachItem.id)
                 if ( $detailedItem.SelectSingleNode("//site/name").InnerText -eq $Name ) {
                     $this.DeleteVPPAccountByID($detailedItem.SelectSingleNode("//id").InnerText)
                     $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="$($allItems.FirstChild.NextSibling.FirstChild.NextSibling.LocalName)"; name="$($detailedItem.SelectSingleNode("//name").InnerText)" } )
@@ -4762,7 +4762,7 @@ Class PwshJamf {
     }
 
     # Returns softwareupdateservers by id
-    [psobject] GetSoftwareUpdateServerById($ID) {
+    [psobject] GetSoftwareUpdateServerByID($ID) {
         $Resource = "softwareupdateservers/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4831,7 +4831,7 @@ Class PwshJamf {
     }
 
     # Returns userextensionattribute by id
-    [psobject] GetUserExtensionAttributeById($ID) {
+    [psobject] GetUserExtensionAttributeByID($ID) {
         $Resource = "userextensionattributes/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4900,7 +4900,7 @@ Class PwshJamf {
     }
 
     # Returns usergroup by id
-    [psobject] GetUserGroupById($ID) {
+    [psobject] GetUserGroupByID($ID) {
         $Resource = "usergroups/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -4977,7 +4977,7 @@ Class PwshJamf {
     }
 
     # Returns vppaccount by id
-    [psobject] GetVPPAccountById($ID) {
+    [psobject] GetVPPAccountByID($ID) {
         $Resource = "vppaccounts/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -5029,7 +5029,7 @@ Class PwshJamf {
     }
 
     # Returns vppassignment by id
-    [psobject] GetVPPAssignmentById($ID) {
+    [psobject] GetVPPAssignmentByID($ID) {
         $Resource = "vppassignments/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -5090,7 +5090,7 @@ Class PwshJamf {
     }
 
     # Returns vppinvitation by id
-    [psobject] GetVPPInvitationById($ID) {
+    [psobject] GetVPPInvitationByID($ID) {
         $Resource = "vppinvitations/id/${ID}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)
@@ -5098,7 +5098,7 @@ Class PwshJamf {
     }
 
     # Returns vppinvitation Subsets by id
-    [psobject] GetVPPInvitationSubsetById($ID, $Subset) {
+    [psobject] GetVPPInvitationSubsetByID($ID, $Subset) {
         $Resource = "vppinvitations/id/${ID}/subset/${Subset}"
         $Method = "GET"
         $Results = $this.InvokeAPI($Resource, $Method)

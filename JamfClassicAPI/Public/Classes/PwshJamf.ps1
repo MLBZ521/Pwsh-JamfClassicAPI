@@ -4689,28 +4689,201 @@ Class PwshJamf {
 
         # If the delete failed because items exist in the Site, delete those items.
         if ( $Results -ne $null ) {
+
+            $allPolicies = $this.GetPolicies()
+            $allComputerConfigurationProfiles = $this.GetComputerConfigurationProfiles()
+            $allRestrictedSoftware = $this.GetRestrictedSoftware()
+            $allComputerGroups = $this.GetComputerGroups()
+            $allMobileDeviceGroups = $this.GetMobileDeviceGroups()
+            $allMobileDeviceConfigurationProfiles = $this.GetMobileDeviceConfigurationProfiles()
+            $allMobileDeviceApplications = $this.GetMobileDeviceApplications()
+            $alleBooks = $this.GeteBooks()
+            $allUserGroups = $this.GetUserGroups()
+            $allMacApplications = $this.GetMacApplications()
+            $allVPPAssignments = $this.GetVPPAssignments()
+            $allVPPInvitations = $this.GetVPPInvitations()
+
             (($Results -split ':',2)[1]).Split(",") | ForEach-Object {
                 $ObjectType = $_.Split(":")[0]
                 $ObjectName = $_.Split(":")[1]
 
                 switch ( $ObjectType ) {
-                    "Policy" { $this.DeletePolicyByName($ObjectName) }
-                    "OS X Configuration Profile" { $this.DeleteComputerConfigurationProfileByName($ObjectName) }
-                    "Restricted Software" { $this.DeleteRestrictedSoftwareByName($ObjectName) }
-                    "Smart Computer Group" { $this.DeleteComputerGroupByName($ObjectName) }
-                    "Static Computer Group" { $this.DeleteComputerGroupByName($ObjectName) }
-                    "Smart Mobile Device Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
-                    "Static Mobile Device Group" { $this.DeleteMobileDeviceGroupByName($ObjectName) }
-                    "Mobile Device Configuration Profile" { $this.DeleteMobileDeviceConfigurationProfileByName($ObjectName) }
-                    "Mobile Device Application" { $this.DeleteMobileDeviceApplicationByName($ObjectName) }
-                    "eBook" { $this.DeleteeBookByName($ObjectName) }
-                    "Smart User Group" { $this.DeleteUserGroupByName($ObjectName) }
-                    "Static User Group" { $this.DeleteUserGroupByName($ObjectName) }
-                    "Patch Management Software Title" { Write-Host "You will need to manually delete Patch Object:  ${ObjectName}" }
-                    "Mac Application" { $this.DeleteMacApplicationByName($ObjectName) }
-                    "VPP Assignment" { $this.DeleteVPPAssignmentByName($ObjectName) }
-                    "VPP Invitation" { $this.DeleteVPPInvitationByName($ObjectName) }
-                    Default { Write-host "Something I don't know how to delete is in this Site." }
+                    "Policy" {
+                        $allPolicies.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetPolicyByID($_.id)
+
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    # Write-host "Delete:  $($_.id) - $($_.name)"
+                                    $this.DeletePolicyByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "OS X Configuration Profile" {
+                        $allComputerConfigurationProfiles.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetComputerConfigurationProfileByID($_.id)
+
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteComputerConfigurationProfileByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Restricted Software" {
+                        $allRestrictedSoftware.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetRestrictedSoftwareByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteRestrictedSoftwareByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Smart Computer Group" {
+                        $allComputerGroups.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetComputerGroupByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    # Write-host "Delete:  $($_.id) - $($_.name)"
+                                    $this.DeleteComputerGroupByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Static Computer Group" {
+                        $allComputerGroups.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+
+                                $Object = $this.GetComputerGroupByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteComputerGroupByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Smart Mobile Device Group" {
+                        $allMobileDeviceGroups.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetMobileDeviceGroupByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    # Write-host "Delete:  $($_.id) - $($_.name)"
+                                    $this.DeleteMobileDeviceGroupByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Static Mobile Device Group" {
+                        $allMobileDeviceGroups.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetMobileDeviceGroupByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteMobileDeviceGroupByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Mobile Device Configuration Profile" {
+                        $allMobileDeviceConfigurationProfiles.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetMobileDeviceConfigurationProfileByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteMobileDeviceConfigurationProfileByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Mobile Device Application" {
+                        $allMobileDeviceApplications.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetMobileDeviceApplicationByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteMobileDeviceApplicationByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "eBook" {
+                        $alleBooks.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+
+                                $Object = $this.GeteBookByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteeBookByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Smart User Group" {
+                        $allUserGroups.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetUserGroupByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteUserGroupByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Static User Group" {
+                        $allUserGroups.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetUserGroupByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteUserGroupByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "Patch Management Software Title" {
+                        Write-Host "You will need to manually delete Patch Object:  ${ObjectName}"
+                    }
+                    "Mac Application" {
+                        $allMacApplications.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetMacApplicationByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteMacApplicationByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "VPP Assignment" {
+                        $allVPPAssignments.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetVPPAssignmentByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteVPPAssignmentByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    "VPP Invitation" {
+                        $allVPPInvitations.SelectNodes("/child::*/descendant::*") | ForEach-Object {
+                            if ( $ObjectName -eq "$($_.name)" ) {
+                                $Object = $this.GetVPPInvitationByID($_.id)
+ 
+                                if ( $Object.SelectNodes("//site/name").InnerText -eq $Name ) {
+                                    $this.DeleteVPPInvitationByID($_.id)
+                                }
+                            }
+                        }
+                    }
+                    Default {
+                        Write-host "Something I don't know how to delete is in this Site."
+                    }
                 }
 
                 $DeletedItems += New-Object PSObject -Property ([ordered]@{ Type="${ObjectType}"; name="$(${ObjectName})" } )
